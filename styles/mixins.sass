@@ -1,0 +1,50 @@
+@import './vars.sass'
+
+@mixin tdn
+  text-decoration: none
+  &:hover
+    text-decoration: none
+  &:focus
+    text-decoration: none
+  &:active
+    text-decoration: none
+
+@mixin posa($padding)
+  position: absolute
+  top: $padding
+  left: $padding
+  right: $padding
+  bottom: $padding
+
+@mixin blur-bg
+  filter: blur(15px)
+  opacity: 0.4
+  border-radius: inherit
+  &-container
+    position: absolute
+    top: 10px
+    bottom: -10px
+    overflow: hidden
+    display: flex
+    border-radius: inherit
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    img
+      width: 100%
+
+@mixin outline-card($brs)
+  border: none
+  outline: none
+  border: 2px solid rgba(black, 0.1)
+  box-sizing: border-box
+  border-radius: $brs
+  transition: all ease 0.25s
+  &:focus
+    border: 2px solid rgba($color-accent, 1)
+
+@keyframes slide
+  0%
+    transform: translateY(-15px)
+  100%
+    transform: translateY(15px)

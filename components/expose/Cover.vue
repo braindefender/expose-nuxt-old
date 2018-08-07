@@ -1,0 +1,184 @@
+<template>
+  <div class="cover">
+    <div class="cover__inner cover__image">
+      <img :src="options.image" alt="">
+    </div>
+    <div class="cover__inner cover__content">
+      <div class="cover__title">{{ options.title }}</div>
+    </div>
+    <div class="cover__inner cover__controls">
+      <div
+        v-if="options.nav"
+        class="cover-control cover-control--left"
+        :class="options.prev ? '' : 'cover-control--disabled'">
+        <a href="#" class="cover-control__link">
+          <span class="cover-control__title">Предыдущая неделя</span>
+          <span class="cover-control__info">{{ prevDate }}</span>
+        </a>
+      </div>
+      <div class="cover-control cover-control--center">
+        <span class="cover-control__title">{{ todayDate }}</span>
+        <span class="cover-control__info">{{ options.source }}</span>
+      </div>
+      <div
+        v-if="options.nav"
+        class="cover-control cover-control--right"
+        :class="options.next ? '' : 'cover-control--disabled'">
+        <a href="#" class="cover-control__link">
+          <span class="cover-control__title">Следующая неделя</span>
+          <span class="cover-control__info">{{ nextDate }}</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Cover',
+  props: ['options'],
+  data() {
+    return {
+      months: [
+        'января',
+        'февраля',
+        'марта',
+        'апреля',
+        'мая',
+        'июня',
+        'июля',
+        'августа',
+        'сентября',
+        'октября',
+        'ноября',
+        'декабря',
+      ],
+    };
+  },
+  computed: {
+    prevDate() {
+      if (this.options.prev) {
+        return this.generateDate(
+          this.options.prev.date.from,
+          this.options.prev.date.to,
+        );
+      }
+      return `\n`;
+    },
+    nextDate() {
+      if (this.options.next) {
+        return this.generateDate(
+          this.options.next.date.from,
+          this.options.next.date.to,
+        );
+      }
+      return `\n`;
+    },
+    todayDate() {
+      return this.generateFullDate(
+        this.options.date.from,
+        this.options.date.to,
+      );
+    },
+  },
+  methods: {
+    generateDate(from, to) {
+      return `с ${from.day} ${this.months[from.month]} по ${to.day} ${
+        this.months[to.month]
+      }`;
+    },
+    generateFullDate(from, to) {
+      return `с ${from.day} ${this.months[from.month]} по ${to.day} ${
+        this.months[to.month]
+      } ${to.year}`;
+    },
+  },
+};
+</script>
+
+<style lang="sass">
+  .cover
+    width: 100%
+    height: 320px
+    position: relative
+    color: white
+    background-color: #333
+    &__inner
+      position: absolute
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
+      pointer-events: none
+    &__content
+      display: flex
+      justify-content: center
+      align-items: center
+      pointer-events: auto
+    &__title
+      text-align: center
+      max-width: 680px
+      font-size: 24px
+      line-height: 30px
+      white-space: pre
+    &__image
+      display: flex
+      justify-content: center
+      align-items: center
+      overflow: hidden
+      &::after
+        content: ''
+        position: absolute
+        top: 0
+        left: 0
+        right: 0
+        bottom: 0
+        background-color: rgba(black, 0.4)
+      img
+        width: 100%
+    &__controls
+      top: auto
+      padding: 30px
+      display: flex
+      align-items: flex-start
+      flex-direction: row
+      justify-content: space-between
+
+  .cover-control
+    position: relative
+    transition: all ease 0.3s
+    pointer-events: auto
+    &--disabled
+      pointer-events: none
+      opacity: 0.2
+    &--left
+      width: 200px
+      left: 0
+      text-align: left
+      &:hover
+        left: 10px
+    &--right
+      width: 200px
+      text-align: right
+      right: 0
+      &:hover
+        right: 10px
+    &--center
+      flex-grow: 1
+      text-align: center
+    &__link
+      text-decoration: none
+      color: white
+      border: none
+      outline: none
+      &:hover
+        text-decoration: none
+    &__title
+      display: block
+      font-size: 16px
+      line-height: 20px
+    &__info
+      display: block
+      font-size: 13px
+      opacity: 0.6
+</style>

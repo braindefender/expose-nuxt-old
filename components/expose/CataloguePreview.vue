@@ -1,0 +1,93 @@
+<template>
+  <div class="cat-preview">
+    <div class="cat-layout">
+      <div class="cat-layout__panel">
+        <div class="cat-layout__title">
+          Каталог выставок
+        </div>
+        <div class="cat-layout__action">
+          Смотреть все
+        </div>
+      </div>
+      <div class="cat-layout__content">
+        <div class="cat-layout__grid">
+          <CatalogueCard
+            v-for="image in list"
+            :key='image+list.indexOf(image)'
+            :image="image"></CatalogueCard>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import CatalogueCard from '@/components/CatalogueCard';
+
+import image1 from '@/assets/images/janko-ferlic-174927-unsplash.jpg';
+import image2 from '@/assets/images/chad-kirchoff-202730-unsplash.jpg';
+import image3 from '@/assets/images/ren-ran-232078-unsplash.jpg';
+import image4 from '@/assets/images/stock-1863880_1920.jpg';
+
+export default {
+  name: 'CataloguePreview',
+  components: { CatalogueCard },
+  data() {
+    return {
+      list: [image1, image2, image3, image4],
+    };
+  },
+};
+</script>
+
+
+<style lang="sass">
+
+  .cat-layout
+    max-width: 810px
+    padding-bottom: 20px
+    &__grid
+      display: grid
+      grid-template-columns: repeat(auto-fill, 395px)
+      grid-auto-row: auto
+      grid-gap: 30px 20px
+      grid-auto-flow: row
+    &__slider
+      width: 100%
+      height: 226px
+      background-color: #333
+      border-radius: 5px
+    &__panel
+      display: flex
+      flex-direction: row
+      justify-content: space-between
+      align-items: center
+      height: 64px
+    &__title
+      font-size: 20px
+      font-weight: bold
+      font-family: 'PT Sans'
+    &__action
+      cursor: pointer
+      font-size: 14px
+      color: #4680ff
+    &__sort
+      font-size: 0
+    &__sort-button
+      margin: 0
+      padding: 0
+      font-family: 'PT Sans'
+      cursor: pointer
+      color: #4680ff
+      border: none
+      outline: none
+      background: none
+      font-size: 14px
+      margin-right: 20px
+      &:last-child
+        margin-right: 0
+      &--active
+        font-weight: bold
+        color: black
+
+</style>
