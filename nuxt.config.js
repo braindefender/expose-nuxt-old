@@ -32,7 +32,11 @@ module.exports = {
         });
       }
     },
-    vendor: ['vue-textarea-autosize'],
+    vendor: ['vue-textarea-autosize', 'axios'],
   },
+  axios: {
+    baseURL: 'http://10.3.6.27:3333/api',
+  },
+  modules: ['@nuxtjs/axios'],
   plugins: [{ src: '~plugins/vue-autosize', ssr: false }],
 };

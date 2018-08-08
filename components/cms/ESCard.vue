@@ -2,7 +2,7 @@
   <div class="es-card-wrapper">
     <div class="es-card-wrapper__letter" v-if="options.showLetters">
       <span v-if="options.showLetter">
-        {{item.author[0]}}
+        {{item.author ? item.author[0] : item.title[0]}}
       </span>
     </div>
     <div
@@ -16,7 +16,12 @@
       </div>
       <div class="es-card__content">
         <div class="es-card__top">
-          <div class="es-card__author">{{ item.author }}</div>
+          <div
+            :class="item.author
+              ? 'es-card__author'
+              : 'es-card__author es-card__author--gray'">
+          {{ author }}
+          </div>
           <div class="es-card__info">{{item.source}}, <span>{{item.year}}</span></div>
         </div>
         <div class="es-card__bot">
@@ -44,6 +49,7 @@ export default {
       selected: false,
       showBadges: this.options.showBadges,
       selectMode: this.options.selectMode,
+      author: this.item.author || 'Автор не указан',
     };
   },
   methods: {
@@ -110,6 +116,8 @@ export default {
       font-size: 14px
       line-height: 20px
       color: $color-accent
+      &--gray
+        color: rgba(black, 0.4)
     &__info
       font-size: 14px
       line-height: 20px
@@ -123,7 +131,7 @@ export default {
     &__controls
       width: 48px
       padding-top: 8px
-      flex-grow: 0
+      flex: 0 0 auto
       display: flex
       flex-direction: column
       align-items: center

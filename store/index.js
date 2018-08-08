@@ -1,6 +1,9 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
 
+import weekly0 from '@/assets/images/jamie-taylor-110195-unsplash.jpg';
+import weekly1 from '@/assets/images/janko-ferlic-174927-unsplash.jpg';
+
 Vue.use(Vuex);
 
 const store = () => {
@@ -12,6 +15,20 @@ const store = () => {
         { name: 'sort', title: 'Сортировка' },
         { name: 'edit', title: 'Редактирование' },
         { name: 'demo', title: 'Предпоказ' },
+      ],
+      sourceList: [
+        {
+          index: 0,
+          title: 'ГПНТБ СО РАН',
+          weekly: `Еженедельная выставка новых поступлений\nГПНТБ СО РАН`,
+          image: weekly0,
+        },
+        {
+          index: 1,
+          title: 'Отделение ГПНТБ СО РАН',
+          weekly: `Еженедельная выставка новых поступлений\nотделения ГПНТБ СО РАН`,
+          image: weekly1,
+        },
       ],
       unsortedItems: [
         {
@@ -52,8 +69,11 @@ const store = () => {
       ],
     },
     mutations: {
-      setPage(page) {
+      setPage(state, page) {
         state.currentPage = page;
+      },
+      setUnsortedItems(state, list) {
+        state.unsortedItems = list;
       },
     },
   });

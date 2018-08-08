@@ -101,7 +101,8 @@
                   Обложка:
                 </div>
                 <div class="ec__loader">
-                  <button class="button">Загрузить обложку</button>
+                  <input type="file" ref="xml" @change="setFile">
+                  <button class="button" @click="upload">Загрузить обложку</button>
                   <p class="ec__loader-comment">
                     Рекомендуемое разрешение
                     <br>
@@ -230,8 +231,14 @@ export default {
     Navigation,
   },
   directives: { mask },
+  mounted() {
+    this.$axios.$get(`/expose`).then(res => {
+      this.$store.commit('setUnsortedItems', res);
+    });
+  },
   data() {
     return {
+      file: '',
       modeList: [
         {
           index: 0,
@@ -244,20 +251,7 @@ export default {
           title: 'Тематическая выставка',
         },
       ],
-      sourceList: [
-        {
-          index: 0,
-          title: 'ГПНТБ СО РАН',
-          weekly: `Еженедельная выставка новых поступлений\nГПНТБ СО РАН`,
-          image: weekly0,
-        },
-        {
-          index: 1,
-          title: 'Отделение ГПНТБ СО РАН',
-          weekly: `Еженедельная выставка новых поступлений\nотделения ГПНТБ СО РАН`,
-          image: weekly1,
-        },
-      ],
+      sourceList: this.$store.state.sourceList,
       mode: 0,
       source: 0,
       customTitle: 'Измените название выставки',
@@ -322,6 +316,25 @@ export default {
     },
   },
   methods: {
+    setFile() {
+      this.file = this.$refs.xml.files[0];
+    },
+    upload() {
+      let formData = new FormData();
+      formData.append('file', this.file);
+      this.$axios
+        .$post('/expose/xml', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(function() {
+          console.log('SUCCESS!!');
+        })
+        .catch(function() {
+          console.log('FAILURE!!');
+        });
+    },
     date(input) {
       const date = new Date(input);
       return {

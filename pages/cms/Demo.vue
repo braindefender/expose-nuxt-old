@@ -1,19 +1,17 @@
 <template>
   <div class="cms-page">
     <Navigation></Navigation>
-    <div class="container">
-      <ExposePage></ExposePage>
-    </div>
+    <Expose></Expose>
   </div>
 </template>
 
 <script>
 import Navigation from '@/components/cms/Navigation';
-import ExposePage from '@/components/expose/ExposePage';
+import Expose from '@/pages/expose/_expose';
 
 export default {
   name: 'Demo',
-  components: { Navigation, ExposePage },
+  components: { Navigation, Expose },
   data() {
     return {};
   },

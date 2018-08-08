@@ -67,7 +67,7 @@ export default {
   computed: {
     letters() {
       return this.$store.state.unsortedItems
-        .map(el => el.author[0])
+        .map(el => (el.author ? el.author[0] : el.title[0]))
         .map((val, ind, arr) => val !== arr[ind - 1]);
     },
   },

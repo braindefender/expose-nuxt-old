@@ -1,23 +1,34 @@
 <template>
-
-<div class="card">
-  <div class="card__content">
-
-    <div class="card__left">
-      <div class="card__image"></div>
-      <div class="card__button">Перейти в каталог</div>
+    <div class="book-card" v-if="this.item.image">
+      <div class="book-card__image">{{ this.item.image }}</div>
+      <div class="book-card__content">
+        <div
+          :class="this.item.author
+            ? 'book-card__author'
+            : 'book-card__author book-card__author--gray'">
+          {{ author }}
+        </div>
+        <div class="book-card__title">{{ this.item.title }}</div>
+        <div class="book-card__info">{{ info }}</div>
+        <div class="book-card__annotation">{{ this.item.annotation || 'Информация отсутствует' }}</div>
+      </div>
     </div>
-
-    <div class="card__right">
-      <div class="card__text card__text--author">{{ this.item.author }}</div>
-      <div class="card__text card__text--title">{{ this.item.title }}</div>
-      <div class="card__text card__text--description">{{ this.item.description }}</div>
-      <div class="card__info">{{ this.item.info }}</div>
+    <div class="book-card book-card--small" v-else>
+      <div class="book-card__line">
+        <div
+          :class="this.item.author
+            ? 'book-card__author'
+            : 'book-card__author book-card__author--gray'">
+          {{ author }}
+        </div>
+        <div class="book-card__info">{{ info }}</div>
+      </div>
+      <div class="book-card__line">
+        <div class="book-card__title book-card__title--small">
+          {{ this.item.title }}
+        </div>
+      </div>
     </div>
-
-  </div>
-</div>
-
 </template>
 
 <script>
@@ -25,52 +36,28 @@ export default {
   name: 'BookCard',
   props: ['item'],
   data() {
-    return {};
+    return {
+      source: this.item.source || '',
+      year: this.item.year || '',
+      pages: this.item.pages ? `${this.item.pages} с.` : '',
+      author: this.item.author || 'Автор не указан',
+    };
+  },
+  computed: {
+    info() {
+      return [this.source, this.year, this.pages]
+        .filter(el => el !== '')
+        .join(', ');
+    },
   },
 };
 </script>
 
 <style lang="sass" scoped>
-  .card
-    border-radius: 10px
-    overflow: hidden
-    &__content
-      padding: 20px
-      display: flex
-    &__left
-      display: flex
-      flex-direction: column
-    &__right
-      display: flex
-      flex-direction: column
-    &__image
-      border-radius: 10px
-      margin-bottom: 20px
-    &__button
-      display: flex
-      flex-direction: column
-      justify-content: center
-      align-items: center
-      width: 100%
-      height: 32px
-      border-radius: 10px
-      font-weight: bold
-      font-size: 14px
-      line-height: 20px
-      text-align: center
-      color: #1861f2
-    &__text
-      font-weight: normal
-      font-size: 16px
-      line-height: 20px
-      margin-bottom: 10px
-      &:last-child
-        margin-bottom: 0
-    &__title
-      font-weight: bold
-    &__author
-      font-size: 16px
-    &__description
-      font-size: 14px
-      color: rgba(black, 0.8)
+
+  @import '@/styles/vars.sass'
+
+
+
+
 </style>
