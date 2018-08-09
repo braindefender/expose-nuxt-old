@@ -86,7 +86,7 @@ export default {
     submitData(data) {
       // eslint-disable-next-line
       console.log(data);
-      axios.post('/expose', data);
+      
     },
   },
 };

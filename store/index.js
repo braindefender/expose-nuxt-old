@@ -16,6 +16,18 @@ const store = () => {
         { name: 'edit', title: 'Редактирование' },
         { name: 'demo', title: 'Предпоказ' },
       ],
+      modeList: [
+        {
+          index: 0,
+          mode: 'weekly',
+          title: 'Еженедельная выставка',
+        },
+        {
+          index: 1,
+          mode: 'theme',
+          title: 'Тематическая выставка',
+        },
+      ],
       sourceList: [
         {
           index: 0,
@@ -30,6 +42,16 @@ const store = () => {
           image: weekly1,
         },
       ],
+      expose: {
+        mode: 0,
+        source: 0,
+        title: 'Измените название выставки',
+        annotation: 'Измените описание выставки',
+        image: weekly0,
+        email: '',
+        phone: '',
+        author: 'Автор выставки',
+      },
       unsortedItems: [
         {
           author: 'Ажевникова Н.А.',
@@ -69,6 +91,9 @@ const store = () => {
       ],
     },
     mutations: {
+      syncInfoState(state, expose) {
+        state.expose = expose;
+      },
       setPage(state, page) {
         state.currentPage = page;
       },

@@ -11,12 +11,15 @@
             <div class="es__side-controls">
               <button class="button" type="button">Выделить все</button>
               <button class="button" type="button">Удалить</button>
-              <button class="button" type="button">Загрузить XML</button>
+              <button
+                class="button"
+                type="button"
+                @click="uploadXML">Загрузить XML</button>
             </div>
           </div>
           <div class="es__list">
             <ESCard
-              v-for="(item, index) in this.$store.state.unsortedItems"
+              v-for="(item, index) in this.unsortedItems"
               :item="item"
               :key="index"
               :options="{
@@ -26,6 +29,7 @@
                 showLetters: true,
               }">
             </ESCard>
+            <input type="file" ref="xml" @change="setFile">
           </div>
         </div>
         <div class="es__side es__side--right">
@@ -51,17 +55,17 @@ import ESCard from '@/components/cms/ESCard';
 
 export default {
   name: 'PageTwo',
-  methods: {
-    toggleStack() {
-      this.stack.opened = !this.stack.opened;
-    },
+  mounted() {
+    // this.fetchState();
+  },
+  beforeDestroy() {
+    // this.syncState();
   },
   components: { Navigation, Stack, ESCard },
   data() {
     return {
-      stack: {
-        opened: false,
-      },
+      unsortedItems: this.$store.state.unsortedItems,
+      list: [],
     };
   },
   computed: {
@@ -69,6 +73,46 @@ export default {
       return this.$store.state.unsortedItems
         .map(el => (el.author ? el.author[0] : el.title[0]))
         .map((val, ind, arr) => val !== arr[ind - 1]);
+    },
+    sortState() {
+      return {};
+    },
+  },
+  methods: {
+    fetchState() {
+      this.$axios
+        .$get('/cms/sort')
+        .then(res => {
+          this.$store.commit('syncSortState', res);
+        })
+        .catch(err => {
+          console.log(`Error: cannot fetch data from server\n${err}`);
+          this.$store.commit('syncSortState', this.list);
+        });
+    },
+    syncState() {
+      this.$store.commit('syncSortState', this.sortState);
+      this.$axios.$post('/cms/sort', this.sortState);
+    },
+    uploadXML() {
+      let formData = new FormData();
+      formData.append('file', this.file);
+      this.$axios
+        .$post('/expose/xml', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(function() {
+          console.log('SUCCESS!!');
+          this.$axios.$get('/cms/sort')
+        })
+        .catch(function() {
+          console.log('FAILURE!!');
+        });
+    },
+    setFile() {
+      this.file = this.$refs.xml.files[0];
     },
   },
 };

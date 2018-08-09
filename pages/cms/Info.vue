@@ -5,7 +5,7 @@
       <div class="ec">
 
         <transition name="slide-fade">
-          <div class="ec__box ec__theme" v-if="mode == 0">
+          <div class="ec__box ec__theme" v-if="expose.mode == 0">
             <div class="ec__column">
 
               <div class="ec__item">
@@ -14,8 +14,8 @@
                 </div>
                 <div class="ec__toggle">
                   <Select
-                    :list="modeList"
-                    :check="mode"
+                    :list="this.$store.state.modeList"
+                    :check="expose.mode"
                     :call="setMode">
                   </Select>
                 </div>
@@ -32,7 +32,7 @@
                 <div class="ec__toggle">
                   <Select
                     :list="sourceList"
-                    :check="source"
+                    :check="expose.source"
                     :call="setSource">
                   </Select>
                 </div>
@@ -65,15 +65,15 @@
 
           </div>
 
-          <div class="ec__box ec__theme" v-if="mode == 1">
+          <div class="ec__box ec__theme" v-if="expose.mode == 1">
             <div class="ec__column">
 
               <div class="ec__item">
                 <div class="ec__title">Тип выставки:</div>
                 <div class="ec__toggle">
                   <Select
-                    :list="modeList"
-                    :check="mode"
+                    :list="this.$store.state.modeList"
+                    :check="expose.mode"
                     :call="setMode">
                   </Select>
                 </div>
@@ -90,8 +90,8 @@
                   cols="30"
                   rows="1"
                   placeholder="Измените название выставки"
-                  v-model="customTitle"
-                  v-autosize="customTitle">
+                  v-model="expose.title"
+                  v-autosize="expose.title">
                 </textarea>
 
               </div>
@@ -101,8 +101,21 @@
                   Обложка:
                 </div>
                 <div class="ec__loader">
-                  <input type="file" ref="xml" @change="setFile">
-                  <button class="button" @click="upload">Загрузить обложку</button>
+
+                  <picture-input
+                    ref="piCover"
+                    width="172"
+                    height="36"
+                    accept="image/jpeg,image/jpg,image/png"
+                    size="2"
+                    button-class="button"
+                    :zIndex=200
+                    :prefill="prefill"
+                    :plain="true"
+                    :hideChangeButton="true"
+                    @change="onPICoverChange">
+                  </picture-input>
+
                   <p class="ec__loader-comment">
                     Рекомендуемое разрешение
                     <br>
@@ -120,7 +133,7 @@
                 <div class="ec__toggle">
                   <Select
                     :list="sourceList"
-                    :check="source"
+                    :check="expose.source"
                     :call="setSource">
                   </Select>
                 </div>
@@ -153,7 +166,7 @@
                   Email:
                 </div>
                 <input
-                  v-model="customEmail"
+                  v-model="expose.email"
                   type="email"
                   name="email"
                   class="ec__input"
@@ -165,7 +178,7 @@
                   Телефон:
                 </div>
                 <input
-                  v-model="customPhone"
+                  v-model="expose.phone"
                   type="tel"
                   name="phone"
                   class="ec__input"
@@ -188,8 +201,8 @@
                     cols="30"
                     rows="1"
                     placeholder="Измените описание выставки"
-                    v-model="annotation"
-                    v-autosize="annotation">
+                    v-model="expose.annotation"
+                    v-autosize="expose.annotation">
                   </textarea>
 
               </div>
@@ -202,8 +215,8 @@
         <Cover :options="options"></Cover>
 
         <Annotation
-          v-if="mode != 0"
-          :text="annotation">
+          v-if="expose.mode != 0"
+          :text="expose.annotation">
         </Annotation>
 
       </div>
@@ -231,73 +244,60 @@ export default {
     Navigation,
   },
   directives: { mask },
+  beforeDestroy() {
+    this.syncState();
+  },
   mounted() {
-    this.$axios.$get(`/expose`).then(res => {
-      this.$store.commit('setUnsortedItems', res);
-    });
+    this.fetchState();
+    // this.$axios.$get(`/expose`).then(res => {
+    //   this.$store.commit('setUnsortedItems', res);
+    // });
   },
   data() {
     return {
       file: '',
-      modeList: [
-        {
-          index: 0,
-          mode: 'weekly',
-          title: 'Еженедельная выставка',
-        },
-        {
-          index: 1,
-          mode: 'theme',
-          title: 'Тематическая выставка',
-        },
-      ],
       sourceList: this.$store.state.sourceList,
-      mode: 0,
-      source: 0,
-      customTitle: 'Измените название выставки',
-      annotation: 'Измените описание выставки',
       dateFrom: this.dateYYYYMMDD(new Date()),
       dateTo: this.dateYYYYMMDD(new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)),
-      customImage: weekly0,
-      customEmail: '',
-      customPhone: '',
-      author: 'Автор выставки',
+      prefill: this.$store.state.expose.image,
+      expose: this.$store.state.expose,
     };
   },
   computed: {
     title() {
-      return this.mode === 0
-        ? this.sourceList[this.source].weekly
-        : this.customTitle;
+      return this.expose.mode === 0
+        ? this.sourceList[this.expose.source].weekly
+        : this.expose.title;
     },
     phone() {
-      return this.mode === 0
-        ? this.sourceList[this.source].phone
-        : this.customPhone;
+      return this.expose.mode === 0
+        ? this.sourceList[this.expose.source].phone
+        : this.phone;
     },
     email() {
-      return this.mode === 0
-        ? this.sourceList[this.source].email
-        : this.customEmail;
-    },
-    currentDate() {
-      return this.date(Date.now());
+      return this.expose.mode === 0
+        ? this.sourceList[this.expose.source].email
+        : this.email;
     },
     options() {
       const source =
-        this.mode === 0 ? `\n` : this.sourceList[this.source].title;
+        this.expose.mode === 0
+          ? `\n`
+          : this.sourceList[this.expose.source].title;
       const image =
-        this.mode !== 0 ? this.customImage : this.sourceList[this.source].image;
+        this.expose.mode !== 0
+          ? this.expose.image
+          : this.sourceList[this.expose.source].image;
       return {
         nav: true,
-        title: this.title,
+        title: this.expose.title,
         image,
         source,
         date: {
           from: this.date(this.dateFrom),
           to: this.date(this.dateTo),
         },
-        next: {
+        prev: {
           date: {
             from: {
               day: 5,
@@ -311,30 +311,49 @@ export default {
             },
           },
         },
-        prev: undefined,
+        next: undefined,
       };
+    },
+    exposeState() {
+      const expose = {
+        dates: {
+          from: this.dateFrom,
+          to: this.dateTo,
+        },
+      };
+      if (this.expose.mode === 1) {
+        expose.image = this.expose.image;
+        expose.annotation = this.expose.annotation;
+      }
+      return { ...this.expose, ...expose };
     },
   },
   methods: {
-    setFile() {
-      this.file = this.$refs.xml.files[0];
-    },
-    upload() {
-      let formData = new FormData();
-      formData.append('file', this.file);
+    fetchState() {
       this.$axios
-        .$post('/expose/xml', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+        .$get('/cms/info')
+        .then(res => {
+          console.log(res);
+          this.$store.commit('syncInfoState', res);
         })
-        .then(function() {
-          console.log('SUCCESS!!');
-        })
-        .catch(function() {
-          console.log('FAILURE!!');
+        .catch(err => {
+          console.log(`Error: cannot fetch data from server\n${err}`);
+          this.$store.commit('syncInfoState', this.exposeState);
         });
     },
+    syncState() {
+      this.$store.commit('syncInfoState', this.exposeState);
+      this.$axios.$post('/cms/info', this.exposeState);
+    },
+    onPICoverChange(image) {
+      if (image) {
+        console.log('Picture loaded.');
+        this.expose.image = image;
+      } else {
+        console.log('FileReader API not supported: use the <form>, Luke!');
+      }
+    },
+
     date(input) {
       const date = new Date(input);
       return {
@@ -347,29 +366,10 @@ export default {
       return date.toISOString().split('T')[0];
     },
     setMode(index) {
-      this.mode = index;
+      this.expose.mode = index;
     },
     setSource(index) {
-      this.source = index;
-    },
-    submitData() {
-      const data = {
-        mode: this.mode,
-        source: this.source,
-        title: this.title,
-        dates: {
-          from: this.dateFrom,
-          to: this.dateTo,
-        },
-        email: this.email,
-        phone: this.phone,
-        author: this.author,
-      };
-      if (this.mode === 1) {
-        data.image = this.customImage;
-        data.annotation = this.annotation;
-      }
-      this.$parent.$emit('submitData', data);
+      this.expose.source = index;
     },
   },
 };
@@ -378,6 +378,7 @@ export default {
 <style lang="sass">
 
   @import '@/styles/vars.sass'
+  @import '@/styles/mixins.sass'
 
   .slide-fade-enter-active
     transition: all .3s ease
@@ -516,5 +517,33 @@ export default {
         margin-left: 10px
         &:first-child
           margin-left: 0
+
+  .picture-input
+    padding: 0
+    width: 172px
+    height: 32px
+    border-radius: 5px
+    overflow: hidden
+    transition: all ease 0.15s
+    box-shadow: 0px 3px 6px rgba(black, 0)
+    &:hover
+      box-shadow: 0px 3px 6px rgba(black, 0.15)
+    .preview-container
+      position: relative
+      overflow: hidden
+      &::after
+        +posa(0)
+        padding-bottom: 4px
+        z-index: 5000
+        font-weight: bold
+        display: flex
+        flex-direction: row
+        justify-content: center
+        align-items: center
+        color: white
+        font-size: 14px
+        pointer-events: none
+        content: 'Загрузить обложку'
+        background-color: rgba(black, 0.5)
 
 </style>

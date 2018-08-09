@@ -32,11 +32,14 @@ module.exports = {
         });
       }
     },
-    vendor: ['vue-textarea-autosize', 'axios'],
+    vendor: ['vue-textarea-autosize', 'vue-picture-input', 'axios'],
   },
   axios: {
     baseURL: 'http://10.3.6.27:3333/api',
   },
   modules: ['@nuxtjs/axios'],
-  plugins: [{ src: '~plugins/vue-autosize', ssr: false }],
+  plugins: [
+    { src: '~plugins/vue-autosize', ssr: false },
+    { src: '~plugins/vue-picture-input', ssr: false },
+  ],
 };
