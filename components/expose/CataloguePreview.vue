@@ -5,16 +5,19 @@
         <div class="cat-layout__title">
           Каталог выставок
         </div>
-        <div class="cat-layout__action">
+        <nuxt-link
+          to="catalogue"
+          class="cat-layout__action">
           Смотреть все
-        </div>
+        </nuxt-link>
       </div>
       <div class="cat-layout__content">
         <div class="cat-layout__grid">
           <CatalogueCard
-            v-for="image in list"
-            :key='image+list.indexOf(image)'
-            :image="image"></CatalogueCard>
+            v-for="(item, index) in list"
+            :key="index"
+            :item="item">
+          </CatalogueCard>
         </div>
       </div>
     </div>
@@ -22,26 +25,22 @@
 </template>
 
 <script>
-import CatalogueCard from '@/components/CatalogueCard';
-
-import image1 from '@/assets/images/janko-ferlic-174927-unsplash.jpg';
-import image2 from '@/assets/images/chad-kirchoff-202730-unsplash.jpg';
-import image3 from '@/assets/images/ren-ran-232078-unsplash.jpg';
-import image4 from '@/assets/images/stock-1863880_1920.jpg';
+import CatalogueCard from '@/components/expose/CatalogueCard';
 
 export default {
   name: 'CataloguePreview',
   components: { CatalogueCard },
+  props: ['list'],
   data() {
-    return {
-      list: [image1, image2, image3, image4],
-    };
+    return {};
   },
 };
 </script>
 
 
 <style lang="sass">
+
+  @import '~/styles/mixins.sass'
 
   .cat-layout
     max-width: 810px
@@ -71,6 +70,7 @@ export default {
       cursor: pointer
       font-size: 14px
       color: #4680ff
+      +tdn
     &__sort
       font-size: 0
     &__sort-button

@@ -3,6 +3,7 @@ import Vue from 'vue';
 
 import weekly0 from '@/assets/images/jamie-taylor-110195-unsplash.jpg';
 import weekly1 from '@/assets/images/janko-ferlic-174927-unsplash.jpg';
+import { resolve } from 'upath';
 
 Vue.use(Vuex);
 
@@ -52,46 +53,10 @@ const store = () => {
         phone: '',
         author: 'Автор выставки',
       },
-      unsortedItems: [
-        {
-          author: 'Ажевникова Н.А.',
-          title:
-            'Материалы к словарю метафор и сравнений русской литературы XIX-XX в.',
-          source: 'Языки рус. культуры',
-          year: '2018',
-        },
-        {
-          author: 'Божевникова Н.А.',
-          title:
-            'Материалы к словарю метафор и сравнений русской литературы XIX-XX в.',
-          source: 'Языки рус. культуры',
-          year: '2018',
-        },
-        {
-          author: 'Божевникова Н.А.',
-          title:
-            'Материалы к словарю метафор и сравнений русской литературы XIX-XX в.',
-          source: 'Языки рус. культуры',
-          year: '2018',
-        },
-        {
-          author: 'Дожевникова Н.А.',
-          title:
-            'Материалы к словарю метафор и сравнений русской литературы XIX-XX в.',
-          source: 'Языки рус. культуры',
-          year: '2018',
-        },
-        {
-          author: 'Дожевникова Н.А.',
-          title:
-            'Материалы к словарю метафор и сравнений русской литературы XIX-XX в.',
-          source: 'Языки рус. культуры',
-          year: '2018',
-        },
-      ],
+      unsortedItems: [],
     },
     mutations: {
-      syncInfoState(state, expose) {
+      setInfoState(state, expose) {
         state.expose = expose;
       },
       setPage(state, page) {
@@ -99,6 +64,32 @@ const store = () => {
       },
       setUnsortedItems(state, list) {
         state.unsortedItems = list;
+      },
+    },
+    actions: {
+      fetchInfoState({ commit, state }) {
+        return new Promise((resolve, reject) => {
+          this.$axios
+            .$get('/cms/info')
+            .then(res => {
+              if (res !== '') {
+                commit('setInfoState', res);
+                resolve(res);
+              } else {
+                resolve(state.expose);
+              }
+            })
+            .catch(err => {
+              console.log(`[Error] Info: get info: ${err}`);
+              reject(err);
+            });
+        });
+      },
+      syncInfoState({ commit }, payload) {
+        commit('setInfoState', payload);
+        this.$axios
+          .$post('/cms/info', payload)
+          .catch(err => console.log(`[Error] post info: ${err}`));
       },
     },
   });

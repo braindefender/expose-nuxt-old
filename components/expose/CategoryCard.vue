@@ -4,18 +4,18 @@
 
     <div class="cat-card__inner cat-card__image-blur">
       <div class="cat-card__image-blur-container">
-        <img :src="this.image" alt="">
+        <img :src="this.item.image" :alt="meta">
       </div>
     </div>
     <div class="cat-card__inner cat-card__image">
-      <img :src="this.image" alt="">
+      <img :src="this.item.image" :alt="meta">
     </div>
     <div class="cat-card__inner cat-card__content cat-card__content--category">
       <div class="cat-card__content-title">
-        Библиотечное дело
+        {{this.item.title}}
       </div>
       <div class="cat-card__content-info">
-        4 выставки, 5 июля 2018
+        {{ `Выставок:${this.item.count}, ${this.item.date}`}}
       </div>
     </div>
 
@@ -26,9 +26,29 @@
 <script>
 export default {
   name: 'CategoryCard',
-  props: ['image'],
+  props: ['item'],
   data() {
     return {};
+  },
+  computed: {
+    meta() {
+      return `${this.item.title} - ${this.item.date}`;
+    },
+    object() {
+      return {
+        categoryItem: {
+          title: 'Название категории',
+          date: 'Дата обновления',
+          count: 'Число выставок в категории',
+          image: 'Обложка категории',
+        },
+        catalogueItem: {
+          title: 'Название выставки',
+          date: 'Дата создания',
+          image: 'Обложка выставки',
+        },
+      };
+    },
   },
 };
 </script>

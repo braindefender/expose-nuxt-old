@@ -36,11 +36,19 @@
         v-on:leave="leave"
         v-on:after-leave="afterLeave">
         <div class="es-stack__list" v-if="!compact" ref="stackList">
-          <transition-group name="list" tag="div">
-            <ESCard
-              v-for="(item, index) in list"
+          <div
+            v-for="(item, index) in list"
+            :key="index"
+            class="es-stack__list-item">
+            <Stack
+              v-if="item.type === 'stack'"
               :item="item"
-              :key="index"
+              :options="{
+                showCheckbox: true
+              }"></Stack>
+            <ESCard
+              v-if="item.type === 'book'"
+              :item="item"
               :options="{
                 selectMode: false,
                 showBadges: false,
@@ -49,7 +57,7 @@
               }"
               @check="checkItem(index)">
             </ESCard>
-          </transition-group>
+          </div>
         </div>
       </transition>
     </div>
@@ -64,26 +72,11 @@ import progressbar from 'progressbar.js';
 export default {
   name: 'Stack',
   components: { ESCard },
-  props: ['options'],
+  props: ['item', 'options'],
   data() {
     return {
-      title: 'Измените название категории',
-      list: [
-        {
-          author: 'Кожевникова Н.А.',
-          title:
-            'Материалы к словарю метафор и сравнений русской литературы XIX-XX в.',
-          source: 'Языки рус. культуры',
-          year: '2018',
-        },
-        {
-          author: 'Кожевникова Н.А.',
-          title:
-            'Материалы к словарю метафор и сравнений русской литературы XIX-XX в.',
-          source: 'Языки рус. культуры',
-          year: '2018',
-        },
-      ],
+      title: this.item.title || 'Измените название категории',
+      list: this.item.list,
       compact: true,
       checked: false,
       checkedItems: [],
@@ -100,6 +93,7 @@ export default {
       });
       p.animate(0.6);
     }
+    this.$on('resize', this.resize);
   },
   computed: {
     count() {
@@ -125,6 +119,7 @@ export default {
       this.resolveChecked();
     },
     toggle() {
+      this.$parent.$emit('resize');
       this.compact = !this.compact;
     },
     check() {
@@ -154,7 +149,7 @@ export default {
     },
     afterEnter() {
       this.listHeight = this.$refs.stackList.offsetHeight;
-      this.$refs.stackContent.height = this.listHeight;
+      this.$refs.stackContent.height = 'auto';
     },
     beforeLeave() {
       this.listHeight = this.$refs.stackList.offsetHeight;
@@ -180,6 +175,9 @@ export default {
     afterLeave(el) {
       const elem = el;
       elem.style.opacity = 0;
+    },
+    resize() {
+      this.$refs.stackContent.velocity({ height: 'auto' }, { duration: 250 });
     },
   },
 };
@@ -284,8 +282,16 @@ export default {
       margin-bottom: -3px
     &__list
       padding-top: 10px
+    &__list-item
+      margin-bottom: 6px
       .es-card-wrapper
         margin-bottom: 6px
+        &:last-child
+          margin-bottom: 0
+      .es-stack
+        margin-bottom: 26px
+        &--active
+          background-color: #cacbce
         &:last-child
           margin-bottom: 0
 

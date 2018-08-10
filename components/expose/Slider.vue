@@ -193,10 +193,10 @@ export default {
         opacity: 0.8
       &--left
         left: 0
-        background: url('../assets/slider-arrow-left.svg') center center no-repeat
+        background: url('/assets/slider-arrow-left.svg') center center no-repeat
       &--right
         right: 0
-        background: url('../assets/slider-arrow-right.svg') center center no-repeat
+        background: url('/assets/slider-arrow-right.svg') center center no-repeat
 
   .slider-item
     color: white

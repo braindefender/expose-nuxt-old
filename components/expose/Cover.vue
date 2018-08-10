@@ -97,6 +97,9 @@ export default {
 </script>
 
 <style lang="sass">
+
+  @import '~/styles/mixins.sass'
+
   .cover
     width: 100%
     height: 320px
@@ -104,11 +107,7 @@ export default {
     color: white
     background-color: #333
     &__inner
-      position: absolute
-      top: 0
-      left: 0
-      right: 0
-      bottom: 0
+      +posa(0)
       pointer-events: none
     &__content
       display: flex
@@ -128,11 +127,7 @@ export default {
       overflow: hidden
       &::after
         content: ''
-        position: absolute
-        top: 0
-        left: 0
-        right: 0
-        bottom: 0
+        +posa(0)
         background-color: rgba(black, 0.4)
       img
         width: 100%

@@ -33,14 +33,14 @@
           </div>
         </div>
         <div class="es__side es__side--right">
-          <Stack :options="{
-            showProgress: false,
-            showCheckbox: true
-          }"></Stack>
-          <Stack :options="{
-            showProgress: false,
-            showCheckbox: true
-          }"></Stack>
+          <Stack
+            v-for="(item, index) in struct"
+            :key="index"
+            :item="item"
+            :options="{
+              showCheckbox: true
+            }">
+          </Stack>
         </div>
       </div>
     </div>
@@ -66,6 +66,50 @@ export default {
     return {
       unsortedItems: this.$store.state.unsortedItems,
       list: [],
+      struct: [
+        {
+          title: 'Название категории',
+          type: 'stack',
+          list: [
+            {
+              title: 'Название книги',
+              source: 'Издательство книги',
+              year: '2008',
+              pages: '145',
+              author: 'Автор книги',
+              type: 'book',
+            },
+            {
+              title: 'Название подкатегории',
+              type: 'stack',
+              list: [
+                {
+                  title: 'Название книги',
+                  source: 'Издательство книги',
+                  year: '2008',
+                  pages: '145',
+                  author: 'Автор книги',
+                  type: 'book',
+                },
+              ],
+            },
+            {
+              title: 'Название подкатегории',
+              type: 'stack',
+              list: [
+                {
+                  title: 'Название книги',
+                  source: 'Издательство книги',
+                  year: '2008',
+                  pages: '145',
+                  author: 'Автор книги',
+                  type: 'book',
+                },
+              ],
+            },
+          ],
+        },
+      ],
     };
   },
   computed: {
@@ -105,7 +149,7 @@ export default {
         })
         .then(function() {
           console.log('SUCCESS!!');
-          this.$axios.$get('/cms/sort')
+          this.$axios.$get('/cms/sort');
         })
         .catch(function() {
           console.log('FAILURE!!');

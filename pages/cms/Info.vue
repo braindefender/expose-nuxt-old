@@ -110,7 +110,6 @@
                     size="2"
                     button-class="button"
                     :zIndex=200
-                    :prefill="prefill"
                     :plain="true"
                     :hideChangeButton="true"
                     @change="onPICoverChange">
@@ -259,7 +258,6 @@ export default {
       sourceList: this.$store.state.sourceList,
       dateFrom: this.dateYYYYMMDD(new Date()),
       dateTo: this.dateYYYYMMDD(new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)),
-      prefill: this.$store.state.expose.image,
       expose: this.$store.state.expose,
     };
   },
@@ -272,12 +270,12 @@ export default {
     phone() {
       return this.expose.mode === 0
         ? this.sourceList[this.expose.source].phone
-        : this.phone;
+        : this.expose.phone;
     },
     email() {
       return this.expose.mode === 0
         ? this.sourceList[this.expose.source].email
-        : this.email;
+        : this.expose.email;
     },
     options() {
       const source =
@@ -330,20 +328,12 @@ export default {
   },
   methods: {
     fetchState() {
-      this.$axios
-        .$get('/cms/info')
-        .then(res => {
-          console.log(res);
-          this.$store.commit('syncInfoState', res);
-        })
-        .catch(err => {
-          console.log(`Error: cannot fetch data from server\n${err}`);
-          this.$store.commit('syncInfoState', this.exposeState);
-        });
+      this.$store.dispatch('fetchInfoState').then(res => {
+        this.expose = this.$store.state.expose;
+      });
     },
     syncState() {
-      this.$store.commit('syncInfoState', this.exposeState);
-      this.$axios.$post('/cms/info', this.exposeState);
+      this.$store.dispatch('syncInfoState', this.exposeState);
     },
     onPICoverChange(image) {
       if (image) {
@@ -353,7 +343,6 @@ export default {
         console.log('FileReader API not supported: use the <form>, Luke!');
       }
     },
-
     date(input) {
       const date = new Date(input);
       return {
@@ -527,7 +516,7 @@ export default {
     transition: all ease 0.15s
     box-shadow: 0px 3px 6px rgba(black, 0)
     &:hover
-      box-shadow: 0px 3px 6px rgba(black, 0.15)
+      box-shadow: 0px 3px 6px rgba($color-accent, 0.4)
     .preview-container
       position: relative
       overflow: hidden
@@ -544,6 +533,6 @@ export default {
         font-size: 14px
         pointer-events: none
         content: 'Загрузить обложку'
-        background-color: rgba(black, 0.5)
+        background-color: rgba($color-accent, 1)
 
 </style>

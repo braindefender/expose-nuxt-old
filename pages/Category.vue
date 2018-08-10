@@ -16,10 +16,11 @@
       </div>
       <div class="cat-layout__content">
         <div class="cat-layout__grid">
-          <CategoryCard
-            v-for="image in list"
-            :key='image+list.indexOf(image)'
-            :image="image"></CategoryCard>
+          <category-card
+            v-for="(item, index) in list"
+            :key="index"
+            :item="item">
+          </category-card>
         </div>
       </div>
     </div>
@@ -27,25 +28,14 @@
 </template>
 
 <script>
-import CategoryCard from '@/components/CategoryCard';
-
-import image1 from '@/assets/images/janko-ferlic-174927-unsplash.jpg';
-import image2 from '@/assets/images/chad-kirchoff-202730-unsplash.jpg';
-import image3 from '@/assets/images/ren-ran-232078-unsplash.jpg';
-import image4 from '@/assets/images/stock-1863880_1920.jpg';
+import CategoryCard from '@/components/expose/CategoryCard';
 
 export default {
   name: 'Category',
   components: { CategoryCard },
+  props: ['list'],
   data() {
-    return {
-      list: [image1, image2, image3, image4],
-    };
+    return {};
   },
 };
 </script>
-
-
-<style lang="sass">
-
-</style>

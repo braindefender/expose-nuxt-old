@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import CategoryCard from '@/components/CategoryCard';
+import CategoryCard from '@/components/expose/CategoryCard';
 
 import image1 from '@/assets/images/janko-ferlic-174927-unsplash.jpg';
 import image2 from '@/assets/images/chad-kirchoff-202730-unsplash.jpg';

@@ -4,18 +4,18 @@
 
     <div class="cat-card__inner cat-card__image-blur">
       <div class="cat-card__image-blur-container">
-        <img :src="this.image" alt="">
+        <img :src="this.item.image" :alt="meta">
       </div>
     </div>
     <div class="cat-card__inner cat-card__image">
-      <img :src="this.image" alt="">
+      <img :src="this.item.image" :alt="meta">
     </div>
     <div class="cat-card__inner cat-card__content cat-card__content--catalogue">
       <div class="cat-card__content-title">
-        Еженедельная выставка новых поступлений отделения ГПНТБ<br>СО РАН
+        {{ this.item.title }}
       </div>
       <div class="cat-card__content-date">
-        18 июля, 2018
+        {{ this.item.date }}
       </div>
     </div>
 
@@ -26,9 +26,14 @@
 <script>
 export default {
   name: 'CatalogueCard',
-  props: ['image'],
+  props: ['item'],
   data() {
     return {};
+  },
+  computed: {
+    meta() {
+      return `${this.item.title} - ${this.item.date}`;
+    },
   },
 };
 </script>
@@ -67,17 +72,14 @@ export default {
         animation: slide 20s alternate infinite ease-in-out
         width: 100%
       &::after
+        +posa(0)
         content: ''
-        position: absolute
-        top: 0
-        left: 0
-        right: 0
-        bottom: 0
         background-color: rgba(black, 0.4)
     &__image-blur
       +blur-bg
       transition: all ease 0.3s
       &-container
+        img
           animation: slide 15s alternate infinite linear
     &__content
       padding: 20px
