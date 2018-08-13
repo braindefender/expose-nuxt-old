@@ -53,18 +53,126 @@ const store = () => {
         phone: '',
         author: 'Автор выставки',
       },
-      unsortedItems: [
-        {
-          title: 'This is a title',
-          year: 2007,
-          source: 'Valve',
-          author: 'inkshir',
-        }
-      ],
+      sortState: {
+        struct: [
+          {
+            title: 'Название категории',
+            type: 'stack',
+            list: [
+              {
+                title: 'Название книги',
+                source: 'Издательство книги',
+                year: '2008',
+                pages: '145',
+                author: 'Автор книги',
+                type: 'book',
+              },
+              {
+                title: 'Название подкатегории',
+                type: 'stack',
+                list: [
+                  {
+                    title: 'Название книги',
+                    source: 'Издательство книги',
+                    year: '2008',
+                    pages: '145',
+                    author: 'Автор книги',
+                    type: 'book',
+                  },
+                ],
+              },
+              {
+                title: 'Название подкатегории',
+                type: 'stack',
+                list: [
+                  {
+                    title: 'Название книги',
+                    source: 'Издательство книги',
+                    year: '2008',
+                    pages: '145',
+                    author: 'Автор книги',
+                    type: 'book',
+                  },
+                  {
+                    title: 'Название книги',
+                    source: 'Издательство книги',
+                    year: '2008',
+                    pages: '145',
+                    author: 'Автор книги',
+                    type: 'book',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            title: 'Название категории',
+            type: 'stack',
+            list: [
+              {
+                title: 'Название книги',
+                source: 'Издательство книги',
+                year: '2008',
+                pages: '145',
+                author: 'Автор книги',
+                type: 'book',
+              },
+              {
+                title: 'Название подкатегории',
+                type: 'stack',
+                list: [
+                  {
+                    title: 'Название книги',
+                    source: 'Издательство книги',
+                    year: '2008',
+                    pages: '145',
+                    author: 'Автор книги',
+                    type: 'book',
+                  },
+                ],
+              },
+              {
+                title: 'Название подкатегории',
+                type: 'stack',
+                list: [
+                  {
+                    title: 'Название книги',
+                    source: 'Издательство книги',
+                    year: '2008',
+                    pages: '145',
+                    author: 'Автор книги',
+                    type: 'book',
+                  },
+                  {
+                    title: 'Название книги',
+                    source: 'Издательство книги',
+                    year: '2008',
+                    pages: '145',
+                    author: 'Автор книги',
+                    type: 'book',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+        unsorted: [
+          {
+            title: 'This is a title',
+            year: 2007,
+            source: 'Valve',
+            author: 'inkshir',
+            type: 'book',
+          },
+        ],
+      },
     },
     mutations: {
       setInfoState(state, expose) {
         state.expose = expose;
+      },
+      setSortState(state, sortState) {
+        state.sortState = sortState;
       },
       setPage(state, page) {
         state.currentPage = page;
@@ -96,6 +204,31 @@ const store = () => {
         commit('setInfoState', payload);
         this.$axios
           .$post('/cms/info', payload)
+          .catch(err => console.log(`[Error] post info: ${err}`));
+      },
+      fetchSortState({ commit, state }) {
+        return new Promise((resolve, reject) => {
+          this.$axios
+            .$get('/cms/sort')
+            .then(res => {
+              if (res !== '') {
+                commit('setSortState', res);
+                resolve(res);
+              } else {
+                console.log('Server is empty. Returning default state');
+                resolve(state.sortState);
+              }
+            })
+            .catch(err => {
+              console.log(`[Error] Sort: get info: ${err}`);
+              reject(err);
+            });
+        });
+      },
+      syncSortState({ commit }, payload) {
+        commit('setSortState', payload);
+        this.$axios
+          .$post('/cms/sort', payload)
           .catch(err => console.log(`[Error] post info: ${err}`));
       },
     },

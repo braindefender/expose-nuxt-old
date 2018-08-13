@@ -7,9 +7,9 @@
     </div>
     <div
       :class="selected ? 'es-card es-card--selected' : 'es-card'"
-      @click="select">
+      @click="atClick">
       <div class="es-card__controls">
-        <div class="es-card__check" @click="check">
+        <div class="es-card__check" @click="options.checkOnClick ? '' : check">
           <input type="checkbox" :checked="options.checked">
           <label></label>
         </div>
@@ -22,7 +22,7 @@
               : 'es-card__author es-card__author--gray'">
           {{ author }}
           </div>
-          <div class="es-card__info">{{item.source}}, <span>{{item.year}}</span></div>
+          <div class="es-card__info">{{ info }}</div>
         </div>
         <div class="es-card__bot">
           <div class="es-card__title">{{ item.title }}</div>
@@ -49,8 +49,17 @@ export default {
       selected: false,
       showBadges: this.options.showBadges,
       selectMode: this.options.selectMode,
-      author: this.item.author || 'Автор не указан',
     };
+  },
+  computed: {
+    author() {
+      return this.item.author || 'Автор не указан';
+    },
+    info() {
+      return [this.item.source, this.item.year]
+        .filter(el => el !== undefined)
+        .join(', ');
+    },
   },
   methods: {
     select() {
@@ -59,7 +68,10 @@ export default {
       }
     },
     check() {
-      this.$emit('check');
+      this.$emit('checkCard');
+    },
+    atClick() {
+      this.options.checkOnClick ? this.check() : this.select();
     },
   },
 };
@@ -115,12 +127,14 @@ export default {
     &__author
       font-size: 14px
       line-height: 20px
+      flex: 0 0 auto
       color: $color-accent
       &--gray
         color: rgba(black, 0.4)
     &__info
       font-size: 14px
-      line-height: 20px
+      line-height: 15px
+      text-align: right
       span
         color: $color-accent
     &__title

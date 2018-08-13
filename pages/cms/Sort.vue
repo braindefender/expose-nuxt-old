@@ -4,31 +4,19 @@
     <div class="container">
       <div class="es">
         <div class="es__side es__side--left">
-          <div class="es__side-top">
-            <div class="es__side-title">
-              Неотсортированные
-            </div>
-            <div class="es__side-controls">
-              <button class="button" type="button">Выделить все</button>
-              <button class="button" type="button">Удалить</button>
-              <button
-                class="button"
-                type="button"
-                @click="uploadXML">Загрузить XML</button>
-            </div>
-          </div>
           <div class="es__list">
-            <ESCard
-              v-for="(item, index) in this.unsortedItems"
-              :item="item"
-              :key="index"
+            <Stack
+              :item="this.unsortedStack"
               :options="{
-                selectMode: false,
-                showBadges: false,
-                showLetter: letters[index],
+                compact: false,
+                showCheckbox: true,
                 showLetters: true,
-              }">
-            </ESCard>
+                editable: false,
+                toggle: false,
+                checkOnClick: true,
+              }"
+              @upload="uploadXML">
+            </Stack>
             <input type="file" ref="xml" @change="setFile">
           </div>
         </div>
@@ -38,9 +26,11 @@
             :key="index"
             :item="item"
             :options="{
-              showCheckbox: true
+              showCheckbox: true,
+              checkOnClick: true,
             }">
           </Stack>
+          <sort-stack></sort-stack>
         </div>
       </div>
     </div>
@@ -49,94 +39,45 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 import Navigation from '@/components/cms/Navigation';
 import Stack from '@/components/cms/Stack';
 import ESCard from '@/components/cms/ESCard';
+import SortStack from '@/components/cms/SortStack';
 
 export default {
   name: 'PageTwo',
   mounted() {
-    // this.fetchState();
+    this.fetchState();
   },
   beforeDestroy() {
     // this.syncState();
   },
-  components: { Navigation, Stack, ESCard },
+  components: { Navigation, Stack, ESCard, SortStack },
   data() {
-    return {
-      unsortedItems: this.$store.state.unsortedItems,
-      list: [],
-      struct: [
-        {
-          title: 'Название категории',
-          type: 'stack',
-          list: [
-            {
-              title: 'Название книги',
-              source: 'Издательство книги',
-              year: '2008',
-              pages: '145',
-              author: 'Автор книги',
-              type: 'book',
-            },
-            {
-              title: 'Название подкатегории',
-              type: 'stack',
-              list: [
-                {
-                  title: 'Название книги',
-                  source: 'Издательство книги',
-                  year: '2008',
-                  pages: '145',
-                  author: 'Автор книги',
-                  type: 'book',
-                },
-              ],
-            },
-            {
-              title: 'Название подкатегории',
-              type: 'stack',
-              list: [
-                {
-                  title: 'Название книги',
-                  source: 'Издательство книги',
-                  year: '2008',
-                  pages: '145',
-                  author: 'Автор книги',
-                  type: 'book',
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    };
+    return {};
   },
   computed: {
-    letters() {
-      return this.$store.state.unsortedItems
-        .map(el => (el.author ? el.author[0] : el.title[0]))
-        .map((val, ind, arr) => val !== arr[ind - 1]);
+    unsortedStack() {
+      return {
+        title: 'Неотсортированные',
+        list: this.unsorted,
+      };
     },
-    sortState() {
-      return {};
-    },
+    ...mapState({
+      unsorted: state => state.sortState.unsorted,
+      struct: state => state.sortState.struct,
+    }),
   },
   methods: {
     fetchState() {
-      this.$axios
-        .$get('/cms/sort')
-        .then(res => {
-          this.$store.commit('syncSortState', res);
-        })
-        .catch(err => {
-          console.log(`Error: cannot fetch data from server\n${err}`);
-          this.$store.commit('syncSortState', this.list);
-        });
+      this.$store.dispatch('fetchSortState').then(res => {
+        this.sortState = this.$store.state.sortState;
+      });
     },
     syncState() {
-      this.$store.commit('syncSortState', this.sortState);
-      this.$axios.$post('/cms/sort', this.sortState);
+      this.$store.dispatch('syncSortState', this.sortState);
     },
     uploadXML() {
       let formData = new FormData();

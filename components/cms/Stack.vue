@@ -25,12 +25,12 @@
             </div>
           </div>
         </transition>
-        <div class="es-stack__info" @click="toggle">
+        <div class="es-stack__info" @click="toggleStack">
           <div class="es-stack__count">{{ count }} документов</div>
           <div class="es-stack__title">{{ title }}</div>
         </div>
         <div class="es-stack__buttons">
-          <button type="button" class="button button--outline">Привет мир!</button>
+          <button type="button" class="button-error button-error--outline">Удалить</button>
           <button type="button" class="button">Привет!</button>
         </div>
       </div>
@@ -51,18 +51,23 @@
                 v-if="item.type === 'stack'"
                 :item="item"
                 :options="{
-                  showCheckbox: true
-                }"></Stack>
+                  showCheckbox: true,
+                  checked: checkedItems.includes(index),
+                  checkOnClick,
+                }"
+                @check="checkItem(index)"></Stack>
               <ESCard
                 v-if="item.type === 'book'"
                 :item="item"
                 :options="{
                   selectMode: false,
                   showBadges: false,
-                  showLetters: false,
+                  showLetters: false || showLetters,
+                  showLetter: letters[index],
                   checked: checkedItems.includes(index),
+                  checkOnClick
                 }"
-                @check="checkItem(index)">
+                @checkCard="checkItem(index)">
               </ESCard>
             </div>
           </div>
@@ -85,11 +90,11 @@ export default {
   data() {
     return {
       title: this.item.title || 'Измените название категории',
-      list: this.item.list,
-      compact: true,
+      compact: this.options.compact !== undefined ? this.options.compact : true,
       checked: false,
       checkedItems: [],
       listHeight: Number,
+      showLetters: false || this.options.showLetters,
     };
   },
   mounted() {
@@ -108,13 +113,29 @@ export default {
     count() {
       return this.list.length;
     },
+    list() {
+      return this.item.list;
+    },
+    letters() {
+      return this.item.list
+        .map(el => (el.author ? el.author[0] : el.title[0]))
+        .map((val, ind, arr) => val !== arr[ind - 1]);
+    },
+    toggle() {
+      return this.options.toggle !== undefined ? this.options.toggle : true;
+    },
+    checkOnClick() {
+      return this.options.checkOnClick !== undefined
+        ? this.options.checkOnClick
+        : false;
+    },
   },
   methods: {
     resolveChecked() {
       if (this.checkedItems.length === this.list.length) {
-        this.checked = true;
+        this.toggleCheck(true);
       } else {
-        this.checked = false;
+        this.toggleCheck(false);
       }
     },
     checkItem(index) {
@@ -127,9 +148,11 @@ export default {
       }
       this.resolveChecked();
     },
-    toggle() {
-      this.$parent.$emit('resize');
-      this.compact = !this.compact;
+    toggleStack() {
+      if (this.toggle) {
+        this.$parent.$emit('resize');
+        this.compact = !this.compact;
+      }
     },
     check() {
       if (this.checked) {
@@ -137,7 +160,18 @@ export default {
       } else {
         this.checkedItems = this.list.map((val, ind) => ind);
       }
-      this.checked = !this.checked;
+      this.toggleCheck();
+    },
+    toggleCheck(arg) {
+      if (arg !== undefined) {
+        if (arg !== this.checked) {
+          this.checked = arg;
+          this.$emit('check');
+        }
+      } else {
+        this.checked = !this.checked;
+        this.$emit('check');
+      }
     },
     beforeEnter() {
       this.$refs.stackContent.style.height = 0;

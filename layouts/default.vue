@@ -90,6 +90,27 @@
         &::before
           background-color: rgba($color-accent, 0.25)
 
+  .button-error
+    +button($color-error)
+    background-color: $color-error
+    font-family: 'PT Sans'
+    color: white
+    font-weight: bold
+    font-size: 14px
+    line-height: 20px
+    padding-left: 13px
+    padding-right: 13px
+    height: 32px
+    border-radius: 5px
+    &--outline
+      background-color: white
+      color: $color-error
+      border: 2px solid $color-error
+      &:active
+        &::before
+          background-color: rgba($color-error, 0.25)
+
+
   .button-remove
     +button($color-error)
     width: 22px
