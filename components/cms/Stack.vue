@@ -1,66 +1,75 @@
 <template>
-  <div :class="compact ? 'es-stack' : 'es-stack es-stack--active'"
-    ref="stack">
-    <div class="es-stack__top">
-      <transition name="slide-fade">
-        <div class="es-stack__controls" v-if="!compact">
-          <div
-            v-if="options.showProgress"
-            ref="progress"
-            class="control-progress"></div>
-          <div
-            v-if="options.showCheckbox"
-            class="es-card__check"
-            @click="check">
-            <input type="checkbox" :checked="checked">
-            <label></label>
+  <div
+    :class="compact
+      ? 'es-stack'
+      : 'es-stack es-stack--active'" ref="stack">
+    <div class="es-stack__background es-stack__background--first"></div>
+    <div class="es-stack__background es-stack__background--second"></div>
+    <div
+      :class="compact
+        ? 'es-stack__background es-stack__background--third'
+        : 'es-stack__background es-stack__background--third es-stack__background--active'">
+      <div class="es-stack__top">
+        <transition name="slide-fade">
+          <div class="es-stack__controls" v-if="!compact">
+            <div
+              v-if="options.showProgress"
+              ref="progress"
+              class="control-progress"></div>
+            <div
+              v-if="options.showCheckbox"
+              class="es-card__check"
+              @click="check">
+              <input type="checkbox" :checked="checked">
+              <label></label>
+            </div>
           </div>
+        </transition>
+        <div class="es-stack__info" @click="toggle">
+          <div class="es-stack__count">{{ count }} документов</div>
+          <div class="es-stack__title">{{ title }}</div>
         </div>
-      </transition>
-      <div class="es-stack__info" @click="toggle">
-        <div class="es-stack__count">{{ count }} документов</div>
-        <div class="es-stack__title">{{ title }}</div>
+        <div class="es-stack__buttons">
+          <button type="button" class="button button--outline">Привет мир!</button>
+          <button type="button" class="button">Привет!</button>
+        </div>
       </div>
-      <div class="es-stack__buttons">
-        <button type="button" class="button button--outline">Привет мир!</button>
-        <button type="button" class="button">Привет!</button>
+      <div class="es-stack__content" ref="stackContent">
+        <transition name="content"
+          v-on:before-enter="beforeEnter"
+          v-on:enter="enter"
+          v-on:after-enter="afterEnter"
+          v-on:before-leave="beforeLeave"
+          v-on:leave="leave"
+          v-on:after-leave="afterLeave">
+          <div class="es-stack__list" v-if="!compact" ref="stackList">
+            <div
+              v-for="(item, index) in list"
+              :key="index"
+              class="es-stack__list-item">
+              <Stack
+                v-if="item.type === 'stack'"
+                :item="item"
+                :options="{
+                  showCheckbox: true
+                }"></Stack>
+              <ESCard
+                v-if="item.type === 'book'"
+                :item="item"
+                :options="{
+                  selectMode: false,
+                  showBadges: false,
+                  showLetters: false,
+                  checked: checkedItems.includes(index),
+                }"
+                @check="checkItem(index)">
+              </ESCard>
+            </div>
+          </div>
+        </transition>
       </div>
+    </div>
 
-    </div>
-    <div class="es-stack__content" ref="stackContent">
-      <transition name="content"
-        v-on:before-enter="beforeEnter"
-        v-on:enter="enter"
-        v-on:after-enter="afterEnter"
-        v-on:before-leave="beforeLeave"
-        v-on:leave="leave"
-        v-on:after-leave="afterLeave">
-        <div class="es-stack__list" v-if="!compact" ref="stackList">
-          <div
-            v-for="(item, index) in list"
-            :key="index"
-            class="es-stack__list-item">
-            <Stack
-              v-if="item.type === 'stack'"
-              :item="item"
-              :options="{
-                showCheckbox: true
-              }"></Stack>
-            <ESCard
-              v-if="item.type === 'book'"
-              :item="item"
-              :options="{
-                selectMode: false,
-                showBadges: false,
-                showLetters: false,
-                checked: checkedItems.includes(index),
-              }"
-              @check="checkItem(index)">
-            </ESCard>
-          </div>
-        </div>
-      </transition>
-    </div>
 
   </div>
 </template>
@@ -195,58 +204,52 @@ export default {
     transform: translateY(30px)
 
   .es-stack
-    box-sizing: border-box
     position: relative
-    margin-bottom: 24px
-    background-color: white
     border-radius: 10px
-    padding-top: 4px
-    padding-left: 8px
-    padding-right: 8px
-    padding-bottom: 8px
     cursor: pointer
     display: flex
     flex-direction: column
     min-height: 54px
     transition: all ease 0.25s
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05), 0px 4px 8px rgba(0, 0, 0, 0.05)
-    border: 2px solid rgba($color-accent, 0)
-    &:hover
-      box-shadow: 0px 2px 5px rgba(black, 0.1), 0px 4px 16px rgba(black, 0.05)
-    &::before
-      content: ''
-      position: absolute
-      top: 0px
-      left: 10px
-      right: 10px
-      bottom: -9px
-      background-color: rgba(black, 0.15)
-      border-radius: 10px
-      z-index: -1
-      transition: all ease 0.25s
-    &::after
-      content: ''
-      position: absolute
-      top: 0px
-      left: 20px
-      right: 20px
-      bottom: -15px
-      clip-path: inset(calc(100% - 6px) 0 0 0)
-      background-color: rgba(black, 0.3)
-      border-radius: 10px
-      z-index: -2
-      transition: all ease 0.25s
-    &:last-child
-      margin-bottom: 14px
+    padding-bottom: 12px
     &--active
-      background-color: #EBECF0
-      margin-bottom: 10px
-      &::before
-        top: 10px
-        bottom: 10px
-      &::after
-        top: 10px
-        bottom: 10px
+      padding-bottom: 0
+      > .es-stack__background--first,
+      > .es-stack__background--second,
+        bottom: 16px
+    &__background
+      border-radius: 10px
+      transition: all ease 0.25s
+      &--first
+        position: absolute
+        top: 0
+        left: 10px
+        right: 10px
+        bottom: 6px
+        background-color: rgba(black, 0.15)
+        clip-path: inset(calc(100% - 6px) 0 0 0)
+      &--second
+        position: absolute
+        top: 0
+        left: 20px
+        right: 20px
+        bottom: 0px
+        clip-path: inset(calc(100% - 6px) 0 0 0)
+        background-color: rgba(black, 0.3)
+      &--third
+        position: relative
+        width: 100%
+        padding-top: 4px
+        padding-left: 8px
+        padding-right: 8px
+        padding-bottom: 8px
+        background-color: white
+        border: 2px solid rgba($color-accent, 0)
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05), 0px 4px 8px rgba(0, 0, 0, 0.05)
+        &:hover
+          box-shadow: 0px 2px 5px rgba(black, 0.1), 0px 4px 16px rgba(black, 0.05)
+      &--active
+        background-color: #EBECF0
     &__top
       display: flex
       flex-direction: row
@@ -284,16 +287,15 @@ export default {
       padding-top: 10px
     &__list-item
       margin-bottom: 6px
+      &:last-child
+        margin-bottom: 0
       .es-card-wrapper
         margin-bottom: 6px
         &:last-child
           margin-bottom: 0
-      .es-stack
-        margin-bottom: 26px
-        &--active
-          background-color: #cacbce
-        &:last-child
-          margin-bottom: 0
+      .es-stack__background--active
+        background-color: #E1E2E5
+        box-shadow: none
 
   .slide-fade-enter-active
     transition: all 0.35s ease

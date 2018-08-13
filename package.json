@@ -15,13 +15,15 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.3.1",
     "axios": "^0.18.0",
+    "eslint-plugin-import": "^2.13.0",
     "nuxt": "^1.0.0",
     "progressbar.js": "^1.0.1",
     "velocity": "^0.7.2",
     "vue-autosize": "^1.0.2",
     "vue-picture-input": "^2.1.6",
     "vue-textarea-autosize": "^1.0.4",
-    "vue-the-mask": "^0.11.1"
+    "vue-the-mask": "^0.11.1",
+    "webpack": "^4.16.5"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",

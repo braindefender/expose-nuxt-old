@@ -53,7 +53,14 @@ const store = () => {
         phone: '',
         author: 'Автор выставки',
       },
-      unsortedItems: [],
+      unsortedItems: [
+        {
+          title: 'This is a title',
+          year: 2007,
+          source: 'Valve',
+          author: 'inkshir',
+        }
+      ],
     },
     mutations: {
       setInfoState(state, expose) {
