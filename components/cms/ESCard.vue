@@ -10,7 +10,7 @@
       @click="atClick">
       <div class="es-card__controls">
         <div class="es-card__check" @click="options.checkOnClick ? '' : check">
-          <input type="checkbox" :checked="options.checked">
+          <input type="checkbox" :checked="item.checked">
           <label></label>
         </div>
       </div>
@@ -47,8 +47,8 @@ export default {
   data() {
     return {
       selected: false,
-      showBadges: this.options.showBadges,
-      selectMode: this.options.selectMode,
+      showBadges: this.options ? this.options.showBadges : false,
+      selectMode: this.options ? this.options.selectMode : false,
     };
   },
   computed: {
@@ -63,12 +63,10 @@ export default {
   },
   methods: {
     select() {
-      if (this.selectMode) {
-        this.selected = !this.selected;
-      }
+      this.selected = this.selectMode ? !this.selected : this.selected;
     },
     check() {
-      this.$emit('checkCard');
+      this.$emit('check');
     },
     atClick() {
       this.options.checkOnClick ? this.check() : this.select();
@@ -138,7 +136,7 @@ export default {
       span
         color: $color-accent
     &__title
-      font-size: 15px
+      font-size: 14px
       line-height: 17px
       font-weight: bold
       width: 80%

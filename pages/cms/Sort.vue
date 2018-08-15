@@ -144,8 +144,6 @@ export default {
         margin-right: 10px
         &:last-child
           margin-right: 0
-    .es-card-wrapper
-      margin-bottom: 6px
 
   .list-enter-active, .list-leave-active
     transition: all 1s

@@ -3,10 +3,10 @@
     <div class="top">
       <div
         class="checkbox"
-        :class="this.stack.checked ? 'checked' : ''"
+        :class="this.innerStack.checked ? 'checked' : ''"
         @click="checkStack">
       </div>
-      <div class="title">{{this.stack.title}}</div>
+      <div class="title" @click="innerStack.title = 'ASDASD'">{{this.innerStack.title}}</div>
       <button
         v-if="!this.options.main"
         class="button"
@@ -21,11 +21,14 @@
         @click="moveDown">
         Вниз
       </button>
-      <button class="button" type="button" @click="moveTo">Сюда</button>
+      <button class="button" type="button" @click="!innerStack.checked ? moveItems() : ''">Move</button>
+      <button class="button" type="button" @click="!innerStack.checked ? copyTo() : ''">Copy</button>
+      <button class="button" type="button" @click="remove()">Delete</button>
     </div>
     <div class="list">
       <div
         v-for="(item, index) in innerStack.list" :key="index"
+        v-if="item.clean !== true"
         class="list-item">
         <test-stack
           v-if="item.type === 'stack'"
@@ -38,11 +41,14 @@
           @moveDown="handleMoveDown(index)"
           @updateCheckState="updateCheckState">
         </test-stack>
-        <book-card
+        <ESCard
           v-if="item.type === 'book'"
           :item="item"
+          :options="{
+            checkOnClick: true
+          }"
           @check="checkItem(index)">
-        </book-card>
+        </ESCard>
       </div>
     </div>
   </div>
@@ -52,16 +58,17 @@
 import { mapState } from 'vuex';
 
 import TestStack from '~/components/cms/TestStack';
-import BookCard from '~/components/cms/BookCard';
+import ESCard from '~/components/cms/ESCard';
 
 export default {
   name: 'TestStack',
-  components: { TestStack, BookCard },
+  components: { TestStack, ESCard },
   props: ['stack', 'options'],
   data() {
-    return {
-      innerStack: this.stack,
-    };
+    return {};
+  },
+  watch: {
+    'stack.list'() {},
   },
   computed: {
     checkedHeadersList() {
@@ -73,30 +80,74 @@ export default {
         return this.$store.state.sortTest.checkedHeadersList;
       }
     },
+    checkedList() {
+      if (this.options.main) {
+        const checkedList = this.getChecked(this.innerStack);
+        this.$store.commit('setCheckedList', checkedList);
+        return checkedList;
+      } else {
+        return this.$store.state.sortTest.checkedList;
+      }
+    },
+    innerStack() {
+      return this.options.main ? this.$store.state.sortTest.stack : this.stack;
+    },
   },
   methods: {
     setChecked(item, to) {
-      console.log(item.title);
       if (item.type === 'stack') {
         item.list.forEach(el => this.setChecked(el, to));
       }
       item.checked = to;
     },
-    removeItem(index) {
-      this.innerStack.list.splice(index, 1);
+    setCleanup(item) {
+      if (item.type === 'stack') {
+        item.list.forEach(el => this.setCleanup(el));
+      }
+      item.clean = true;
     },
-    moveTo(position) {
-      let items = [];
+    remove() {
+      const checkedList = this.checkedList.slice();
+      const checkedHeadersList = this.checkedHeadersList.slice();
+      checkedList.forEach(el => this.setChecked(el, false));
+      this.$store.commit('addToUnsorted', checkedList);
+      if (this.innerStack.checked) {
+        this.setCleanup(this.innerStack);
+      } else {
+        checkedHeadersList.forEach(item => this.setCleanup(item));
+      }
+      this.updateCheckState();
+    },
+    copyTo() {
+      const list = this.checkedList;
       this.checkedHeadersList.forEach(item => {
-        const el = item;
-        this.setChecked(el, false);
-        items.push(el);
+        this.setChecked(item, false);
       });
-      console.log(items);
-      items = JSON.parse(JSON.stringify(items));
-      this.innerStack.list = this.innerStack.list.concat(items);
+      const newList = JSON.parse(JSON.stringify(list));
+      this.innerStack.list = this.innerStack.list.concat(newList);
+      this.updateCheckState();
     },
-    handleMoveTo() {},
+    moveTo() {
+      const list = this.checkedHeadersList;
+      list.forEach(item => {
+        this.setChecked(item, false);
+      });
+      const newList = JSON.parse(JSON.stringify(list));
+      this.innerStack.list = this.innerStack.list.concat(newList);
+      list.forEach(item => this.setCleanup(item));
+      this.updateCheckState();
+    },
+    moveItems() {
+      const list = this.checkedList.slice();
+      const checkedHeadersList = this.checkedHeadersList.slice();
+      list.forEach(item => {
+        this.setChecked(item, false);
+      });
+      const newList = JSON.parse(JSON.stringify(list));
+      this.innerStack.list = this.innerStack.list.concat(newList);
+      checkedHeadersList.forEach(item => this.setCleanup(item));
+      this.updateCheckState();
+    },
     moveUp() {
       this.$emit('moveUp');
     },
@@ -121,24 +172,25 @@ export default {
         this.$set(this.innerStack.list, position + 1, item);
       }
     },
+    cleanup() {
+      this.innerStack.list = this.innerStack.list.filter(item => !item.clean);
+    },
     updateCheckState() {
-      let number = 0;
-      this.innerStack.list.forEach(item => {
-        if (item.checked) {
-          number += 1;
-        }
-      });
-      if (number === this.innerStack.list.length) {
-        this.innerStack.checked = true;
-      } else {
-        this.innerStack.checked = false;
-      }
+      this.cleanup();
+      let list = this.innerStack.list;
+      const number = list.reduce(
+        (acc, item) => (item.checked ? (acc += 1) : acc),
+        0,
+      );
+      this.innerStack.checked = number === list.length;
+      this.$set(this.innerStack, 'list', list);
       this.$emit('updateCheckState');
       if (this.options.main) {
         this.$store.commit(
           'setCheckedHeadersList',
           this.getCheckedHeaders(this.innerStack),
         );
+        this.$store.commit('setCheckedList', this.getChecked(this.innerStack));
       }
     },
     checkItem(index) {
@@ -166,6 +218,16 @@ export default {
       this.$emit('updateCheckState');
     },
     getChecked(stack) {
+      let checkedList = [];
+      stack.list.forEach(item => {
+        if (item.type === 'stack') {
+          checkedList = checkedList.concat(this.getChecked(item));
+        } else {
+          if (item.checked) {
+            checkedList.push(item);
+          }
+        }
+      });
       return checkedList;
     },
     showChecked() {
@@ -199,7 +261,6 @@ export default {
   .stack
     border-radius: 5px
     background-color: #333
-    color: white
     padding: 15px
     padding-top: 10px
     .top
@@ -225,7 +286,7 @@ export default {
         background-color: #FB616F
     .list
       .list-item
-        margin-bottom: 10px
+        margin-bottom: 6px
         &:last-child
           margin-bottom: 0
         .stack

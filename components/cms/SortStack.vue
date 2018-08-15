@@ -26,7 +26,6 @@
   </ul>
   <ul>
     <test-stack
-      :stack="stack"
       :options="{ main: true }">
     </test-stack>
   </ul>
@@ -42,52 +41,6 @@ export default {
   props: [],
   data() {
     return {
-      stack: {
-        title: 'Новая категория',
-        type: 'stack',
-        checked: false,
-        list: [
-          {
-            title: 'Book Title',
-            type: 'book',
-            checked: false,
-          },
-          {
-            title: 'Book Title 2',
-            type: 'book',
-            checked: false,
-          },
-          {
-            title: 'Подкатегория',
-            type: 'stack',
-            checked: false,
-            list: [
-              {
-                title: 'Book Title 3',
-                type: 'book',
-                checked: false,
-              },
-              {
-                title: 'Внутренняя подкатегория',
-                type: 'stack',
-                checked: false,
-                list: [
-                  {
-                    title: 'Book Title 4',
-                    type: 'book',
-                    checked: false,
-                  },
-                  {
-                    title: 'Book Title 5',
-                    type: 'book',
-                    checked: false,
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
       items: [
         {
           title: 'This is a title 6',
