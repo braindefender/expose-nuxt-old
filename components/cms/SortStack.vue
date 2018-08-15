@@ -24,37 +24,71 @@
       <button @click="removeItems([item])" class="button">Delete</button>
     </li>
   </ul>
+  <ul>
+    <test-stack
+      :stack="stack"
+      :options="{ main: true }">
+    </test-stack>
+  </ul>
 </div>
 </template>
 
 <script>
+import TestStack from '~/components/cms/TestStack';
+
 export default {
   name: 'SortStack',
-  components: {},
+  components: { TestStack },
   props: [],
   data() {
     return {
+      stack: {
+        title: 'Новая категория',
+        type: 'stack',
+        checked: false,
+        list: [
+          {
+            title: 'Book Title',
+            type: 'book',
+            checked: false,
+          },
+          {
+            title: 'Book Title 2',
+            type: 'book',
+            checked: false,
+          },
+          {
+            title: 'Подкатегория',
+            type: 'stack',
+            checked: false,
+            list: [
+              {
+                title: 'Book Title 3',
+                type: 'book',
+                checked: false,
+              },
+              {
+                title: 'Внутренняя подкатегория',
+                type: 'stack',
+                checked: false,
+                list: [
+                  {
+                    title: 'Book Title 4',
+                    type: 'book',
+                    checked: false,
+                  },
+                  {
+                    title: 'Book Title 5',
+                    type: 'book',
+                    checked: false,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
       items: [
-        {
-          title: 'This is a title 1',
-          position: 0
-        },
-        {
-          title: 'This is a title 2',
-          position: 0,
-        },
-        {
-          title: 'This is a title 3',
-          position: 0,
-        },
-        {
-          title: 'This is a title 4',
-          position: 2,
-        },
-        {
-          title: 'This is a title 5',
-          position: 2,
-        },
         {
           title: 'This is a title 6',
           position: 0,

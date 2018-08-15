@@ -121,8 +121,11 @@ export default {
       &--left
         padding-right: 5px
         margin-right: 5px
+        display: none
       &--right
         padding-right: 5px
+        .es-stack
+          margin-bottom: 6px
     &__side-top
       padding-left: 20px
       margin-bottom: 10px
