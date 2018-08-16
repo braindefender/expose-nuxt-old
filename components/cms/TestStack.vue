@@ -1,60 +1,111 @@
 <template>
-  <div class="stack">
-    <div class="top">
-      <div
-        class="checkbox"
-        :class="this.innerStack.checked ? 'checked' : ''"
-        @click="checkStack">
+  <div
+    ref="stack"
+    :class="this.innerStack.compact
+      ? 'es-stack'
+      : 'es-stack es-stack--active'">
+    <div class="es-stack__background es-stack__background--first"></div>
+    <div class="es-stack__background es-stack__background--second"></div>
+    <div
+      :class="this.innerStack.compact
+        ? 'es-stack__background es-stack__background--third'
+        : 'es-stack__background es-stack__background--third es-stack__background--active'">
+      <div class="es-stack__top">
+        <div class="es-stack__controls">
+          <div
+            v-if="options.showProgress"
+            ref="progress"
+            class="control-progress"></div>
+          <div
+            v-if="options.showCheckbox"
+            class="es-card__check"
+            @click="checkStack">
+            <input type="checkbox" :checked="this.innerStack.checked">
+            <label></label>
+          </div>
+        </div>
+        <div class="es-stack__info" @click="toggle">
+          <div class="es-stack__count">{{ this.innerStack.list.length }} документов</div>
+          <div class="es-stack__title" @click="innerStack.title = 'ASDASD'">{{this.innerStack.title}}</div>
+        </div>
+        <transition name="slide-fade" mode="out-in">
+          <div
+            v-if="this.checkedList.length === 0"
+            class="es-stack__buttons">
+            <button
+              v-if="!this.options.main"
+              class="button-small button-small--up"
+              type="button" @click="moveUp">
+            </button>
+            <button
+              v-if="!this.options.main"
+              class="button-small button-small--down"
+              type="button" @click="moveDown">
+            </button>
+          </div>
+          <div
+            v-else
+            class="es-stack__buttons">
+            <button
+              class="button-small button-small--move"
+              type="button" @click="!innerStack.checked ? moveItems() : ''"></button>
+            <button
+              class="button-small button-small--copy"
+              type="button" @click="!innerStack.checked ? copyTo() : ''"></button>
+            <button
+              class="button-small button-small--remove"
+              type="button" @click="remove()"></button>
+          </div>
+        </transition>
       </div>
-      <div class="title" @click="innerStack.title = 'ASDASD'">{{this.innerStack.title}}</div>
-      <button
-        v-if="!this.options.main"
-        class="button"
-        type="button"
-        @click="moveUp">
-        Вверх
-      </button>
-      <button
-        v-if="!this.options.main"
-        class="button"
-        type="button"
-        @click="moveDown">
-        Вниз
-      </button>
-      <button class="button" type="button" @click="!innerStack.checked ? moveItems() : ''">Move</button>
-      <button class="button" type="button" @click="!innerStack.checked ? copyTo() : ''">Copy</button>
-      <button class="button" type="button" @click="remove()">Delete</button>
-    </div>
-    <div class="list">
-      <div
-        v-for="(item, index) in innerStack.list" :key="index"
-        v-if="item.clean !== true"
-        class="list-item">
-        <test-stack
-          v-if="item.type === 'stack'"
-          :stack="item"
-          :options="{
-            main: false
-          }"
-          @checkItem="checkItem(index)"
-          @moveUp="handleMoveUp(index)"
-          @moveDown="handleMoveDown(index)"
-          @updateCheckState="updateCheckState">
-        </test-stack>
-        <ESCard
-          v-if="item.type === 'book'"
-          :item="item"
-          :options="{
-            checkOnClick: true
-          }"
-          @check="checkItem(index)">
-        </ESCard>
+      <div class="es-stack__content" ref="stackContent">
+        <transition name="content"
+            v-on:before-enter="beforeEnter"
+            v-on:enter="enter"
+            v-on:after-enter="afterEnter"
+            v-on:before-leave="beforeLeave"
+            v-on:leave="leave"
+            v-on:after-leave="afterLeave">
+          <div class="es-stack__list" v-if="!this.innerStack.compact" ref="stackList">
+            <div
+              v-for="(item, index) in innerStack.list" :key="index"
+              v-if="item.clean !== true"
+              class="es-stack__list-item">
+              <test-stack
+                v-if="item.type === 'stack'"
+                :stack="item"
+                :options="{
+                  main: false,
+                  showCheckbox: true,
+                  checkOnClick,
+                }"
+                @checkItem="checkItem(index)"
+                @moveUp="handleMoveUp(index)"
+                @moveDown="handleMoveDown(index)"
+                @updateCheckState="updateCheckState">
+              </test-stack>
+              <ESCard
+                v-if="item.type === 'book'"
+                :item="item"
+                :options="{
+                  selectMode: false,
+                  showBadges: false,
+                  showLetters: false || showLetters,
+                  showLetter: letters[index],
+                  checkOnClick
+                }"
+                @check="checkItem(index)">
+              </ESCard>
+            </div>
+          </div>
+        </transition>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import progressbar from 'progressbar.js';
 import { mapState } from 'vuex';
 
 import TestStack from '~/components/cms/TestStack';
@@ -65,10 +116,25 @@ export default {
   components: { TestStack, ESCard },
   props: ['stack', 'options'],
   data() {
-    return {};
+    return {
+      listHeight: Number,
+      showLetters: false || this.options.showLetters,
+    };
   },
   watch: {
     'stack.list'() {},
+  },
+  mounted() {
+    if (this.options.showProgress) {
+      const p = new progressbar.Circle(this.$refs.progress, {
+        strokeWidth: 16,
+        easing: 'easeInOut',
+        duration: 1000,
+        color: '#4680ff',
+      });
+      p.animate(0.6);
+    }
+    this.$on('resize', this.resize);
   },
   computed: {
     checkedHeadersList() {
@@ -92,8 +158,24 @@ export default {
     innerStack() {
       return this.options.main ? this.$store.state.sortTest.stack : this.stack;
     },
+    letters() {
+      return this.innerStack.list
+        .map(el => (el.author ? el.author[0] : el.title[0]))
+        .map((val, ind, arr) => val !== arr[ind - 1]);
+    },
+    checkOnClick() {
+      return this.options.checkOnClick !== undefined
+        ? this.options.checkOnClick
+        : false;
+    },
   },
   methods: {
+    toggle() {
+      if (!this.options.main) {
+        this.innerStack.compact = !this.innerStack.compact;
+        this.$emit('resize');
+      }
+    },
     setChecked(item, to) {
       if (item.type === 'stack') {
         item.list.forEach(el => this.setChecked(el, to));
@@ -253,46 +335,133 @@ export default {
         console.log(item.title),
       );
     },
+    beforeEnter() {},
+    enter() {},
+    afterEnter() {},
+    beforeLeave() {},
+    leave() {},
+    afterLeave() {},
+    resize() {
+      // this.$refs.stackContent.velocity({ height: 'auto' }, { duration: 250 });
+    },
   },
 };
 </script>
 
 <style lang="sass" scoped>
-  .stack
-    border-radius: 5px
-    background-color: #333
-    padding: 15px
-    padding-top: 10px
-    .top
+
+  @import '@/styles/mixins.sass'
+
+  .list-enter-active, .list-leave-active
+    transition: all 1s
+
+  .list-enter, .list-leave-to
+    opacity: 0
+    transform: translateY(30px)
+
+  .es-stack
+    position: relative
+    border-radius: 10px
+    cursor: pointer
+    display: flex
+    flex-direction: column
+    min-height: 54px
+    transition: all ease 0.25s
+    padding-bottom: 12px
+    &--active
+      padding-bottom: 0
+      > .es-stack__background--first,
+      > .es-stack__background--second,
+        bottom: 16px
+    &__background
+      border-radius: 10px
+      transition: all ease 0.25s
+      &--first
+        position: absolute
+        top: 0
+        left: 10px
+        right: 10px
+        bottom: 6px
+        background-color: rgba(black, 0.15)
+        clip-path: inset(calc(100% - 6px) 0 0 0)
+      &--second
+        position: absolute
+        top: 0
+        left: 20px
+        right: 20px
+        bottom: 0px
+        clip-path: inset(calc(100% - 6px) 0 0 0)
+        background-color: rgba(black, 0.3)
+      &--third
+        position: relative
+        width: 100%
+        padding-top: 4px
+        padding-left: 8px
+        padding-right: 8px
+        padding-bottom: 8px
+        background-color: white
+        border: 2px solid rgba($color-accent, 0)
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05), 0px 4px 8px rgba(0, 0, 0, 0.05)
+        &:hover
+          box-shadow: 0px 2px 5px rgba(black, 0.1), 0px 4px 16px rgba(black, 0.05)
+      &--active
+        background-color: #EBECF0
+    &__top
       display: flex
+      flex-direction: row
+    &__buttons
+      display: flex
+      flex-direction: row
       align-items: center
-      margin-bottom: 10px
-    .button
-      margin-right: 10px
-      padding-left: 5px
-      padding-right: 5px
-      height: 24px
-      font-size: 12px
-    .title
+      padding-top: 5px
+      button
+        margin-left: 13px
+        &:first-child
+          margin-left: 0
+    &__controls
+      width: 48px
+      margin-left: -9px
+      padding-top: 10px
+      flex: 0 0 auto
+      display: flex
+      flex-direction: column
+      align-items: center
+    &__info
+      flex-grow: 1
+      padding-top: 2px
+    &__count
+      font-size: 14px
+      line-height: 20px
+      color: rgba(black, 0.4)
+    &__title
+      margin-top: -3px
+      font-size: 16px
+      line-height: 20px
       font-weight: bold
-      padding: 0 10px
-    .checkbox
-      position: relative
-      width: 16px
-      height: 16px
-      border-radius: 5px
-      background-color: #4680ff
-      &.checked
-        background-color: #FB616F
-    .list
-      .list-item
+      margin-bottom: -3px
+    &__list
+      padding-top: 10px
+    &__list-item
+      margin-bottom: 6px
+      &:last-child
+        margin-bottom: 0
+      .es-card-wrapper
         margin-bottom: 6px
         &:last-child
           margin-bottom: 0
-        .stack
-          background-color: #666
-          .list
-            .list-item
-              .stack
-                background-color: #999
+      .es-stack__background--active
+        background-color: #E1E2E5
+        box-shadow: none
+
+  .slide-fade-enter-active
+    transition: all 1s ease
+
+  .slide-fade-leave-active
+    transition: all 1s ease
+
+  .slide-fade-enter, .slide-fade-leave-to
+    opacity: 0
+
+  .slide-fade-enter-to, .slide-fade-leave
+    opacity: 1
 </style>

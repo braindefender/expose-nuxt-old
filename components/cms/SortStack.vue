@@ -26,7 +26,12 @@
   </ul>
   <ul>
     <test-stack
-      :options="{ main: true }">
+      :options="{
+        main: true,
+        compact: false,
+        showCheckbox: true,
+        checkOnClick: true,
+      }">
     </test-stack>
   </ul>
 </div>

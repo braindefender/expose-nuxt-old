@@ -110,7 +110,6 @@
         &::before
           background-color: rgba($color-error, 0.25)
 
-
   .button-remove
     +button($color-error)
     width: 22px
@@ -120,6 +119,25 @@
       +posa(0)
       content: ''
       background: url('../assets/button-remove.svg') center center no-repeat
+
+  .button-small
+    +button($color-accent)
+    border: none
+    width: 22px
+    height: 22px
+    display: flex
+    border-radius: 5px
+    overflow: hidden
+    &--up
+      background: url('/assets/icon-small-up.svg') center center no-repeat
+    &--down
+      background: url('/assets/icon-small-down.svg') center center no-repeat
+    &--remove
+      background: url('/assets/icon-small-remove.svg') center center no-repeat
+    &--copy
+      background: url('/assets/icon-small-copy.svg') center center no-repeat
+    &--move
+      background: url('/assets/icon-small-move.svg') center center no-repeat
 
   .container
     width: 1170px

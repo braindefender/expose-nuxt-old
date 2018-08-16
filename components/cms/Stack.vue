@@ -34,44 +34,9 @@
           <button type="button" class="button">Привет!</button>
         </div>
       </div>
+
       <div class="es-stack__content" ref="stackContent">
-        <transition name="content"
-          v-on:before-enter="beforeEnter"
-          v-on:enter="enter"
-          v-on:after-enter="afterEnter"
-          v-on:before-leave="beforeLeave"
-          v-on:leave="leave"
-          v-on:after-leave="afterLeave">
-          <div class="es-stack__list" v-if="!compact" ref="stackList">
-            <div
-              v-for="(item, index) in list"
-              :key="index"
-              class="es-stack__list-item">
-              <Stack
-                v-if="item.type === 'stack'"
-                :item="item"
-                :options="{
-                  showCheckbox: true,
-                  checked: checkedItems.includes(index),
-                  checkOnClick,
-                }"
-                @check="checkItem(index)"></Stack>
-              <ESCard
-                v-if="item.type === 'book'"
-                :item="item"
-                :options="{
-                  selectMode: false,
-                  showBadges: false,
-                  showLetters: false || showLetters,
-                  showLetter: letters[index],
-                  checked: checkedItems.includes(index),
-                  checkOnClick
-                }"
-                @checkCard="checkItem(index)">
-              </ESCard>
-            </div>
-          </div>
-        </transition>
+
       </div>
     </div>
 
@@ -80,23 +45,11 @@
 </template>
 
 <script>
-import ESCard from '@/components/cms/ESCard';
 import progressbar from 'progressbar.js';
 
+import ESCard from '@/components/cms/ESCard';
+
 export default {
-  name: 'Stack',
-  components: { ESCard },
-  props: ['item', 'options'],
-  data() {
-    return {
-      title: this.item.title || 'Измените название категории',
-      compact: this.options.compact !== undefined ? this.options.compact : true,
-      checked: false,
-      checkedItems: [],
-      listHeight: Number,
-      showLetters: false || this.options.showLetters,
-    };
-  },
   mounted() {
     if (this.options.showProgress) {
       const p = new progressbar.Circle(this.$refs.progress, {
@@ -131,48 +84,6 @@ export default {
     },
   },
   methods: {
-    resolveChecked() {
-      if (this.checkedItems.length === this.list.length) {
-        this.toggleCheck(true);
-      } else {
-        this.toggleCheck(false);
-      }
-    },
-    checkItem(index) {
-      const ind = this.checkedItems.indexOf(index);
-      // console.log(ind);
-      if (ind !== -1) {
-        this.checkedItems.splice(ind, 1);
-      } else {
-        this.checkedItems.push(index);
-      }
-      this.resolveChecked();
-    },
-    toggleStack() {
-      if (this.toggle) {
-        this.$parent.$emit('resize');
-        this.compact = !this.compact;
-      }
-    },
-    check() {
-      if (this.checked) {
-        this.checkedItems = [];
-      } else {
-        this.checkedItems = this.list.map((val, ind) => ind);
-      }
-      this.toggleCheck();
-    },
-    toggleCheck(arg) {
-      if (arg !== undefined) {
-        if (arg !== this.checked) {
-          this.checked = arg;
-          this.$emit('check');
-        }
-      } else {
-        this.checked = !this.checked;
-        this.$emit('check');
-      }
-    },
     beforeEnter() {
       this.$refs.stackContent.style.height = 0;
     },

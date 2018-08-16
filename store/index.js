@@ -21,9 +21,10 @@ const store = () => {
           },
         ],
         stack: {
-          title: 'Новая категория',
+          title: 'Отсортированные',
           type: 'stack',
           checked: false,
+          compact: false,
           list: [
             {
               title: 'Book Title',
@@ -39,6 +40,7 @@ const store = () => {
               title: 'Подкатегория',
               type: 'stack',
               checked: false,
+              compact: true,
               list: [
                 {
                   title: 'Book Title 3',
@@ -49,6 +51,7 @@ const store = () => {
                   title: 'Внутренняя подкатегория',
                   type: 'stack',
                   checked: false,
+                  compact: false,
                   list: [
                     {
                       title: 'Book Title 4',
@@ -66,6 +69,7 @@ const store = () => {
                   title: 'Внутренняя подкатегория 2',
                   type: 'stack',
                   checked: false,
+                  compact: false,
                   list: [
                     {
                       title: 'Book Title 4',

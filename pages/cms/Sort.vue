@@ -5,31 +5,10 @@
       <div class="es">
         <div class="es__side es__side--left">
           <div class="es__list">
-            <Stack
-              :item="this.unsortedStack"
-              :options="{
-                compact: false,
-                showCheckbox: true,
-                showLetters: true,
-                editable: false,
-                toggle: false,
-                checkOnClick: true,
-              }"
-              @upload="uploadXML">
-            </Stack>
             <input type="file" ref="xml" @change="setFile">
           </div>
         </div>
         <div class="es__side es__side--right">
-          <Stack
-            v-for="(item, index) in struct"
-            :key="index"
-            :item="item"
-            :options="{
-              showCheckbox: true,
-              checkOnClick: true,
-            }">
-          </Stack>
           <sort-stack></sort-stack>
         </div>
       </div>
@@ -121,7 +100,6 @@ export default {
       &--left
         padding-right: 5px
         margin-right: 5px
-        display: none
       &--right
         padding-right: 5px
         .es-stack
