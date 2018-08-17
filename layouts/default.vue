@@ -128,6 +128,8 @@
     display: flex
     border-radius: 5px
     overflow: hidden
+    &--ok
+      background: url('/assets/icon-small-ok.svg') center center no-repeat
     &--up
       background: url('/assets/icon-small-up.svg') center center no-repeat
     &--down
@@ -138,6 +140,8 @@
       background: url('/assets/icon-small-copy.svg') center center no-repeat
     &--move
       background: url('/assets/icon-small-move.svg') center center no-repeat
+    &--rename
+      background: url('/assets/icon-small-rename.svg') center center no-repeat
 
   .container
     width: 1170px

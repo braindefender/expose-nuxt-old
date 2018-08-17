@@ -25,13 +25,35 @@
           </div>
         </div>
         <div class="es-stack__info" @click="toggle">
-          <div class="es-stack__count">{{ this.innerStack.list.length }} документов</div>
-          <div class="es-stack__title" @click="innerStack.title = 'ASDASD'">{{this.innerStack.title}}</div>
+          <div
+            v-if="!this.renameMode"
+            class="es-stack__count">{{ this.innerStack.list.length }} документов</div>
+          <div
+            v-if="!this.renameMode"
+            class="es-stack__title">
+            {{this.innerStack.title}}
+          </div>
+          <input
+            type="text"
+            v-if="this.renameMode"
+            class="es-stack__title-input"
+            v-model="innerStack.title">
         </div>
         <transition name="slide-fade" mode="out-in">
           <div
             v-if="this.checkedList.length === 0"
+            key="es-stack-buttons-1"
             class="es-stack__buttons">
+            <button
+              v-if="!this.options.main && !this.renameMode"
+              class="button-small button-small--rename"
+              type="button" @click="rename">
+            </button>
+            <button
+              v-if="!this.options.main && this.renameMode"
+              class="button-small button-small--ok"
+              type="button" @click="rename">
+            </button>
             <button
               v-if="!this.options.main"
               class="button-small button-small--up"
@@ -45,6 +67,7 @@
           </div>
           <div
             v-else
+            key="es-stack-buttons-2"
             class="es-stack__buttons">
             <button
               class="button-small button-small--move"
@@ -118,6 +141,7 @@ export default {
   data() {
     return {
       listHeight: Number,
+      renameMode: false,
       showLetters: false || this.options.showLetters,
     };
   },
@@ -171,10 +195,13 @@ export default {
   },
   methods: {
     toggle() {
-      if (!this.options.main) {
+      if (!this.options.main && !this.renameMode) {
         this.innerStack.compact = !this.innerStack.compact;
         this.$emit('resize');
       }
+    },
+    rename() {
+      this.renameMode = !this.renameMode;
     },
     setChecked(item, to) {
       if (item.type === 'stack') {
@@ -420,6 +447,7 @@ export default {
           margin-left: 0
     &__controls
       width: 48px
+      min-height: 36px
       margin-left: -9px
       padding-top: 10px
       flex: 0 0 auto
@@ -436,9 +464,30 @@ export default {
     &__title
       margin-top: -3px
       font-size: 16px
-      line-height: 20px
+      line-height: 16px
       font-weight: bold
       margin-bottom: -3px
+      max-width: 280px
+    &__title-input
+      display: flex
+      resize: none
+      width: 280px
+      padding: 0
+      margin: 0
+      font-weight: bold
+      border: none
+      outline: none
+      font-size: 16px
+      line-height: 16px
+      font-family: 'PT Sans'
+      min-height: 32px
+      background-color: rgba(black, 0.1)
+      border-radius: 5px
+      overflow: hidden
+      padding-left: 8px
+      padding-right: 8px
+      margin-left: -8px
+      margin-top: 2px
     &__list
       padding-top: 10px
     &__list-item
@@ -454,13 +503,14 @@ export default {
         box-shadow: none
 
   .slide-fade-enter-active
-    transition: all 1s ease
+    transition: all 0.15s ease-in-out
 
   .slide-fade-leave-active
-    transition: all 1s ease
+    transition: all 0.15s ease-in-out
 
   .slide-fade-enter, .slide-fade-leave-to
     opacity: 0
+    margin-right: 3px
 
   .slide-fade-enter-to, .slide-fade-leave
     opacity: 1
