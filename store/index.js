@@ -11,20 +11,31 @@ const store = () => {
   return new Vuex.Store({
     state: {
       sortTest: {
-        unsorted: [
-          {
-            title: 'This is a title',
-            year: 2007,
-            source: 'Valve',
-            author: 'inkshir',
-            type: 'book',
-          },
-        ],
+        checkedLeft: [],
+        checkedList: [],
+        checkedHeadersList: [],
+        leftStack: {
+          title: 'Неотсортированные',
+          type: 'stack',
+          checked: false,
+          compact: false,
+          main: true,
+          list: [
+            {
+              title: 'This is a title',
+              year: 2007,
+              source: 'Valve',
+              author: 'inkshir',
+              type: 'book',
+            },
+          ],
+        },
         stack: {
           title: 'Отсортированные',
           type: 'stack',
           checked: false,
           compact: false,
+          main: true,
           list: [
             {
               title: 'Book Title',
@@ -143,119 +154,6 @@ const store = () => {
         phone: '',
         author: 'Автор выставки',
       },
-      sortState: {
-        struct: [
-          {
-            title: 'Название категории',
-            type: 'stack',
-            list: [
-              {
-                title: 'Название книги',
-                source: 'Издательство книги',
-                year: '2008',
-                pages: '145',
-                author: 'Автор книги',
-                type: 'book',
-              },
-              {
-                title: 'Название подкатегории',
-                type: 'stack',
-                list: [
-                  {
-                    title: 'Название книги',
-                    source: 'Издательство книги',
-                    year: '2008',
-                    pages: '145',
-                    author: 'Автор книги',
-                    type: 'book',
-                  },
-                ],
-              },
-              {
-                title: 'Название подкатегории',
-                type: 'stack',
-                list: [
-                  {
-                    title: 'Название книги',
-                    source: 'Издательство книги',
-                    year: '2008',
-                    pages: '145',
-                    author: 'Автор книги',
-                    type: 'book',
-                  },
-                  {
-                    title: 'Название книги',
-                    source: 'Издательство книги',
-                    year: '2008',
-                    pages: '145',
-                    author: 'Автор книги',
-                    type: 'book',
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            title: 'Название категории',
-            type: 'stack',
-            list: [
-              {
-                title: 'Название книги',
-                source: 'Издательство книги',
-                year: '2008',
-                pages: '145',
-                author: 'Автор книги',
-                type: 'book',
-              },
-              {
-                title: 'Название подкатегории',
-                type: 'stack',
-                list: [
-                  {
-                    title: 'Название книги',
-                    source: 'Издательство книги',
-                    year: '2008',
-                    pages: '145',
-                    author: 'Автор книги',
-                    type: 'book',
-                  },
-                ],
-              },
-              {
-                title: 'Название подкатегории',
-                type: 'stack',
-                list: [
-                  {
-                    title: 'Название книги',
-                    source: 'Издательство книги',
-                    year: '2008',
-                    pages: '145',
-                    author: 'Автор книги',
-                    type: 'book',
-                  },
-                  {
-                    title: 'Название книги',
-                    source: 'Издательство книги',
-                    year: '2008',
-                    pages: '145',
-                    author: 'Автор книги',
-                    type: 'book',
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-        unsorted: [
-          {
-            title: 'This is a title',
-            year: 2007,
-            source: 'Valve',
-            author: 'inkshir',
-            type: 'book',
-          },
-        ],
-      },
     },
     mutations: {
       setInfoState(state, expose) {
@@ -270,6 +168,9 @@ const store = () => {
       setUnsortedItems(state, list) {
         state.unsortedItems = list;
       },
+      setLeftCheckedList(state, list) {
+        state.sortTest.checkedLeft = list;
+      },
       setCheckedList(state, list) {
         state.sortTest.checkedList = list;
       },
@@ -278,7 +179,8 @@ const store = () => {
       },
       addToUnsorted(state, items) {
         items.forEach(el => {
-          state.sortTest.unsorted.push(el);
+          state.sortTest.leftStack.list.push(el);
+          console.log(state.sortTest.leftStack.list.length);
         });
       },
     },

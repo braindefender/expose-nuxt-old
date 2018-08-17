@@ -1,11 +1,13 @@
 <template>
   <div
     ref="stack"
-    :class="this.innerStack.compact
-      ? 'es-stack'
-      : 'es-stack es-stack--active'">
-    <div class="es-stack__background es-stack__background--first"></div>
-    <div class="es-stack__background es-stack__background--second"></div>
+    :class="className">
+    <div
+      v-if="!isMain"
+      class="es-stack__background es-stack__background--first"></div>
+    <div
+      v-if="!isMain"
+      class="es-stack__background es-stack__background--second"></div>
     <div
       :class="this.innerStack.compact
         ? 'es-stack__background es-stack__background--third'
@@ -37,7 +39,8 @@
             type="text"
             v-if="this.renameMode"
             class="es-stack__title-input"
-            v-model="innerStack.title">
+            v-model="innerStack.title"
+            @keyup.enter="rename">
         </div>
         <transition name="slide-fade" mode="out-in">
           <div
@@ -45,22 +48,22 @@
             key="es-stack-buttons-1"
             class="es-stack__buttons">
             <button
-              v-if="!this.options.main && !this.renameMode"
+              v-if="!isMain && !this.renameMode"
               class="button-small button-small--rename"
               type="button" @click="rename">
             </button>
             <button
-              v-if="!this.options.main && this.renameMode"
+              v-if="!isMain && this.renameMode"
               class="button-small button-small--ok"
               type="button" @click="rename">
             </button>
             <button
-              v-if="!this.options.main"
+              v-if="!isMain"
               class="button-small button-small--up"
               type="button" @click="moveUp">
             </button>
             <button
-              v-if="!this.options.main"
+              v-if="!isMain"
               class="button-small button-small--down"
               type="button" @click="moveDown">
             </button>
@@ -70,9 +73,15 @@
             key="es-stack-buttons-2"
             class="es-stack__buttons">
             <button
+              v-if="!innerStack.checked && !options.left"
+              class="button-small button-small--add"
+              type="button" @click="!innerStack.checked ? addStack() : ''"></button>
+            <button
+              v-if="!innerStack.checked && !isMain"
               class="button-small button-small--move"
               type="button" @click="!innerStack.checked ? moveItems() : ''"></button>
             <button
+              v-if="!innerStack.checked && !isMain"
               class="button-small button-small--copy"
               type="button" @click="!innerStack.checked ? copyTo() : ''"></button>
             <button
@@ -81,7 +90,11 @@
           </div>
         </transition>
       </div>
-      <div class="es-stack__content" ref="stackContent">
+      <div
+        :class="this.options.right
+          ? 'es-stack-main__content'
+          : 'es-stack__content'"
+        ref="stackContent">
         <transition name="content"
             v-on:before-enter="beforeEnter"
             v-on:enter="enter"
@@ -98,7 +111,8 @@
                 v-if="item.type === 'stack'"
                 :stack="item"
                 :options="{
-                  main: false,
+                  left: false,
+                  right: false,
                   showCheckbox: true,
                   checkOnClick,
                 }"
@@ -146,7 +160,9 @@ export default {
     };
   },
   watch: {
-    'stack.list'() {},
+    innerStack() {
+      // this.cleanup();
+    },
   },
   mounted() {
     if (this.options.showProgress) {
@@ -160,27 +176,23 @@ export default {
     }
     this.$on('resize', this.resize);
   },
+  updated() {
+    this.cleanup();
+  },
   computed: {
-    checkedHeadersList() {
-      if (this.options.main) {
-        const checkedHeadersList = this.getCheckedHeaders(this.innerStack);
-        this.$store.commit('setCheckedHeadersList', checkedHeadersList);
-        return checkedHeadersList;
-      } else {
-        return this.$store.state.sortTest.checkedHeadersList;
-      }
+    isMain() {
+      return this.options.left || this.options.right;
     },
-    checkedList() {
-      if (this.options.main) {
-        const checkedList = this.getChecked(this.innerStack);
-        this.$store.commit('setCheckedList', checkedList);
-        return checkedList;
+    className() {
+      if (this.isMain) {
+        return 'es-stack-main';
       } else {
-        return this.$store.state.sortTest.checkedList;
+        if (this.innerStack.compact) {
+          return 'es-stack';
+        } else {
+          return 'es-stack es-stack--active';
+        }
       }
-    },
-    innerStack() {
-      return this.options.main ? this.$store.state.sortTest.stack : this.stack;
     },
     letters() {
       return this.innerStack.list
@@ -192,10 +204,25 @@ export default {
         ? this.options.checkOnClick
         : false;
     },
+    innerStack(state) {
+      if (this.options.left) {
+        return this.$store.state.sortTest.leftStack;
+      }
+      if (this.options.right) {
+        return this.$store.state.sortTest.stack;
+      }
+      return this.stack;
+    },
+    ...mapState({
+      checkedList: state => state.sortTest.checkedList,
+      checkedHeadersList: state => state.sortTest.checkedHeadersList,
+    }),
   },
   methods: {
     toggle() {
-      if (!this.options.main && !this.renameMode) {
+      const canTogggle =
+        !this.options.left && !this.options.right && !this.renameMode;
+      if (canTogggle) {
         this.innerStack.compact = !this.innerStack.compact;
         this.$emit('resize');
       }
@@ -213,17 +240,21 @@ export default {
       if (item.type === 'stack') {
         item.list.forEach(el => this.setCleanup(el));
       }
-      item.clean = true;
+      if (!item.main) {
+        item.clean = true;
+      }
+      item.checked = false;
     },
     remove() {
-      const checkedList = this.checkedList.slice();
-      const checkedHeadersList = this.checkedHeadersList.slice();
-      checkedList.forEach(el => this.setChecked(el, false));
-      this.$store.commit('addToUnsorted', checkedList);
+      const newList = JSON.parse(JSON.stringify(this.checkedList));
+      newList.forEach(item => {
+        this.setChecked(item, false);
+      });
+      this.$store.commit('addToUnsorted', newList);
       if (this.innerStack.checked) {
         this.setCleanup(this.innerStack);
       } else {
-        checkedHeadersList.forEach(item => this.setCleanup(item));
+        this.checkedHeadersList.forEach(item => this.setCleanup(item));
       }
       this.updateCheckState();
     },
@@ -247,13 +278,27 @@ export default {
       this.updateCheckState();
     },
     moveItems() {
-      const list = this.checkedList.slice();
-      const checkedHeadersList = this.checkedHeadersList.slice();
-      list.forEach(item => {
+      const newList = JSON.parse(JSON.stringify(this.checkedList));
+      newList.forEach(item => {
         this.setChecked(item, false);
       });
-      const newList = JSON.parse(JSON.stringify(list));
       this.innerStack.list = this.innerStack.list.concat(newList);
+      this.checkedHeadersList.forEach(item => this.setCleanup(item));
+      this.updateCheckState();
+    },
+    addStack() {
+      const list = this.checkedList.slice();
+      const checkedHeadersList = this.checkedHeadersList.slice();
+      list.forEach(item => this.setChecked(item, false));
+      const newList = JSON.parse(JSON.stringify(list));
+      this.innerStack.list.push({
+        title: 'Новая категория',
+        checked: false,
+        compact: false,
+        type: 'stack',
+        list: newList,
+      });
+      list.forEach(item => this.setCleanup(item));
       checkedHeadersList.forEach(item => this.setCleanup(item));
       this.updateCheckState();
     },
@@ -282,7 +327,10 @@ export default {
       }
     },
     cleanup() {
-      this.innerStack.list = this.innerStack.list.filter(item => !item.clean);
+      const clean = this.innerStack.list.filter(item => !item.clean);
+      if (clean.length !== this.innerStack.list.length) {
+        this.innerStack.list = clean;
+      }
     },
     updateCheckState() {
       this.cleanup();
@@ -291,16 +339,15 @@ export default {
         (acc, item) => (item.checked ? (acc += 1) : acc),
         0,
       );
-      this.innerStack.checked = number === list.length;
-      this.$set(this.innerStack, 'list', list);
-      this.$emit('updateCheckState');
-      if (this.options.main) {
-        this.$store.commit(
-          'setCheckedHeadersList',
-          this.getCheckedHeaders(this.innerStack),
-        );
-        this.$store.commit('setCheckedList', this.getChecked(this.innerStack));
+      if (this.innerStack.list.length > 0) {
+        this.innerStack.checked = number === list.length;
+      } else {
+        this.innerStack.checked = false;
       }
+      this.$set(this.innerStack, 'list', list);
+      this.getChecked(this.innerStack);
+      this.getCheckedHeaders(this.innerStack);
+      this.$emit('updateCheckState');
     },
     checkItem(index) {
       const item = this.innerStack.list[index];
@@ -337,30 +384,32 @@ export default {
           }
         }
       });
+      if (this.isMain) {
+        this.$store.commit('setCheckedList', checkedList);
+      }
       return checkedList;
-    },
-    showChecked() {
-      this.getChecked(this.innerStack).forEach(item => console.log(item.title));
     },
     getCheckedHeaders(stack) {
       let checkedHeadersList = [];
-      stack.list.forEach(item => {
-        if (item.checked) {
-          checkedHeadersList.push(item);
-        } else {
-          if (item.type === 'stack') {
-            checkedHeadersList = checkedHeadersList.concat(
-              this.getCheckedHeaders(item),
-            );
+      if (stack.checked) {
+        checkedHeadersList.push(stack);
+      } else {
+        stack.list.forEach(item => {
+          if (item.checked) {
+            checkedHeadersList.push(item);
+          } else {
+            if (item.type === 'stack') {
+              checkedHeadersList = checkedHeadersList.concat(
+                this.getCheckedHeaders(item),
+              );
+            }
           }
-        }
-      });
+        });
+      }
+      if (this.isMain) {
+        this.$store.commit('setCheckedHeadersList', checkedHeadersList);
+      }
       return checkedHeadersList;
-    },
-    showCheckedHeaders() {
-      this.getCheckedHeaders(this.innerStack).forEach(item =>
-        console.log(item.title),
-      );
     },
     beforeEnter() {},
     enter() {},
@@ -386,6 +435,35 @@ export default {
     opacity: 0
     transform: translateY(30px)
 
+  .es-stack-main
+    display: flex
+    flex-direction: column
+    position: relative
+    >.es-stack__background
+      &--third
+        background: none
+        box-shadow: none
+        padding-left: 0
+        padding-right: 0
+        &:hover
+          box-shadow: none
+      >.es-stack__top
+        padding-left: 9px
+    &__content
+      .es-stack__background--active
+        background-color: rgba(black, 0.05)
+        // background-color: #FD583B
+        box-shadow: none
+        &:hover
+          box-shadow: none
+        .es-stack__background--active
+          background-color: rgba(black, 0.1)
+          // background-color: #FD7D54
+          box-shadow: none
+          &:hover
+            box-shadow: none
+
+
   .es-stack
     position: relative
     border-radius: 10px
@@ -400,6 +478,7 @@ export default {
       > .es-stack__background--first,
       > .es-stack__background--second,
         bottom: 16px
+        opacity: 0
     &__background
       border-radius: 10px
       transition: all ease 0.25s
@@ -498,9 +577,6 @@ export default {
         margin-bottom: 6px
         &:last-child
           margin-bottom: 0
-      .es-stack__background--active
-        background-color: #E1E2E5
-        box-shadow: none
 
   .slide-fade-enter-active
     transition: all 0.15s ease-in-out

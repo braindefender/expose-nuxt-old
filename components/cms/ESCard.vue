@@ -141,6 +141,7 @@ export default {
       font-weight: bold
       width: 80%
     &__controls
+      margin-left: -1px
       width: 48px
       padding-top: 8px
       flex: 0 0 auto

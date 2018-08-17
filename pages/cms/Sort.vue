@@ -6,10 +6,26 @@
         <div class="es__side es__side--left">
           <div class="es__list">
             <input type="file" ref="xml" @change="setFile">
+            <test-stack
+              :options="{
+                left: true,
+                compact: false,
+                showCheckbox: true,
+                checkOnClick: true,
+              }">
+            </test-stack>
           </div>
         </div>
         <div class="es__side es__side--right">
-          <sort-stack></sort-stack>
+          <button @click="submitt"></button>
+          <test-stack
+            :options="{
+              right: true,
+              compact: false,
+              showCheckbox: true,
+              checkOnClick: true,
+            }">
+          </test-stack>
         </div>
       </div>
     </div>
@@ -21,9 +37,8 @@
 import { mapState } from 'vuex';
 
 import Navigation from '@/components/cms/Navigation';
-import Stack from '@/components/cms/Stack';
 import ESCard from '@/components/cms/ESCard';
-import SortStack from '@/components/cms/SortStack';
+import TestStack from '@/components/cms/TestStack';
 
 export default {
   name: 'PageTwo',
@@ -33,7 +48,7 @@ export default {
   beforeDestroy() {
     // this.syncState();
   },
-  components: { Navigation, Stack, ESCard, SortStack },
+  components: { Navigation, ESCard, TestStack },
   data() {
     return {};
   },
@@ -45,11 +60,13 @@ export default {
       };
     },
     ...mapState({
-      unsorted: state => state.sortState.unsorted,
-      struct: state => state.sortState.struct,
+      unsorted: state => state.sortTest.unsorted,
     }),
   },
   methods: {
+    submitt() {
+      this.$axios.post('/json', this.$store.state.sortTest);
+    },
     fetchState() {
       this.$store.dispatch('fetchSortState').then(res => {
         this.sortState = this.$store.state.sortState;
@@ -69,7 +86,7 @@ export default {
         })
         .then(function() {
           console.log('SUCCESS!!');
-          this.$axios.$get('/cms/sort');
+          this.fetchState();
         })
         .catch(function() {
           console.log('FAILURE!!');

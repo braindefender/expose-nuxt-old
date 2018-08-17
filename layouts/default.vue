@@ -132,14 +132,16 @@
       background: url('/assets/icon-small-ok.svg') center center no-repeat
     &--up
       background: url('/assets/icon-small-up.svg') center center no-repeat
-    &--down
-      background: url('/assets/icon-small-down.svg') center center no-repeat
-    &--remove
-      background: url('/assets/icon-small-remove.svg') center center no-repeat
+    &--add
+      background: url('/assets/icon-small-add.svg') center center no-repeat
     &--copy
       background: url('/assets/icon-small-copy.svg') center center no-repeat
+    &--down
+      background: url('/assets/icon-small-down.svg') center center no-repeat
     &--move
       background: url('/assets/icon-small-move.svg') center center no-repeat
+    &--remove
+      background: url('/assets/icon-small-remove.svg') center center no-repeat
     &--rename
       background: url('/assets/icon-small-rename.svg') center center no-repeat
 
