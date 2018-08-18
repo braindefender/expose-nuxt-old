@@ -332,8 +332,27 @@ export default {
         this.innerStack.list = clean;
       }
     },
+    sortList() {
+      this.innerStack.list.sort((el1, el2) => {
+        if (el1.type === 'stack') {
+          if (el2.type === 'stack') {
+            return 0;
+          } else {
+            return -1;
+          }
+        }
+        if (el2.type === 'stack') {
+          return 1;
+        } else {
+          const cmp1 = el1.author ? el1.author : el1.title;
+          const cmp2 = el2.author ? el2.author : el2.title;
+          return cmp1 < cmp2 ? -1 : cmp1 > cmp2;
+        }
+      });
+    },
     updateCheckState() {
       this.cleanup();
+      this.sortList();
       let list = this.innerStack.list;
       const number = list.reduce(
         (acc, item) => (item.checked ? (acc += 1) : acc),

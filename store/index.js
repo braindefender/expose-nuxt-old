@@ -39,11 +39,13 @@ const store = () => {
           list: [
             {
               title: 'Book Title',
+              author: 'Пупкин Вася',
               type: 'book',
               checked: false,
             },
             {
               title: 'Book Title 2',
+              author: 'Вася Пупкин',
               type: 'book',
               checked: false,
             },
