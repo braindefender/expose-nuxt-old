@@ -10,13 +10,17 @@ Vue.use(Vuex);
 const store = () => {
   return new Vuex.Store({
     state: {
+      editState: {
+        selected: {
+          selected: false,
+        },
+      },
       sortTest: {
-        checkedLeft: [],
         checkedList: [],
         checkedHeadersList: [],
         leftStack: {
           title: 'Неотсортированные',
-          type: 'stack',
+          kind: 'stack',
           checked: false,
           compact: false,
           main: true,
@@ -26,73 +30,81 @@ const store = () => {
               year: 2007,
               source: 'Valve',
               author: 'inkshir',
-              type: 'book',
+              kind: 'book',
             },
           ],
         },
         stack: {
           title: 'Отсортированные',
-          type: 'stack',
+          kind: 'stack',
           checked: false,
           compact: false,
           main: true,
           list: [
             {
-              title: 'Book Title',
-              author: 'Пупкин Вася',
-              type: 'book',
-              checked: false,
-            },
-            {
-              title: 'Book Title 2',
-              author: 'Вася Пупкин',
-              type: 'book',
-              checked: false,
-            },
-            {
-              title: 'Подкатегория',
-              type: 'stack',
+              title: 'Категория',
+              kind: 'stack',
               checked: false,
               compact: true,
               list: [
                 {
-                  title: 'Book Title 3',
-                  type: 'book',
+                  title: 'Book Title',
+                  author: 'Пупкин Вася',
+                  authors: ['Пупкин Вася'],
+                  kind: 'book',
                   checked: false,
+                  progress: 0.33,
                 },
                 {
-                  title: 'Внутренняя подкатегория',
-                  type: 'stack',
+                  title: 'Book Title 2',
+                  author: 'Вася Пупкин',
+                  kind: 'book',
+                  checked: false,
+                  progress: 0.33,
+                },
+                {
+                  title: 'Book Title 3',
+                  kind: 'book',
+                  checked: false,
+                  progress: 0.33,
+                },
+                {
+                  title: 'Подкатегория',
+                  kind: 'stack',
                   checked: false,
                   compact: false,
                   list: [
                     {
                       title: 'Book Title 4',
-                      type: 'book',
+                      kind: 'book',
                       checked: false,
+                      progress: 0.33,
                     },
                     {
                       title: 'Book Title 5',
-                      type: 'book',
+                      kind: 'book',
                       checked: false,
+                      progress: 0.33,
                     },
                   ],
                 },
                 {
-                  title: 'Внутренняя подкатегория 2',
-                  type: 'stack',
+                  title: 'Подкатегория 2',
+                  kind: 'stack',
                   checked: false,
                   compact: false,
                   list: [
                     {
                       title: 'Book Title 4',
-                      type: 'book',
+                      kind: 'book',
                       checked: false,
+                      progress: 0.33,
                     },
                     {
                       title: 'Book Title 5',
-                      type: 'book',
+                      kind: 'book',
                       checked: false,
+                      progress: 0.33,
                     },
                   ],
                 },
@@ -161,8 +173,10 @@ const store = () => {
       setInfoState(state, expose) {
         state.expose = expose;
       },
-      setSortState(state, sortState) {
-        state.sortState = sortState;
+      setSortState(state, sortTest) {
+        console.log(state.sortTest);
+        console.log(sortTest);
+        state.sortTest = { ...state.sortTest, ...sortTest };
       },
       setPage(state, page) {
         state.currentPage = page;
@@ -184,6 +198,11 @@ const store = () => {
           state.sortTest.leftStack.list.push(el);
           console.log(state.sortTest.leftStack.list.length);
         });
+      },
+      selectOnEditScreen(state, item) {
+        state.editState.selected.selected = false;
+        state.editState.selected = item;
+        state.editState.selected.selected = true;
       },
     },
     actions: {
@@ -217,11 +236,12 @@ const store = () => {
             .$get('/cms/sort')
             .then(res => {
               if (res !== '') {
+                console.log('Server state: ', res);
                 commit('setSortState', res);
                 resolve(res);
               } else {
                 console.log('Server is empty. Returning default state');
-                resolve(state.sortState);
+                resolve(state.sortTest);
               }
             })
             .catch(err => {

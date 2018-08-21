@@ -98,7 +98,9 @@ export default {
   },
   computed: {
     authors() {
-      return this.item.authors.join(', ');
+      return this.item.authors
+        ? this.item.authors.join(', ')
+        : 'Авторы не указаны';
     },
     metadata() {
       return `${this.authors} - ${this.item.title}`;

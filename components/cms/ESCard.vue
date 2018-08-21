@@ -9,10 +9,15 @@
       :class="selected ? 'es-card es-card--selected' : 'es-card'"
       @click="atClick">
       <div class="es-card__controls">
-        <div class="es-card__check" @click="options.checkOnClick ? '' : check">
+        <div
+          v-if="!selectMode"
+          class="es-card__check" @click="options.checkOnClick ? '' : check">
           <input type="checkbox" :checked="item.checked">
           <label></label>
         </div>
+        <div
+          v-else
+          ref="progress" class="control-progress"></div>
       </div>
       <div class="es-card__content">
         <div class="es-card__top">
@@ -41,14 +46,27 @@
 </template>
 
 <script>
+import progressbar from 'progressbar.js';
+
 export default {
   name: 'ESCard',
   props: ['item', 'options'],
+  mounted() {
+    if (this.selectMode) {
+      this.progressbar = new progressbar.Circle(this.$refs.progress, {
+        strokeWidth: 16,
+        easing: 'easeInOut',
+        duration: 1000,
+        color: '#4680ff',
+      });
+      this.progressbar.animate(this.progress);
+    }
+  },
   data() {
     return {
-      selected: false,
-      showBadges: this.options ? this.options.showBadges : false,
+      showBadges: this.options.showBadges ? this.options.showBadges : false,
       selectMode: this.options ? this.options.selectMode : false,
+      progressbar: Object,
     };
   },
   computed: {
@@ -60,10 +78,23 @@ export default {
         .filter(el => el !== undefined)
         .join(', ');
     },
+    selected() {
+      return this.item === this.$store.state.editState.selected;
+    },
+    progress() {
+      let progress = 0;
+      if (this.item.annotation) {
+        progress += 1;
+      }
+      if (this.item.cover) {
+        progress += 1;
+      }
+      return this.item.progress + progress / 2;
+    },
   },
   methods: {
     select() {
-      this.selected = this.selectMode ? !this.selected : this.selected;
+      this.$store.commit('selectOnEditScreen', this.item);
     },
     check() {
       this.$emit('check');

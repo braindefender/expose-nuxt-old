@@ -4,25 +4,23 @@
     <div class="container">
       <div class="es">
         <div class="es__side es__side--left">
-          <div class="es__list">
-            <input type="file" ref="xml" @change="setFile">
-            <test-stack
-              :options="{
-                left: true,
-                compact: false,
-                showCheckbox: true,
-                checkOnClick: true,
-              }">
-            </test-stack>
-          </div>
+          <input type="file" ref="xml" @change="setFile">
+          <button @click="uploadXML">Отправить XML</button>
+          <test-stack
+            :options="{
+              left: true,
+              compact: false,
+              checkOnClick: true,
+              showLetters: true,
+            }">
+          </test-stack>
         </div>
         <div class="es__side es__side--right">
-          <button @click="submitt"></button>
+          <button @click="submitt">Отправить State</button>
           <test-stack
             :options="{
               right: true,
               compact: false,
-              showCheckbox: true,
               checkOnClick: true,
             }">
           </test-stack>
@@ -46,50 +44,42 @@ export default {
     this.fetchState();
   },
   beforeDestroy() {
-    // this.syncState();
+    this.syncState();
   },
   components: { Navigation, ESCard, TestStack },
   data() {
     return {};
   },
   computed: {
-    unsortedStack() {
-      return {
-        title: 'Неотсортированные',
-        list: this.unsorted,
-      };
-    },
     ...mapState({
       unsorted: state => state.sortTest.unsorted,
     }),
   },
   methods: {
     submitt() {
-      this.$axios.post('/json', this.$store.state.sortTest);
+      this.$axios.post('/cms/sort', this.$store.state.sortTest);
     },
     fetchState() {
-      this.$store.dispatch('fetchSortState').then(res => {
-        this.sortState = this.$store.state.sortState;
-      });
+      this.$store.dispatch('fetchSortState');
     },
     syncState() {
-      this.$store.dispatch('syncSortState', this.sortState);
+      this.$store.dispatch('syncSortState', this.$store.state.sortTest);
     },
     uploadXML() {
       let formData = new FormData();
       formData.append('file', this.file);
       this.$axios
-        .$post('/expose/xml', formData, {
+        .$post('/cms/xml', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         })
-        .then(function() {
-          console.log('SUCCESS!!');
+        .then(res => {
+          console.log('Uploaded XML');
           this.fetchState();
         })
-        .catch(function() {
-          console.log('FAILURE!!');
+        .catch(err => {
+          console.log(err);
         });
     },
     setFile() {

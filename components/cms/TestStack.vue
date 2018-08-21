@@ -15,11 +15,6 @@
       <div class="es-stack__top">
         <div class="es-stack__controls">
           <div
-            v-if="options.showProgress"
-            ref="progress"
-            class="control-progress"></div>
-          <div
-            v-if="options.showCheckbox"
             class="es-card__check"
             @click="checkStack">
             <input type="checkbox" :checked="this.innerStack.checked">
@@ -29,7 +24,7 @@
         <div class="es-stack__info" @click="toggle">
           <div
             v-if="!this.renameMode"
-            class="es-stack__count">{{ this.innerStack.list.length }} документов</div>
+            class="es-stack__count">{{ count }} документов</div>
           <div
             v-if="!this.renameMode"
             class="es-stack__title">
@@ -108,12 +103,11 @@
               v-if="item.clean !== true"
               class="es-stack__list-item">
               <test-stack
-                v-if="item.type === 'stack'"
+                v-if="item.kind === 'stack'"
                 :stack="item"
                 :options="{
                   left: false,
                   right: false,
-                  showCheckbox: true,
                   checkOnClick,
                 }"
                 @checkItem="checkItem(index)"
@@ -122,11 +116,10 @@
                 @updateCheckState="updateCheckState">
               </test-stack>
               <ESCard
-                v-if="item.type === 'book'"
+                v-if="item.kind === 'book'"
                 :item="item"
                 :options="{
                   selectMode: false,
-                  showBadges: false,
                   showLetters: false || showLetters,
                   showLetter: letters[index],
                   checkOnClick
@@ -165,21 +158,18 @@ export default {
     },
   },
   mounted() {
-    if (this.options.showProgress) {
-      const p = new progressbar.Circle(this.$refs.progress, {
-        strokeWidth: 16,
-        easing: 'easeInOut',
-        duration: 1000,
-        color: '#4680ff',
-      });
-      p.animate(0.6);
-    }
     this.$on('resize', this.resize);
   },
   updated() {
     this.cleanup();
   },
   computed: {
+    count() {
+      return this.countList(this.innerStack);
+    },
+    stacks() {
+      return this.countStacks(this.innerStack);
+    },
     isMain() {
       return this.options.left || this.options.right;
     },
@@ -231,13 +221,13 @@ export default {
       this.renameMode = !this.renameMode;
     },
     setChecked(item, to) {
-      if (item.type === 'stack') {
+      if (item.kind === 'stack') {
         item.list.forEach(el => this.setChecked(el, to));
       }
       item.checked = to;
     },
     setCleanup(item) {
-      if (item.type === 'stack') {
+      if (item.kind === 'stack') {
         item.list.forEach(el => this.setCleanup(el));
       }
       if (!item.main) {
@@ -295,7 +285,7 @@ export default {
         title: 'Новая категория',
         checked: false,
         compact: false,
-        type: 'stack',
+        kind: 'stack',
         list: newList,
       });
       list.forEach(item => this.setCleanup(item));
@@ -320,7 +310,7 @@ export default {
       this.$emit('moveDown');
     },
     handleMoveDown(position) {
-      if (position < this.innerStack.list.length - 1) {
+      if (position < this.stacks - 1) {
         const item = this.innerStack.list[position];
         this.innerStack.list[position] = this.innerStack.list[position + 1];
         this.$set(this.innerStack.list, position + 1, item);
@@ -334,14 +324,14 @@ export default {
     },
     sortList() {
       this.innerStack.list.sort((el1, el2) => {
-        if (el1.type === 'stack') {
-          if (el2.type === 'stack') {
+        if (el1.kind === 'stack') {
+          if (el2.kind === 'stack') {
             return 0;
           } else {
             return -1;
           }
         }
-        if (el2.type === 'stack') {
+        if (el2.kind === 'stack') {
           return 1;
         } else {
           const cmp1 = el1.author ? el1.author : el1.title;
@@ -349,6 +339,21 @@ export default {
           return cmp1 < cmp2 ? -1 : cmp1 > cmp2;
         }
       });
+    },
+    countStacks(stack) {
+      return stack.list.reduce(
+        (acc, item) => (item.kind === 'stack' ? (acc += 1) : acc),
+        0,
+      );
+    },
+    countList(stack) {
+      return stack.list.reduce((acc, item) => {
+        if (item.kind === 'stack') {
+          return (acc += this.countList(item));
+        } else {
+          return (acc += 1);
+        }
+      }, 0);
     },
     updateCheckState() {
       this.cleanup();
@@ -383,7 +388,7 @@ export default {
       }
       const toChange = to !== undefined ? to : stack.checked;
       stack.list.forEach(item => {
-        if (item.type === 'stack') {
+        if (item.kind === 'stack') {
           this.checkStack(e, item, toChange);
         } else {
           item.checked = toChange;
@@ -395,7 +400,7 @@ export default {
     getChecked(stack) {
       let checkedList = [];
       stack.list.forEach(item => {
-        if (item.type === 'stack') {
+        if (item.kind === 'stack') {
           checkedList = checkedList.concat(this.getChecked(item));
         } else {
           if (item.checked) {
@@ -417,7 +422,7 @@ export default {
           if (item.checked) {
             checkedHeadersList.push(item);
           } else {
-            if (item.type === 'stack') {
+            if (item.kind === 'stack') {
               checkedHeadersList = checkedHeadersList.concat(
                 this.getCheckedHeaders(item),
               );
