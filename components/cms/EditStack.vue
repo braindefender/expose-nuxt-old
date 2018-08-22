@@ -84,13 +84,17 @@ export default {
     });
     this.progressbar.animate(this.progress);
   },
+  updated() {
+    // this.updateProgress();
+  },
+  watch: {
+    progress(prev, next) {
+      this.progressbar.animate(this.progress);
+    },
+  },
   computed: {
     count() {
       return this.countList(this.innerStack);
-    },
-    progress() {
-      const progress = this.countProgress(this.innerStack) / this.count;
-      return progress;
     },
     isMain() {
       return this.options.left || this.options.right;
@@ -111,6 +115,17 @@ export default {
         return this.$store.state.sortTest.stack;
       }
       return this.stack;
+    },
+    progress() {
+      return (
+        this.innerStack.list.reduce((acc, item) => {
+          if (item.kind === 'stack') {
+            return (acc += this.countProgress(item));
+          } else {
+            return item.progress ? (acc += item.progress) : acc;
+          }
+        }, 0) / this.count
+      );
     },
   },
   methods: {

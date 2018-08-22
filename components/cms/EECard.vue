@@ -1,5 +1,5 @@
 <template>
-  <div class="ee-card">
+  <div class="ee-card" v-if="item.selected">
 
     <div class="ee-card__top">
       <div class="ee-card__label">Редактирование записи</div>
@@ -12,15 +12,23 @@
     <div class="ee-card__item">
       <div class="ee-card__item-title">Обложка:</div>
       <div class="ee-card__item-content ee-card__cover">
-        <div class="book-image">
-          <div class="book-image__blur">
-            <div class="book-image__blur-container">
-              <img :src="item.cover" :alt="metadata">
-            </div>
-          </div>
-          <div class="book-image__image">
-            <img :src="item.cover" :alt="metadata">
-          </div>
+        <image-blur :image="cover" :meta="metadata" :options="{
+            width: 125
+          }">
+        </image-blur>
+        <div class="ee-card__cover-input">
+          <picture-input
+            ref="piCover"
+            width="172"
+            height="36"
+            accept="image/jpeg,image/jpg,image/png"
+            size="2"
+            button-class="button"
+            :zIndex=200
+            :plain="true"
+            :hideChangeButton="true"
+            @change="onPICoverChange">
+          </picture-input>
         </div>
       </div>
     </div>
@@ -40,7 +48,7 @@
           placeholder="Аннотация не указана"
           cols="30"
           rows="1"
-          v-model="annotation">
+          v-model="item.annotation">
         </textarea>
       </div>
     </div>
@@ -83,13 +91,24 @@
     </div>
 
   </div>
+  <div class="ee-card" v-else>
+    <div class="ee-card__not-found">
+      Здесь ничего нет. Пожалуйста, выберите документ слева
+    </div>
+  </div>
 </template>
 
 
 <script>
+import noCover from '~/assets/default/Article.svg';
+import testCover from '~/assets/covers/public01032012112432_b.jpg';
+
+import ImageBlur from '~/components/ImageBlur';
+
 export default {
   name: 'EECard',
   props: ['item'],
+  components: { ImageBlur },
   data() {
     return {
       annotation: this.item.annotation,
@@ -97,6 +116,9 @@ export default {
     };
   },
   computed: {
+    cover() {
+      return this.item.cover ? this.item.cover : noCover;
+    },
     authors() {
       return this.item.authors
         ? this.item.authors.join(', ')
@@ -104,6 +126,16 @@ export default {
     },
     metadata() {
       return `${this.authors} - ${this.item.title}`;
+    },
+  },
+  methods: {
+    onPICoverChange(image) {
+      if (image) {
+        console.log('Picture loaded.');
+        this.$set(this.item, 'cover', image);
+      } else {
+        console.log('FileReader API not supported: use the <form>, Luke!');
+      }
     },
   },
 };
@@ -125,6 +157,23 @@ export default {
     padding-bottom: 15px
     padding-left: 20px
     padding-right: 20px
+    &__cover
+      width: 100%
+      display: flex
+      flex-direction: row
+      justify-content: flex-start
+    &__cover-input
+      margin-left: 10px
+      flex: 0 0 auto
+      height: 32px
+      width: 172px
+    &__not-found
+      padding-top: 40px
+      padding-bottom: 40px
+      font-size: 16px
+      font-weight: bold
+      text-align: center
+      color: rgba(black, 0.4)
     &__label
       font-size: 16px
       font-weight: bold
@@ -172,8 +221,6 @@ export default {
       &-text
         display: inline-block
         text-align: left
-    &__cover
-      width: 125px
     &__images
       +outline-card(5px)
       padding: 15px
@@ -232,4 +279,32 @@ export default {
         width: 100%
         &::placeholder
           color: rgba(black, 0.4)
+
+  .picture-input
+    padding: 0
+    width: 172px
+    height: 32px
+    border-radius: 5px
+    overflow: hidden
+    transition: all ease 0.15s
+    box-shadow: 0px 3px 6px rgba(black, 0)
+    &:hover
+      box-shadow: 0px 3px 6px rgba($color-accent, 0.4)
+    .preview-container
+      position: relative
+      overflow: hidden
+      &::after
+        +posa(0)
+        padding-bottom: 4px
+        z-index: 5000
+        font-weight: bold
+        display: flex
+        flex-direction: row
+        justify-content: center
+        align-items: center
+        color: white
+        font-size: 14px
+        pointer-events: none
+        content: 'Загрузить обложку'
+        background-color: rgba($color-accent, 1)
 </style>

@@ -3,15 +3,14 @@
     <Navigation></Navigation>
     <div class="container">
       <div class="ee">
-        <div class="ee__side ee-side--left">
+        <div class="ee__side ee__side--left">
           <edit-stack
           :options="{
             left: true,
             compact: false,
-          }"
-          @select="select"></edit-stack>
+          }"></edit-stack>
         </div>
-        <div class="ee__side ee-side--right">
+        <div class="ee__side ee__side--right">
           <EECard :item="selectedItem"></EECard>
         </div>
       </div>
@@ -37,13 +36,7 @@ export default {
       selectedItem: state => state.editState.selected,
     }),
   },
-  methods: {
-    select(item) {
-      this.selectedItem.selected = false;
-      this.selectedItem = item;
-      this.selectedItem.selected = true;
-    },
-  },
+  methods: {},
 };
 </script>
 

@@ -6,7 +6,7 @@
       </span>
     </div>
     <div
-      :class="selected ? 'es-card es-card--selected' : 'es-card'"
+      :class="selectMode && selected ? 'es-card es-card--selected' : 'es-card'"
       @click="atClick">
       <div class="es-card__controls">
         <div
@@ -32,11 +32,11 @@
         <div class="es-card__bot">
           <div class="es-card__title">{{ item.title }}</div>
           <div class="es-card__badge-box" v-if="showBadges">
-            <div class="es-card__badge es-card__badge--warning">
+            <div v-if="errorAnnotation" class="es-card__badge es-card__badge--warning">
               Нет аннотации
             </div>
-            <div class="es-card__badge es-card__badge--error">
-              Нет обложки!
+            <div v-if="errorCover" class="es-card__badge es-card__badge--warning">
+              Нет обложки
             </div>
           </div>
         </div>
@@ -61,12 +61,21 @@ export default {
       });
       this.progressbar.animate(this.progress);
     }
+    if (this.options.selectMode) {
+      this.updateProgress();
+    }
+  },
+  updated() {
+    if (this.options.selectMode) {
+      this.updateProgress();
+    }
   },
   data() {
     return {
       showBadges: this.options.showBadges ? this.options.showBadges : false,
       selectMode: this.options ? this.options.selectMode : false,
       progressbar: Object,
+      progress: 0,
     };
   },
   computed: {
@@ -81,15 +90,12 @@ export default {
     selected() {
       return this.item === this.$store.state.editState.selected;
     },
-    progress() {
-      let progress = 0;
-      if (this.item.annotation) {
-        progress += 1;
-      }
-      if (this.item.cover) {
-        progress += 1;
-      }
-      return this.item.progress + progress / 2;
+
+    errorAnnotation() {
+      return this.item.annotation === undefined || this.item.annotation === '';
+    },
+    errorCover() {
+      return !this.item.cover;
     },
   },
   methods: {
@@ -101,6 +107,18 @@ export default {
     },
     atClick() {
       this.options.checkOnClick ? this.check() : this.select();
+    },
+    updateProgress() {
+      let progress = 0;
+      if (this.item.annotation) {
+        progress += 1;
+      }
+      if (this.item.cover) {
+        progress += 1;
+      }
+      this.progress = (1 + progress) / 3;
+      this.progressbar.animate(this.progress);
+      this.item.progress = this.progress;
     },
   },
 };
@@ -237,6 +255,7 @@ export default {
       padding-top: 1px
       padding-bottom: 8px
       border-radius: 4em
+      margin-right: 5px
       &--warning
         background-color: rgba($color-warning, 0.6)
       &--error

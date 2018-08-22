@@ -248,9 +248,6 @@ export default {
   },
   mounted() {
     this.fetchState();
-    // this.$axios.$get(`/expose`).then(res => {
-    //   this.$store.commit('setUnsortedItems', res);
-    // });
   },
   data() {
     return {

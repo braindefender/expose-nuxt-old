@@ -66,6 +66,7 @@ export default {
       this.$store.dispatch('syncSortState', this.$store.state.sortTest);
     },
     uploadXML() {
+      this.syncState();
       let formData = new FormData();
       formData.append('file', this.file);
       this.$axios
@@ -139,25 +140,5 @@ export default {
 
   .list-move
     transition: transform 1s
-
-  .es-stack-view
-    box-sizing: border-box
-    background-color: #EBECF0
-    border-radius: 10px
-    padding-top: 8px
-    padding-bottom: 10px
-    overflow: hidden
-    position: relative
-    z-index: 1
-    margin-bottom: 10px
-    .es-stack-view
-      background-color: #E1E2E5
-    &__info
-      padding-left: 48px
-    &__count
-      font-size: 14px
-      line-height: 20px
-      color: rgba(black, 0.4)
-
 
 </style>
