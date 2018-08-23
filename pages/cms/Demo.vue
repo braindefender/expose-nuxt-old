@@ -1,7 +1,9 @@
 <template>
-  <div class="cms-page">
+  <div class="cms-page cms-page--white">
     <Navigation></Navigation>
-    <Expose></Expose>
+    <Expose :options="{
+      cms: true
+    }"></Expose>
   </div>
 </template>
 
@@ -14,6 +16,15 @@ export default {
   components: { Navigation, Expose },
   data() {
     return {};
+  },
+  mounted() {
+    this.fetchState();
+  },
+  beforeDestroy() {},
+  methods: {
+    fetchState() {
+      this.$store.dispatch('fetchSortState');
+    },
   },
 };
 </script>

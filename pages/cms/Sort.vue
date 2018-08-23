@@ -76,8 +76,9 @@ export default {
           },
         })
         .then(res => {
+          this.$store.dispatch('syncSortState', res);
           console.log('Uploaded XML');
-          this.fetchState();
+          // this.fetchState();
         })
         .catch(err => {
           console.log(err);

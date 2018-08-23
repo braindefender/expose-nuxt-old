@@ -77,16 +77,41 @@
             <button class="button-remove" type="button"></button>
             <img :src="item.image" alt="">
           </div>
+          <div class="ee-card__image">
+            <button class="button-remove" type="button"></button>
+            <img :src="item.image" alt="">
+          </div>
+          <div class="ee-card__image">
+            <button class="button-remove" type="button"></button>
+            <img :src="item.image" alt="">
+          </div>
+          <div class="ee-card__image ee-card__image--transparent">
+            <picture-input
+              ref="piImage"
+              width="125"
+              height="180"
+              accept="image/jpeg,image/jpg,image/png"
+              size="2"
+              button-class="ee-card__image-upload"
+              :zIndex=200
+              :plain="true"
+              :hideChangeButton="true"
+              @change="onPIImageChange">
+            </picture-input>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="ee-card__item">
       <div class="ee-card__item-title">Содержание:</div>
-      <div class="ee-card__item-content ee-card__contents">
-        <div class="ee-card__contents-text">
-          {{ contents }}
-        </div>
+      <div class="ee-card__item-content">
+        <textarea
+          v-model="item.contents"
+          v-autosize="item.contents"
+          class="ee-card__contents"
+          placeholder="Содержание не указано"
+          name="contents" cols="60" rows="1"></textarea>
       </div>
     </div>
 
@@ -137,6 +162,14 @@ export default {
         console.log('FileReader API not supported: use the <form>, Luke!');
       }
     },
+    onPIImageChange(image) {
+      if (image) {
+        console.log('Picture loaded.');
+        this.$set(this.item, 'cover', image);
+      } else {
+        console.log('FileReader API not supported: use the <form>, Luke!');
+      }
+    },
   },
 };
 </script>
@@ -167,6 +200,33 @@ export default {
       flex: 0 0 auto
       height: 32px
       width: 172px
+      >.picture-input
+        padding: 0
+        width: 172px
+        height: 32px
+        border-radius: 5px
+        overflow: hidden
+        transition: all ease 0.15s
+        box-shadow: 0px 3px 6px rgba(black, 0)
+        &:hover
+          box-shadow: 0px 3px 6px rgba($color-accent, 0.4)
+        .preview-container
+          position: relative
+          overflow: hidden
+          &::after
+            +posa(0)
+            padding-bottom: 4px
+            z-index: 5000
+            font-weight: bold
+            display: flex
+            flex-direction: row
+            justify-content: center
+            align-items: center
+            color: white
+            font-size: 14px
+            pointer-events: none
+            content: 'Загрузить обложку'
+            background-color: rgba($color-accent, 1)
     &__not-found
       padding-top: 40px
       padding-bottom: 40px
@@ -199,6 +259,7 @@ export default {
       line-height: 20px
       font-weight: bold
       margin-bottom: 5px
+      user-select: none
     &__title
       font-size: 15px
       line-height: 20px
@@ -215,12 +276,17 @@ export default {
       font-size: 12px
       line-height: 15px
       font-family: 'PT Mono'
+      outline: none
+      border: none
       +outline-card(5px)
       padding: 15px
-      text-align: center
-      &-text
-        display: inline-block
-        text-align: left
+      padding-left: 13px
+      text-align: left
+      resize: none
+      width: 100%
+      min-height: 44px
+      display: flex
+      white-space: pre
     &__images
       +outline-card(5px)
       padding: 15px
@@ -232,7 +298,7 @@ export default {
       flex-wrap: nowrap
     &__image
       border-radius: 5px
-      max-width: 120px
+      min-width: 125px
       min-height: 120px
       background-color: #333
       position: relative
@@ -241,13 +307,61 @@ export default {
       justify-content: center
       flex: 0 0 auto
       overflow: hidden
-      margin-right: 15px
+      margin-right: 10px
+      &--transparent
+        background: none
       .button-remove
         position: absolute
         top: 15px
         right: 15px
       img
         width: 100%
+      >.picture-input
+        margin: 0
+        padding: 0
+        width: 125px
+        height: 180px
+        border-radius: 5px
+        overflow: hidden
+        transition: all ease 0.15s
+        .picture-preview
+          background: none
+          display: none
+        .preview-container
+          position: relative
+          overflow: hidden
+          &::before
+            position: absolute
+            top: 50%
+            left: 50%
+            margin-left: -24px
+            margin-top: -24px
+            z-index: 6000
+            content: ''
+            width: 48px
+            height: 48px
+            border-radius: 11px
+            transition: all ease 0.15s
+            background: url('~/assets/icon-image-add.svg') center center no-repeat
+          &::after
+            +posa(0)
+            padding-bottom: 4px
+            z-index: 5000
+            pointer-events: none
+            content: ''
+            background-color: white
+            border: 2px dashed rgba(black, 0.15)
+            border-radius: 5px
+            transition: all ease 0.15s
+            box-shadow: 0px 3px 6px rgba($color-accent, 0)
+          &:hover
+            &::before
+              box-shadow: 0px 3px 6px rgba($color-accent, 0.4)
+            &::after
+              border-radius: 10px
+          &:active
+            &::before
+              transform: scale(0.95)
     &__info
       +outline-card(5px)
       padding: 15px
@@ -280,31 +394,5 @@ export default {
         &::placeholder
           color: rgba(black, 0.4)
 
-  .picture-input
-    padding: 0
-    width: 172px
-    height: 32px
-    border-radius: 5px
-    overflow: hidden
-    transition: all ease 0.15s
-    box-shadow: 0px 3px 6px rgba(black, 0)
-    &:hover
-      box-shadow: 0px 3px 6px rgba($color-accent, 0.4)
-    .preview-container
-      position: relative
-      overflow: hidden
-      &::after
-        +posa(0)
-        padding-bottom: 4px
-        z-index: 5000
-        font-weight: bold
-        display: flex
-        flex-direction: row
-        justify-content: center
-        align-items: center
-        color: white
-        font-size: 14px
-        pointer-events: none
-        content: 'Загрузить обложку'
-        background-color: rgba($color-accent, 1)
+
 </style>

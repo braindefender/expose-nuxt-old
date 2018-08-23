@@ -2,7 +2,7 @@
   <div class="container">
     <div class="expose-page">
 
-      <Cover :options="options"></Cover>
+      <Cover :options="coverOptions"></Cover>
 
       <div class="expose-page__grid">
         <div class="expose-page__panel expose-page__sort">
@@ -28,32 +28,13 @@
             placeholder="Поиск по странице">
         </div>
         <div class="expose-page__content">
-          <div class="expose-section">
-            <div class="expose-section__panel">
-              <div class="expose-section__title">
-                Новые отечественные книги из фондов Отделения ГПНТБ СО РАН
-              </div>
-              <div class="expose-section__info">{{`Количество: ${this.list.length}`}}</div>
-            </div>
-            <div class="expose-section__content">
 
-              <BookCard
-                v-for="(val, ind) in list"
-                :key="ind"
-                :item="val">
-              </BookCard>
-              <BookCard
-                :item="{
-                  author: 'Ажевникова Н.А.',
-                  title:
-                    'Материалы к словарю метафор и сравнений русской литературы XIX-XX в.',
-                  source: 'Языки рус. культуры',
-                  year: '2018',
-              }">
-              </BookCard>
+          <expose-stack
+           v-for="(item, index) in stack.list"
+           :key="index"
+           :stack="item">
+           </expose-stack>
 
-            </div>
-          </div>
         </div>
         <div class="expose-page__menu">
           <!-- <ContentSelector :list="list"></ContentSelector> -->
@@ -82,14 +63,23 @@
 import BookCard from '@/components/expose/BookCard';
 import ContentSelector from '@/components/expose/ContentSelector';
 import Cover from '@/components/expose/Cover';
+import ExposeStack from '@/components/expose/ExposeStack';
 
 export default {
   name: 'Expose',
-  components: { Cover, ContentSelector, BookCard },
-  asyncData({ app }) {
-    return app.$axios.$get(`/expose`).then(res => {
-      return { list: res };
-    });
+  components: { Cover, ContentSelector, BookCard, ExposeStack },
+  props: ['options'],
+  mounted() {
+    if (!this.options) {
+      this.$axios
+        .get(`/expose/${this.path}`)
+        .then(res => {
+          this.expose = res;
+        })
+        .catch(err => {
+          console.log(`Error: get expose named: ${this.path}`, err);
+        });
+    }
   },
   data() {
     return {
@@ -104,11 +94,12 @@ export default {
       phone: '+79130014485',
       maker: 'this.maker',
       list: [],
+      expose: {},
     };
   },
   methods: {
     showData() {
-      console.log(this.$data);
+      // console.log(this.$data);
     },
     date(input) {
       const date = new Date(input);
@@ -123,14 +114,28 @@ export default {
     },
   },
   computed: {
+    info() {
+      return `Документов: ${this.list.length}`;
+    },
+    path() {
+      return $nuxt.$route.path.split('/').pop();
+    },
+    stack() {
+      if (this.options) {
+        if (this.options.cms) {
+          return this.$store.state.sortTest.stack;
+        }
+      } else {
+        this.expose.stack;
+      }
+    },
     prettyPhone() {
       return this.phone.replace(
         /(\+\d)(\d\d\d)(\d\d\d)(\d\d\d\d)/,
         '$1 ($2) $3-$4',
       );
     },
-    options() {
-      console.log(this.source);
+    coverOptions() {
       const sourceList = this.$store.state.sourceList;
       const image = this.image ? this.image : sourceList[this.source].image;
       return {
@@ -176,76 +181,6 @@ export default {
     &__info
       font-size: 18px
       color: rgba(black, 0.25)
-
-    .book-card
-      padding: 15px
-      border-radius: 5px
-      overflow: hidden
-      display: flex
-      flex-direction: row
-      background-color: white
-      box-shadow: 0px 5px 10px rgba(black, 0.1)
-      margin-bottom: 10px
-      transition: all ease 0.25s
-      &:hover
-        box-shadow: 0px 5px 20px rgba(black, 0.15)
-      &:last-child
-        margin-bottom: 0
-      &--small
-        display: flex
-        flex-direction: column
-        padding-top: 10px
-        padding-bottom: 10px
-        cursor: pointer
-        &__info
-          color: rgba(black, 0.6)
-          font-size: 14px
-      &__content
-        flex-grow: 1
-        padding-top: 5px
-        padding-bottom: 5px
-      &__line
-        display: flex
-        flex-direction: row
-        justify-content: space-between
-      &__image
-        margin-right: 15px
-        flex-grow: 0
-        flex-shrink: 0
-        flex-basis: 125px
-        width: 125px
-        min-height: 125px
-        background-color: #333
-        border-radius: 5px
-        overflow: hidden
-        img
-          width: 100%
-      &__author
-        font-size: 14px
-        line-height: 20px
-        color: $color-accent
-        max-width: 560px
-        &--gray
-          color: rgba(black, 0.4)
-      &__title
-        font-weight: bold
-        line-height: 20px
-        max-width: 560px
-        margin-bottom: 5px
-        cursor: pointer
-        &--small
-          font-size: 15px
-          margin: 0
-      &__info
-        max-width: 560px
-        color: rgba(black, 0.6)
-        font-size: 14px
-        margin-bottom: 5px
-      &__annotation
-        max-width: 480px
-        font-size: 14px
-        line-height: 18px
-        color: rgba(black, 0.6)
 
   .expose-page
     &__grid

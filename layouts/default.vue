@@ -38,7 +38,9 @@
     overflow: hidden
     overflow-y: auto
   .cms-page
-      background: $color-bg
+    background: $color-bg
+    &--white
+      background-color: white
 
   @mixin button($color)
     box-sizing: border-box

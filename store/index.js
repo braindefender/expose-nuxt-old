@@ -174,8 +174,8 @@ const store = () => {
         state.expose = expose;
       },
       setSortState(state, sortTest) {
-        console.log(state.sortTest);
-        console.log(sortTest);
+        // console.log(state.sortTest);
+        // console.log(sortTest);
         state.sortTest = { ...state.sortTest, ...sortTest };
       },
       setPage(state, page) {
@@ -196,7 +196,6 @@ const store = () => {
       addToUnsorted(state, items) {
         items.forEach(el => {
           state.sortTest.leftStack.list.push(el);
-          console.log(state.sortTest.leftStack.list.length);
         });
       },
       selectOnEditScreen(state, item) {
