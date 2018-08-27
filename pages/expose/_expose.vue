@@ -37,7 +37,9 @@
 
         </div>
         <div class="expose-page__menu">
-          <!-- <ContentSelector :list="list"></ContentSelector> -->
+
+          <ContentSelector :stack="stack"></ContentSelector>
+
           <div class="expose-page__info">
             <div class="expose-page__info-title">
               Информация
@@ -85,7 +87,6 @@ export default {
     return {
       mode: 0,
       source: 0,
-      title: 'this.title',
       dates: {
         from: '2018-08-07',
         to: '2018-08-14',
@@ -94,7 +95,6 @@ export default {
       phone: '+79130014485',
       maker: 'this.maker',
       list: [],
-      expose: {},
     };
   },
   methods: {
@@ -129,6 +129,15 @@ export default {
         this.expose.stack;
       }
     },
+    expose() {
+      if (this.options) {
+        if (this.options.cms) {
+          return this.$store.state.expose;
+        }
+      } else {
+        this.expose.stack;
+      }
+    },
     prettyPhone() {
       return this.phone.replace(
         /(\+\d)(\d\d\d)(\d\d\d)(\d\d\d\d)/,
@@ -140,7 +149,7 @@ export default {
       const image = this.image ? this.image : sourceList[this.source].image;
       return {
         nav: true,
-        title: this.title,
+        title: this.expose.title,
         image,
         source: sourceList[this.source].title,
         date: {

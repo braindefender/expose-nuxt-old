@@ -10,9 +10,23 @@ Vue.use(Vuex);
 const store = () => {
   return new Vuex.Store({
     state: {
+      state: {
+        info: {
+          mode: 0,
+          source: 0,
+          title: 'Измените название выставки',
+          annotation: 'Измените описание выставки',
+          image: weekly0,
+          email: '',
+          phone: '',
+          author: 'Автор выставки',
+          dates: {},
+        },
+      },
       editState: {
         selected: {
           selected: false,
+          images: [],
         },
       },
       sortTest: {
@@ -58,12 +72,14 @@ const store = () => {
                       kind: 'book',
                       checked: false,
                       progress: 0.33,
+                      images: [],
                     },
                     {
                       title: 'Book Title 5',
                       kind: 'book',
                       checked: false,
                       progress: 0.33,
+                      images: [],
                     },
                   ],
                 },
@@ -78,12 +94,14 @@ const store = () => {
                       kind: 'book',
                       checked: false,
                       progress: 0.33,
+                      images: [],
                     },
                     {
                       title: 'Book Title 5',
                       kind: 'book',
                       checked: false,
                       progress: 0.33,
+                      images: [],
                     },
                   ],
                 },
@@ -94,6 +112,7 @@ const store = () => {
                   kind: 'book',
                   checked: false,
                   progress: 0.33,
+                  images: [],
                 },
                 {
                   title: 'Book Title 2',
@@ -101,12 +120,14 @@ const store = () => {
                   kind: 'book',
                   checked: false,
                   progress: 0.33,
+                  images: [],
                 },
                 {
                   title: 'Book Title 3',
                   kind: 'book',
                   checked: false,
                   progress: 0.33,
+                  images: [],
                 },
               ],
             },
@@ -158,25 +179,18 @@ const store = () => {
           image: weekly1,
         },
       ],
-      expose: {
-        mode: 0,
-        source: 0,
-        title: 'Измените название выставки',
-        annotation: 'Измените описание выставки',
-        image: weekly0,
-        email: '',
-        phone: '',
-        author: 'Автор выставки',
-      },
     },
     mutations: {
-      setInfoState(state, expose) {
-        state.expose = expose;
+      setInfoState(state, payload) {
+        state.state.info = payload;
       },
       setSortState(state, sortTest) {
         // console.log(state.sortTest);
         // console.log(sortTest);
         state.sortTest = { ...state.sortTest, ...sortTest };
+      },
+      setState(state, payload) {
+        state.state = payload;
       },
       setPage(state, page) {
         state.currentPage = page;
@@ -203,31 +217,52 @@ const store = () => {
         state.editState.selected = item;
         state.editState.selected.selected = true;
       },
+      updateSelected(state, item) {
+        state.editState.selected = item;
+      },
+      syncState(state) {
+        this.$axios
+          .$post('/cms/state', state.state)
+          .catch(err =>
+            console.log(`[Error] Cannot post state to server: ${err}`),
+          );
+      },
     },
     actions: {
-      fetchInfoState({ commit, state }) {
+      syncInfoState({ commit }, payload) {
+        commit('setInfoState', payload);
+        commit('syncState');
+      },
+      syncSortState({ commit }, payload) {
+        commit('setSortState', payload);
+        commit('syncState');
+      },
+      fetchState({ commit, state }) {
         return new Promise((resolve, reject) => {
           this.$axios
-            .$get('/cms/info')
+            .$get('/cms/state')
             .then(res => {
               if (res !== '') {
-                commit('setInfoState', res);
+                commit('setState', res);
+                console.log('From server:', res);
                 resolve(res);
               } else {
-                resolve(state.expose);
+                resolve(state.state);
               }
             })
             .catch(err => {
-              console.log(`[Error] Info: get info: ${err}`);
+              console.log(`[Error] Cannot get state from server: ${err}`);
               reject(err);
             });
         });
       },
-      syncInfoState({ commit }, payload) {
-        commit('setInfoState', payload);
+      syncState({ commit }, payload) {
+        commit('setState', payload);
         this.$axios
-          .$post('/cms/info', payload)
-          .catch(err => console.log(`[Error] post info: ${err}`));
+          .$post('/cms/state', payload)
+          .catch(err =>
+            console.log(`[Error] Cannot post state to server: ${err}`),
+          );
       },
       fetchSortState({ commit, state }) {
         return new Promise((resolve, reject) => {
@@ -249,11 +284,14 @@ const store = () => {
             });
         });
       },
-      syncSortState({ commit }, payload) {
-        commit('setSortState', payload);
-        this.$axios
-          .$post('/cms/sort', payload)
-          .catch(err => console.log(`[Error] post info: ${err}`));
+      removeImageAt({ commit, state }, payload) {
+        state.editState.selected.images.splice(payload, 1);
+      },
+      addImage({ commit, state }, payload) {
+        state.editState.selected.images.push(payload);
+      },
+      setTitle({ commit, state }, payload) {
+        state.test.title.push(payload);
       },
     },
   });

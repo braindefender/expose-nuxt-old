@@ -49,7 +49,7 @@ export default {
 
   .expose-stack
     border-radius: 5px
-    background-color: rgba(black, 0.1)
+    background-color: rgba(black, 0.05)
     &__top
       padding-left: 30px
       padding-right: 30px

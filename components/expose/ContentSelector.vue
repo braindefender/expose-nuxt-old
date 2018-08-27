@@ -1,21 +1,26 @@
 <template>
-<div class="content-selector">
+  <div class="content-selector">
 
-<h3>Содержание</h3>
+    <h3>Содержание</h3>
+    <div class="content-selector__list">
+      <content-selector-list
+        v-for="(item, index) in stack.list"
+        v-if="item.kind === 'stack'"
+        :stack="item"
+        :key="index">
+      </content-selector-list>
+    </div>
 
-<ul>
-  <li v-for="(item, index) in this.list"
-    :key="item"
-    :class="index == active ? 'active' : ''">{{ item }}</li>
-</ul>
-
-</div>
+  </div>
 </template>
 
 <script>
+import ContentSelectorList from '~/components/expose/ContentSelectorList';
+
 export default {
   name: 'ContentSelector',
-  props: ['list'],
+  components: { ContentSelectorList },
+  props: ['stack'],
   data() {
     return {
       active: 0,
@@ -29,12 +34,26 @@ export default {
   .content-selector
     max-width: 250px
     text-align: left
+    &__list
+      position: relative
+      left: 13px
+      &::after
+        content: ''
+        position: absolute
+        top: 0
+        left: -13px
+        bottom: 0
+        background-color: rgba(black, 0.15)
+        width: 3px
+        border-radius: 5em
 
   h3
     color: black
     font-weight: bold
     font-size: 18px
     line-height: 20px
+    margin-bottom: 20px
+    margin-top: 18px
 
   ul
     list-style: none
@@ -60,17 +79,5 @@ export default {
       margin-bottom: 6px
       position: relative
       color: rgba(black, 0.6)
-      &.active
-        color: rgba(black, 1)
-        font-weight: bold
-        &::after
-          content: ''
-          position: absolute
-          top: 0
-          bottom: 0
-          left: -12px
-          width: 3px
-          background-color: #1861f2
-          border-radius: 5em
 
 </style>

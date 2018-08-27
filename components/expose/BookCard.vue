@@ -1,34 +1,36 @@
 <template>
-    <div class="book-card" v-if="this.item.image">
-      <div class="book-card__image">{{ this.item.image }}</div>
-      <div class="book-card__content">
-        <div
-          :class="this.item.author
-            ? 'book-card__author'
-            : 'book-card__author book-card__author--gray'">
-          {{ author }}
-        </div>
-        <div class="book-card__title">{{ this.item.title }}</div>
-        <div class="book-card__info">{{ info }}</div>
-        <div class="book-card__annotation">{{ this.item.annotation || 'Информация отсутствует' }}</div>
+  <div class="book-card" v-if="this.item.cover">
+    <div class="book-card__image">
+      <img :src="this.item.cover" :alt="this.item.meta">
+    </div>
+    <div class="book-card__content">
+      <div
+        :class="this.item.author
+          ? 'book-card__author'
+          : 'book-card__author book-card__author--gray'">
+        {{ author }}
+      </div>
+      <div class="book-card__title">{{ this.item.title }}</div>
+      <div class="book-card__info">{{ info }}</div>
+      <div class="book-card__annotation">{{ this.item.annotation || 'Информация отсутствует' }}</div>
+    </div>
+  </div>
+  <div class="book-card book-card--small" v-else>
+    <div class="book-card__line">
+      <div
+        :class="this.item.author
+          ? 'book-card__author'
+          : 'book-card__author book-card__author--gray'">
+        {{ author }}
+      </div>
+      <div class="book-card__info">{{ info }}</div>
+    </div>
+    <div class="book-card__line">
+      <div class="book-card__title book-card__title--small">
+        {{ this.item.title }}
       </div>
     </div>
-    <div class="book-card book-card--small" v-else>
-      <div class="book-card__line">
-        <div
-          :class="this.item.author
-            ? 'book-card__author'
-            : 'book-card__author book-card__author--gray'">
-          {{ author }}
-        </div>
-        <div class="book-card__info">{{ info }}</div>
-      </div>
-      <div class="book-card__line">
-        <div class="book-card__title book-card__title--small">
-          {{ this.item.title }}
-        </div>
-      </div>
-    </div>
+  </div>
 </template>
 
 <script>
@@ -48,6 +50,11 @@ export default {
       return [this.source, this.year, this.pages]
         .filter(el => el !== '')
         .join(', ');
+    },
+    meta() {
+      return `${this.author} — ${this.item.title}, ${this.source}, ${
+        this.year
+      }`;
     },
   },
 };

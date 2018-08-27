@@ -11,7 +11,7 @@
           }"></edit-stack>
         </div>
         <div class="ee__side ee__side--right">
-          <EECard :item="selectedItem"></EECard>
+          <EECard></EECard>
         </div>
       </div>
     </div>
@@ -19,8 +19,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-
 import Navigation from '@/components/cms/Navigation';
 import EECard from '@/components/cms/EECard';
 import EditStack from '@/components/cms/EditStack';
@@ -31,11 +29,7 @@ export default {
   data() {
     return {};
   },
-  computed: {
-    ...mapState({
-      selectedItem: state => state.editState.selected,
-    }),
-  },
+  computed: {},
   methods: {},
 };
 </script>

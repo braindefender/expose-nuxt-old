@@ -4,217 +4,43 @@
     <div class="container">
       <div class="ec">
 
-        <transition name="slide-fade">
-          <div class="ec__box ec__theme" v-if="expose.mode == 0">
-            <div class="ec__column">
+        <Weekly
+          v-if="expose.mode === 0"
+          :mode="expose.mode"
+          :source="expose.source"
+          :dateTo="dates.to"
+          :dateFrom="dates.from"
+          @setModeTo="setModeTo"
+          @setSourceTo="setSourceTo"
+          @changeDateTo="changeDateTo"
+          @changeDateFrom="changeDateFrom">
+        </Weekly>
 
-              <div class="ec__item">
-                <div class="ec__title">
-                  Тип выставки:
-                </div>
-                <div class="ec__toggle">
-                  <Select
-                    :list="this.$store.state.modeList"
-                    :check="expose.mode"
-                    :call="setMode">
-                  </Select>
-                </div>
-              </div>
-
-            </div>
-
-            <div class="ec__column">
-
-              <div class="ec__item">
-                <div class="ec__title">
-                  Место проведения:
-                </div>
-                <div class="ec__toggle">
-                  <Select
-                    :list="sourceList"
-                    :check="expose.source"
-                    :call="setSource">
-                  </Select>
-                </div>
-              </div>
-            </div>
-
-            <div class="ec__column">
-              <div class="ec__item">
-                <div class="ec__title">
-                  Даты проведения:
-                </div>
-                <div class="ec__date-picker">
-                  <span>от</span>
-                  <input
-                    @change="dateFrom = $event.target.value"
-                    :value="dateFrom"
-                    type="date"
-                    name="date-starts"
-                    max="9999-12-31">
-                  <span>до</span>
-                  <input
-                    @change="dateTo = $event.target.value"
-                    :value="dateTo"
-                    type="date"
-                    name="date-ends"
-                    max="9999-12-31">
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <div class="ec__box ec__theme" v-if="expose.mode == 1">
-            <div class="ec__column">
-
-              <div class="ec__item">
-                <div class="ec__title">Тип выставки:</div>
-                <div class="ec__toggle">
-                  <Select
-                    :list="this.$store.state.modeList"
-                    :check="expose.mode"
-                    :call="setMode">
-                  </Select>
-                </div>
-              </div>
-
-              <div class="ec__item">
-                <div class="ec__title">
-                  Название:
-                </div>
-
-                <textarea
-                  class="ec__textarea ec__textarea--bold ec__textarea--title"
-                  name="title"
-                  cols="30"
-                  rows="1"
-                  placeholder="Измените название выставки"
-                  v-model="expose.title"
-                  v-autosize="expose.title">
-                </textarea>
-
-              </div>
-
-              <div class="ec__item">
-                <div class="ec__title">
-                  Обложка:
-                </div>
-                <div class="ec__loader">
-
-                  <picture-input
-                    ref="piCover"
-                    width="172"
-                    height="36"
-                    accept="image/jpeg,image/jpg,image/png"
-                    size="2"
-                    button-class="button"
-                    :zIndex=200
-                    :plain="true"
-                    :hideChangeButton="true"
-                    @change="onPICoverChange">
-                  </picture-input>
-
-                  <p class="ec__loader-comment">
-                    Рекомендуемое разрешение
-                    <br>
-                    не менее 1150x320px
-                  </p>
-                </div>
-              </div>
-
-            </div>
-
-            <div class="ec__column">
-
-              <div class="ec__item">
-                <div class="ec__title">Место проведения:</div>
-                <div class="ec__toggle">
-                  <Select
-                    :list="sourceList"
-                    :check="expose.source"
-                    :call="setSource">
-                  </Select>
-                </div>
-              </div>
-
-              <div class="ec__item">
-                <div class="ec__title">
-                  Даты проведения:
-                </div>
-                <div class="ec__date-picker">
-                  <span>от</span>
-                  <input
-                    @change="dateFrom = $event.target.value"
-                    :value="dateFrom"
-                    type="date"
-                    name="date-starts"
-                    max="2099-12-31">
-                  <span>до</span>
-                  <input
-                    @change="dateTo = $event.target.value"
-                    :value="dateTo"
-                    type="date"
-                    name="date-ends"
-                    max="2099-12-31">
-                </div>
-              </div>
-
-              <div class="ec__item">
-                <div class="ec__title">
-                  Email:
-                </div>
-                <input
-                  v-model="expose.email"
-                  type="email"
-                  name="email"
-                  class="ec__input"
-                  placeholder="Не указан">
-              </div>
-
-              <div class="ec__item">
-                <div class="ec__title">
-                  Телефон:
-                </div>
-                <input
-                  v-model="expose.phone"
-                  type="tel"
-                  name="phone"
-                  class="ec__input"
-                  placeholder="+7 (999) 999 9999"
-                  v-mask="'\+7\ (###) ###-####'"/>
-              </div>
-
-            </div>
-
-            <div class="ec__column">
-
-              <div class="ec__item">
-                <div class="ec__title">
-                  Описание:
-                </div>
-
-                  <textarea
-                    class="ec__textarea ec__textarea--description"
-                    name="description"
-                    cols="30"
-                    rows="1"
-                    placeholder="Измените описание выставки"
-                    v-model="expose.annotation"
-                    v-autosize="expose.annotation">
-                  </textarea>
-
-              </div>
-
-            </div>
-
-          </div>
-        </transition>
+        <Theme
+          v-if="expose.mode === 1"
+          :title="expose.title"
+          :mode="expose.mode"
+          :phone="expose.phone"
+          :email="expose.email"
+          :source="expose.source"
+          :dateTo="dates.to"
+          :dateFrom="dates.from"
+          :annotation="expose.annotation"
+          @setSourceTo="setSourceTo"
+          @setModeTo="setModeTo"
+          @changeDateFrom="changeDateFrom"
+          @changeDateTo="changeDateTo"
+          @changeAnnotationTo="changeAnnotationTo"
+          @changeTitleTo="changeTitleTo"
+          @changePhoneTo="changePhoneTo"
+          @changeEmailTo="changeEmailTo"
+          @changeImage="changeImage">
+        </Theme>
 
         <Cover :options="options"></Cover>
 
         <Annotation
-          v-if="expose.mode != 0"
+          v-if="expose.mode !== 0"
           :text="expose.annotation">
         </Annotation>
 
@@ -224,12 +50,15 @@
 </template>
 
 <script>
-import { mask } from 'vue-the-mask';
+import { mapState } from 'vuex';
 
 import Annotation from '@/components/expose/Annotation';
 import Cover from '@/components/expose/Cover';
 import Select from '@/components/cms/Select';
 import Navigation from '@/components/cms/Navigation';
+
+import Weekly from '~/components/cms/info/Weekly';
+import Theme from '~/components/cms/info/Theme';
 
 import weekly0 from '@/assets/images/jamie-taylor-110195-unsplash.jpg';
 import weekly1 from '@/assets/images/janko-ferlic-174927-unsplash.jpg';
@@ -241,8 +70,9 @@ export default {
     Cover,
     Select,
     Navigation,
+    Weekly,
+    Theme,
   },
-  directives: { mask },
   beforeDestroy() {
     this.syncState();
   },
@@ -251,28 +81,41 @@ export default {
   },
   data() {
     return {
-      file: '',
+      expose: this.$store.state.state.info,
       sourceList: this.$store.state.sourceList,
-      dateFrom: this.dateYYYYMMDD(new Date()),
-      dateTo: this.dateYYYYMMDD(new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)),
-      expose: this.$store.state.expose,
+      dates: {
+        from: this.getDateInYYYYMMDD(new Date()),
+        to: this.getDateInYYYYMMDD(
+          new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+        ),
+      },
     };
   },
   computed: {
-    title() {
-      return this.expose.mode === 0
-        ? this.sourceList[this.expose.source].weekly
-        : this.expose.title;
+    info() {
+      return this.expose.mode === 0 ? this.weekly : this.theme;
     },
-    phone() {
-      return this.expose.mode === 0
-        ? this.sourceList[this.expose.source].phone
-        : this.expose.phone;
+    weekly() {
+      return {
+        mode: 0,
+        title: this.sourceList[this.source].weekly,
+        phone: this.sourceList[this.source].phone,
+        email: this.sourceList[this.source].email,
+        source: this.expose.source,
+        dates: this.dates,
+      };
     },
-    email() {
-      return this.expose.mode === 0
-        ? this.sourceList[this.expose.source].email
-        : this.expose.email;
+    theme() {
+      return {
+        mode: 1,
+        source: this.expose.source,
+        title: this.expose.title,
+        phone: this.expose.phone,
+        email: this.expose.email,
+        image: this.expose.image,
+        annotation: this.expose.annotation,
+        dates: this.dates,
+      };
     },
     options() {
       const source =
@@ -289,73 +132,63 @@ export default {
         image,
         source,
         date: {
-          from: this.date(this.dateFrom),
-          to: this.date(this.dateTo),
+          from: this.getDateFrom(this.dates.from),
+          to: this.getDateFrom(this.dates.to),
         },
-        prev: {
-          date: {
-            from: {
-              day: 5,
-              month: 7,
-              year: 2017,
-            },
-            to: {
-              day: 24,
-              month: 8,
-              year: 2017,
-            },
-          },
-        },
+        prev: undefined,
         next: undefined,
       };
-    },
-    exposeState() {
-      const expose = {
-        dates: {
-          from: this.dateFrom,
-          to: this.dateTo,
-        },
-      };
-      if (this.expose.mode === 1) {
-        expose.image = this.expose.image;
-        expose.annotation = this.expose.annotation;
-      }
-      return { ...this.expose, ...expose };
     },
   },
   methods: {
     fetchState() {
-      this.$store.dispatch('fetchInfoState').then(res => {
-        this.expose = this.$store.state.expose;
+      this.$store.dispatch('fetchState').then(res => {
+        this.expose = { ...this.expose, ...res.info };
+        if (res.info.dates) {
+          this.dates = res.info.dates;
+        }
       });
     },
     syncState() {
-      this.$store.dispatch('syncInfoState', this.exposeState);
+      this.$store.dispatch('syncInfoState', this.info);
     },
-    onPICoverChange(image) {
-      if (image) {
-        console.log('Picture loaded.');
-        this.expose.image = image;
-      } else {
-        console.log('FileReader API not supported: use the <form>, Luke!');
-      }
+    changeDateFrom(value) {
+      this.dates.from = value;
     },
-    date(input) {
+    changeDateTo(value) {
+      this.dates.to = value;
+    },
+    changeAnnotationTo(value) {
+      this.expose.annotation = value;
+    },
+    changeEmailTo(value) {
+      this.expose.email = value;
+    },
+    changePhoneTo(value) {
+      this.expose.phone = value;
+    },
+    changeTitleTo(value) {
+      this.expose.title = value;
+    },
+    changeImage(value) {
+      this.expose.image = value;
+    },
+    setModeTo(id) {
+      this.expose.mode = id;
+    },
+    setSourceTo(id) {
+      this.expose.source = id;
+    },
+    getDateInYYYYMMDD(date) {
+      return date.toISOString().split('T')[0];
+    },
+    getDateFrom(input) {
       const date = new Date(input);
       return {
         day: date.getDate(),
         month: date.getMonth(),
         year: date.getFullYear(),
       };
-    },
-    dateYYYYMMDD(date) {
-      return date.toISOString().split('T')[0];
-    },
-    setMode(index) {
-      this.expose.mode = index;
-    },
-    setSource(index) {
-      this.expose.source = index;
     },
   },
 };

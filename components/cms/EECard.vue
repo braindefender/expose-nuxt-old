@@ -1,5 +1,5 @@
 <template>
-  <div class="ee-card" v-if="item.selected">
+  <div class="ee-card" v-if="item && item.selected">
 
     <div class="ee-card__top">
       <div class="ee-card__label">Редактирование записи</div>
@@ -69,21 +69,14 @@
       <div class="ee-card__item-title">Дополнительные изображения:</div>
       <div class="ee-card__item-content ee-card__images">
         <div class="ee-card__images-container">
-          <div class="ee-card__image">
-            <button class="button-remove" type="button"></button>
-            <img :src="item.image" alt="">
-          </div>
-          <div class="ee-card__image">
-            <button class="button-remove" type="button"></button>
-            <img :src="item.image" alt="">
-          </div>
-          <div class="ee-card__image">
-            <button class="button-remove" type="button"></button>
-            <img :src="item.image" alt="">
-          </div>
-          <div class="ee-card__image">
-            <button class="button-remove" type="button"></button>
-            <img :src="item.image" alt="">
+          <div class="ee-card__image"
+            v-for="(image, index) in images"
+            :key="index">
+            <button
+              @click="removeImageAt(index)"
+              class="button-remove"
+              type="button"></button>
+            <img :src="image" alt="">
           </div>
           <div class="ee-card__image ee-card__image--transparent">
             <picture-input
@@ -96,6 +89,7 @@
               :zIndex=200
               :plain="true"
               :hideChangeButton="true"
+              :prefill="undefined"
               @change="onPIImageChange">
             </picture-input>
           </div>
@@ -128,16 +122,16 @@
 import noCover from '~/assets/default/Article.svg';
 import testCover from '~/assets/covers/public01032012112432_b.jpg';
 
+import { mapState } from 'vuex';
+
 import ImageBlur from '~/components/ImageBlur';
 
 export default {
   name: 'EECard',
-  props: ['item'],
   components: { ImageBlur },
   data() {
     return {
-      annotation: this.item.annotation,
-      contents: this.item.contents,
+      // annotation: this.item.annotation,
     };
   },
   computed: {
@@ -152,6 +146,10 @@ export default {
     metadata() {
       return `${this.authors} - ${this.item.title}`;
     },
+    ...mapState({
+      item: state => state.editState.selected,
+      images: state => state.editState.selected.images,
+    }),
   },
   methods: {
     onPICoverChange(image) {
@@ -165,10 +163,20 @@ export default {
     onPIImageChange(image) {
       if (image) {
         console.log('Picture loaded.');
-        this.$set(this.item, 'cover', image);
+        if (!this.item.images) {
+          this.$set(this.item, 'images', []);
+        }
+        this.$store.dispatch('addImage', image);
+        // this.$set(this.item, 'images', this.item.images.concat(image));
       } else {
         console.log('FileReader API not supported: use the <form>, Luke!');
       }
+    },
+    removeImageAt(index) {
+      this.$store.dispatch('removeImageAt', index);
+    },
+    changeTitle() {
+      this.$store.dispatch('setTitle', 'Blah');
     },
   },
 };
@@ -298,8 +306,8 @@ export default {
       flex-wrap: nowrap
     &__image
       border-radius: 5px
-      min-width: 125px
-      min-height: 120px
+      width: 125px
+      height: 180px
       background-color: #333
       position: relative
       display: flex
@@ -326,11 +334,13 @@ export default {
         transition: all ease 0.15s
         .picture-preview
           background: none
-          display: none
+          // display: none
+          border-radius: 10px
         .preview-container
           position: relative
           overflow: hidden
           &::before
+            pointer-events: none
             position: absolute
             top: 50%
             left: 50%
