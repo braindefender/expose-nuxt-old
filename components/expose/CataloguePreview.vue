@@ -13,11 +13,11 @@
       </div>
       <div class="cat-layout__content">
         <div class="cat-layout__grid">
-          <CatalogueCard
+          <catalogue-card
             v-for="(item, index) in list"
             :key="index"
             :item="item">
-          </CatalogueCard>
+          </catalogue-card>
         </div>
       </div>
     </div>

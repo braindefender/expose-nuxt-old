@@ -16,7 +16,6 @@
           </test-stack>
         </div>
         <div class="es__side es__side--right">
-          <button @click="submitt">Отправить State</button>
           <test-stack
             :options="{
               right: true,
@@ -32,8 +31,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-
 import Navigation from '@/components/cms/Navigation';
 import ESCard from '@/components/cms/ESCard';
 import TestStack from '@/components/cms/TestStack';
@@ -50,20 +47,13 @@ export default {
   data() {
     return {};
   },
-  computed: {
-    ...mapState({
-      unsorted: state => state.sortTest.unsorted,
-    }),
-  },
+  computed: {},
   methods: {
-    submitt() {
-      this.$axios.post('/cms/sort', this.$store.state.sortTest);
-    },
     fetchState() {
-      this.$store.dispatch('fetchSortState');
+      this.$store.dispatch('state/fetchState');
     },
     syncState() {
-      this.$store.dispatch('syncSortState', this.$store.state.sortTest);
+      this.$store.dispatch('state/syncState');
     },
     uploadXML() {
       this.syncState();
@@ -76,9 +66,8 @@ export default {
           },
         })
         .then(res => {
-          this.$store.dispatch('syncSortState', res);
+          this.$store.commit('setState', res);
           console.log('Uploaded XML');
-          // this.fetchState();
         })
         .catch(err => {
           console.log(err);

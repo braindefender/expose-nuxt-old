@@ -23,7 +23,7 @@ export default {
   beforeDestroy() {},
   methods: {
     fetchState() {
-      this.$store.dispatch('fetchSortState');
+      this.$store.dispatch('fetchState');
     },
   },
 };

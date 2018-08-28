@@ -10,10 +10,9 @@
           :source="expose.source"
           :dateTo="dates.to"
           :dateFrom="dates.from"
-          @setModeTo="setModeTo"
-          @setSourceTo="setSourceTo"
           @changeDateTo="changeDateTo"
-          @changeDateFrom="changeDateFrom">
+          @changeDateFrom="changeDateFrom"
+          @set="set">
         </Weekly>
 
         <Theme
@@ -26,15 +25,9 @@
           :dateTo="dates.to"
           :dateFrom="dates.from"
           :annotation="expose.annotation"
-          @setSourceTo="setSourceTo"
-          @setModeTo="setModeTo"
+          @set="set"
           @changeDateFrom="changeDateFrom"
-          @changeDateTo="changeDateTo"
-          @changeAnnotationTo="changeAnnotationTo"
-          @changeTitleTo="changeTitleTo"
-          @changePhoneTo="changePhoneTo"
-          @changeEmailTo="changeEmailTo"
-          @changeImage="changeImage">
+          @changeDateTo="changeDateTo">
         </Theme>
 
         <Cover :options="options"></Cover>
@@ -81,7 +74,6 @@ export default {
   },
   data() {
     return {
-      expose: this.$store.state.state.info,
       sourceList: this.$store.state.sourceList,
       dates: {
         from: this.getDateInYYYYMMDD(new Date()),
@@ -92,15 +84,18 @@ export default {
     };
   },
   computed: {
+    expose() {
+      return this.$store.state.info;
+    },
     info() {
       return this.expose.mode === 0 ? this.weekly : this.theme;
     },
     weekly() {
       return {
         mode: 0,
-        title: this.sourceList[this.source].weekly,
-        phone: this.sourceList[this.source].phone,
-        email: this.sourceList[this.source].email,
+        title: this.sourceList[this.expose.source].weekly,
+        phone: this.sourceList[this.expose.source].phone,
+        email: this.sourceList[this.expose.source].email,
         source: this.expose.source,
         dates: this.dates,
       };
@@ -126,9 +121,13 @@ export default {
         this.expose.mode !== 0
           ? this.expose.image
           : this.sourceList[this.expose.source].image;
+      const title =
+        this.expose.mode === 0
+          ? this.sourceList[this.expose.source].weekly
+          : this.expose.title;
       return {
         nav: true,
-        title: this.expose.title,
+        title,
         image,
         source,
         date: {
@@ -142,15 +141,15 @@ export default {
   },
   methods: {
     fetchState() {
-      this.$store.dispatch('fetchState').then(res => {
-        this.expose = { ...this.expose, ...res.info };
+      this.$store.dispatch('state/fetchState').then(res => {
+        // this.expose = { ...this.expose, ...res.info };
         if (res.info.dates) {
           this.dates = res.info.dates;
         }
       });
     },
     syncState() {
-      this.$store.dispatch('syncInfoState', this.info);
+      this.$store.dispatch('state/syncInfoState', this.info);
     },
     changeDateFrom(value) {
       this.dates.from = value;
@@ -158,26 +157,8 @@ export default {
     changeDateTo(value) {
       this.dates.to = value;
     },
-    changeAnnotationTo(value) {
-      this.expose.annotation = value;
-    },
-    changeEmailTo(value) {
-      this.expose.email = value;
-    },
-    changePhoneTo(value) {
-      this.expose.phone = value;
-    },
-    changeTitleTo(value) {
-      this.expose.title = value;
-    },
-    changeImage(value) {
-      this.expose.image = value;
-    },
-    setModeTo(id) {
-      this.expose.mode = id;
-    },
-    setSourceTo(id) {
-      this.expose.source = id;
+    set(field, value) {
+      this.$store.commit('info/set', { field, value });
     },
     getDateInYYYYMMDD(date) {
       return date.toISOString().split('T')[0];

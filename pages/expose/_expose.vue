@@ -7,16 +7,13 @@
       <div class="expose-page__grid">
         <div class="expose-page__panel expose-page__sort">
           <span class="expose-page__sort-title">Сортировка:</span>
-          <button
-            type="button"
+          <button type="button"
             class="expose-page__sort-button expose-page__sort-button--active">
             по названию</button>
-          <button
-            type="button"
+          <button type="button"
             class="expose-page__sort-button">
             по автору</button>
-          <button
-            type="button"
+          <button type="button"
             class="expose-page__sort-button">
             по году</button>
         </div>
@@ -36,25 +33,33 @@
            </expose-stack>
 
         </div>
-        <div class="expose-page__menu">
+        <div class="expose-page__content-selector">
+          <no-ssr>
+            <affix
+              class="expose-page__menu"
+              relative-element-selector=".expose-page__content-selector"
+              :offset="{ top: 10, bottom: 0 }">
+              <ContentSelector :stack="stack"></ContentSelector>
 
-          <ContentSelector :stack="stack"></ContentSelector>
-
-          <div class="expose-page__info">
-            <div class="expose-page__info-title">
-              Информация
-            </div>
-            <div class="expose-page__info-text">
-              Составитель: {{ this.maker }}
-            </div>
-            <div class="expose-page__info-text">
-              Телефон: <a :href="`tel:${this.phone}`">{{ this.prettyPhone }}</a>
-            </div>
-            <div class="expose-page__info-text">
-              Email: <a :href="`mailto:${this.email}`">{{ this.email }}</a>
-            </div>
-          </div>
+              <div class="expose-page__info">
+                <div class="expose-page__info-title">Информация</div>
+                <div v-if="this.expose.maker"
+                  class="expose-page__info-text">
+                  Составитель: {{ this.expose.maker }}
+                </div>
+                <div v-if="this.expose.phone"
+                  class="expose-page__info-text">
+                  Телефон: <a :href="`tel:${this.phone}`">{{ this.expose.phone }}</a>
+                </div>
+                <div v-if="this.expose.email"
+                  class="expose-page__info-text">
+                  Email: <a :href="`mailto:${this.expose.email}`">{{ this.expose.email }}</a>
+                </div>
+              </div>
+            </affix>
+          </no-ssr>
         </div>
+
       </div>
       <!-- <button @click="showData"></button> -->
     </div>
@@ -76,7 +81,7 @@ export default {
       this.$axios
         .get(`/expose/${this.path}`)
         .then(res => {
-          this.expose = res;
+          this.real = res;
         })
         .catch(err => {
           console.log(`Error: get expose named: ${this.path}`, err);
@@ -91,10 +96,9 @@ export default {
         from: '2018-08-07',
         to: '2018-08-14',
       },
-      email: 'this.email',
-      phone: '+79130014485',
       maker: 'this.maker',
       list: [],
+      real: {},
     };
   },
   methods: {
@@ -123,7 +127,7 @@ export default {
     stack() {
       if (this.options) {
         if (this.options.cms) {
-          return this.$store.state.sortTest.stack;
+          return this.$store.state.state.stack;
         }
       } else {
         this.expose.stack;
@@ -132,29 +136,29 @@ export default {
     expose() {
       if (this.options) {
         if (this.options.cms) {
-          return this.$store.state.expose;
+          return this.$store.state.state.info;
         }
       } else {
-        this.expose.stack;
+        return this.real;
       }
     },
-    prettyPhone() {
-      return this.phone.replace(
-        /(\+\d)(\d\d\d)(\d\d\d)(\d\d\d\d)/,
-        '$1 ($2) $3-$4',
-      );
+    phone() {
+      return `+${this.expose.phone.replace(/\D/g, '')}`;
     },
     coverOptions() {
       const sourceList = this.$store.state.sourceList;
-      const image = this.image ? this.image : sourceList[this.source].image;
+      const image = this.expose.image
+        ? this.expose.image
+        : sourceList[this.expose.source].image;
       return {
         nav: true,
         title: this.expose.title,
         image,
-        source: sourceList[this.source].title,
+        source:
+          this.expose.mode !== 0 ? sourceList[this.expose.source].title : '',
         date: {
-          from: this.date(this.dates.from),
-          to: this.date(this.dates.to),
+          from: this.date(this.expose.dates.from),
+          to: this.date(this.expose.dates.to),
         },
         prev: undefined,
         next: undefined,

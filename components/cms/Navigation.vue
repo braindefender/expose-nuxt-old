@@ -20,8 +20,8 @@
           <button
             type="button"
             class="button button--outline"
-            @click="nextPage">
-              Далее
+            @click="final">
+              Готово
           </button>
         </div>
       </div>
@@ -39,8 +39,8 @@ export default {
     };
   },
   methods: {
-    nextPage() {
-      this.$store.commit('setPage');
+    final() {
+      this.$store.dispatch('pushFinalState');
     },
   },
 };

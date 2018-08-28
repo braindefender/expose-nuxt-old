@@ -86,6 +86,7 @@
         <the-mask
           placeholder="+7 (999) 999 9999"
           type="tel" class="ec__input"
+          :masked="true"
           mask="+7 (###) ###-####"
           :value="phone" @input="changePhoneTo"/>
       </div>
@@ -130,10 +131,10 @@ export default {
   },
   methods: {
     setModeTo(id) {
-      this.$emit('setModeTo', id);
+      this.$emit('set', 'mode', id);
     },
     setSourceTo(id) {
-      this.$emit('setSourceTo', id);
+      this.$emit('set', 'source', id);
     },
     changeDateFrom(e) {
       this.$emit('changeDateFrom', e.target.value);
@@ -142,16 +143,16 @@ export default {
       this.$emit('changeDateTo', e.target.value);
     },
     changeEmailTo(e) {
-      this.$emit('changeEmailTo', e.target.value);
+      this.$emit('set', 'email', e.target.value);
     },
     changePhoneTo(e) {
-      this.$emit('changePhoneTo', e);
+      this.$emit('set', 'email', e);
     },
     changeTitleTo(e) {
-      this.$emit('changeTitleTo', e.target.value);
+      this.$emit('set', 'title', e.target.value);
     },
     changeAnnotationTo(e) {
-      this.$emit('changeAnnotationTo', e.target.value);
+      this.$emit('set', 'annotation', e.target.value);
     },
     onPICoverChange(image) {
       if (image) {

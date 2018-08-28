@@ -30,8 +30,7 @@
             class="es-stack__title">
             {{this.innerStack.title}}
           </div>
-          <input
-            type="text"
+          <input type="text" ref="titleInput"
             v-if="this.renameMode"
             class="es-stack__title-input"
             v-model="innerStack.title"
@@ -194,18 +193,18 @@ export default {
         ? this.options.checkOnClick
         : false;
     },
-    innerStack(state) {
+    innerStack() {
       if (this.options.left) {
-        return this.$store.state.sortTest.leftStack;
+        return this.$store.state.state.leftStack;
       }
       if (this.options.right) {
-        return this.$store.state.sortTest.stack;
+        return this.$store.state.state.stack;
       }
       return this.stack;
     },
     ...mapState({
-      checkedList: state => state.sortTest.checkedList,
-      checkedHeadersList: state => state.sortTest.checkedHeadersList,
+      checkedList: state => state.state.checkedList,
+      checkedHeadersList: state => state.state.checkedHeadersList,
     }),
   },
   methods: {
@@ -219,6 +218,15 @@ export default {
     },
     rename() {
       this.renameMode = !this.renameMode;
+      if (this.renameMode) {
+        this.$nextTick(() => {
+          this.$refs.titleInput.focus();
+          this.$refs.titleInput.setSelectionRange(
+            0,
+            this.$refs.titleInput.value.length,
+          );
+        });
+      }
     },
     setChecked(item, to) {
       if (item.kind === 'stack') {
@@ -240,7 +248,7 @@ export default {
       newList.forEach(item => {
         this.setChecked(item, false);
       });
-      this.$store.commit('addToUnsorted', newList);
+      this.$store.commit('state/addToUnsorted', newList);
       if (this.innerStack.checked) {
         this.setCleanup(this.innerStack);
       } else {
@@ -409,7 +417,7 @@ export default {
         }
       });
       if (this.isMain) {
-        this.$store.commit('setCheckedList', checkedList);
+        this.$store.commit('state/setCheckedList', checkedList);
       }
       return checkedList;
     },
@@ -431,7 +439,7 @@ export default {
         });
       }
       if (this.isMain) {
-        this.$store.commit('setCheckedHeadersList', checkedHeadersList);
+        this.$store.commit('state/setCheckedHeadersList', checkedHeadersList);
       }
       return checkedHeadersList;
     },

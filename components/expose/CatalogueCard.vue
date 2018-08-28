@@ -4,19 +4,15 @@
 
     <div class="cat-card__inner cat-card__image-blur">
       <div class="cat-card__image-blur-container">
-        <img :src="this.item.image" :alt="meta">
+        <img :src="this.image" :alt="meta">
       </div>
     </div>
     <div class="cat-card__inner cat-card__image">
-      <img :src="this.item.image" :alt="meta">
+      <img :src="this.image" :alt="meta">
     </div>
     <div class="cat-card__inner cat-card__content cat-card__content--catalogue">
-      <div class="cat-card__content-title">
-        {{ this.item.title }}
-      </div>
-      <div class="cat-card__content-date">
-        {{ this.item.date }}
-      </div>
+      <div class="cat-card__content-title">{{ this.item.title }}</div>
+      <div class="cat-card__content-date">{{ this.item.date }}</div>
     </div>
 
   </div>
@@ -33,6 +29,11 @@ export default {
   computed: {
     meta() {
       return `${this.item.title} - ${this.item.date}`;
+    },
+    image() {
+      return this.item.image
+        ? this.item.image
+        : this.$store.state.sourceList[this.item.source].image;
     },
   },
 };
@@ -95,6 +96,7 @@ export default {
           line-height: 22px
           font-weight: bold
           font-family: "PT Sans"
+          white-space: pre
         .cat-card__content-info
           padding-top: 3px
           font-size: 13px
@@ -106,6 +108,7 @@ export default {
           line-height: 17px
           font-weight: bold
           font-family: "PT Sans"
+          white-space: pre
         .cat-card__content-date
           position: absolute
           right: 20px

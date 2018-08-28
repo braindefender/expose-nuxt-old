@@ -50,6 +50,9 @@ export default {
   .expose-stack
     border-radius: 5px
     background-color: rgba(black, 0.05)
+    margin-bottom: 15px
+    &:last-child
+      margin-bottom: 0
     &__top
       padding-left: 30px
       padding-right: 30px

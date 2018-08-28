@@ -57,10 +57,10 @@ export default {
   },
   methods: {
     setModeTo(id) {
-      this.$emit('setModeTo', id);
+      this.$emit('set', 'mode', id);
     },
     setSourceTo(id) {
-      this.$emit('setSourceTo', id);
+      this.$emit('set', 'source', id);
     },
     changeDateFrom(e) {
       this.$emit('changeDateFrom', e.target.value);

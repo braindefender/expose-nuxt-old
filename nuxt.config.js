@@ -41,5 +41,6 @@ module.exports = {
   plugins: [
     { src: '~plugins/vue-autosize', ssr: false },
     { src: '~plugins/vue-picture-input', ssr: false },
+    { src: '~plugins/vue-affix', ssr: false },
   ],
 };

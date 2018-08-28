@@ -52,8 +52,8 @@ export default {
     font-weight: bold
     font-size: 18px
     line-height: 20px
-    margin-bottom: 20px
-    margin-top: 18px
+    padding-top: 18px
+    padding-bottom: 20px
 
   ul
     list-style: none

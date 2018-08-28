@@ -112,7 +112,7 @@ export default {
     },
     innerStack() {
       if (this.options.left) {
-        return this.$store.state.sortTest.stack;
+        return this.$store.state.state.stack;
       }
       return this.stack;
     },
