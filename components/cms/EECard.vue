@@ -4,7 +4,13 @@
     <div class="ee-card__top">
       <div class="ee-card__label">Редактирование записи</div>
       <div class="ee-card__controls">
-        <div class="button button--outline" type="button">Загрузить XML</div>
+        <input
+          class="hidden"
+          id="xml"
+          type="file"
+          ref="xml"
+          @input="loadXML"/>
+        <label for="xml" class="button">Загрузить XML</label>
         <div class="button" type="button">Сохранить</div>
       </div>
     </div>
@@ -42,13 +48,10 @@
       <div class="ee-card__item-title">Аннотация:</div>
       <div class="ee-card__item-content ee-card__annotation">
         <textarea
-          ref="annotation"
-          name="annotation"
-          id="ee-annotation"
-          placeholder="Аннотация не указана"
-          cols="30"
-          rows="1"
-          v-model="item.annotation">
+          ref="annotation" name="annotation" id="ee-annotation"
+          placeholder="Аннотация не указана" cols="30" rows="1"
+          @input="changeAnnotation" :value="item.annotation"
+          v-autosize="item.annotation">
         </textarea>
       </div>
     </div>
@@ -101,7 +104,8 @@
       <div class="ee-card__item-title">Содержание:</div>
       <div class="ee-card__item-content">
         <textarea
-          v-model="item.contents"
+          :value="item.contents"
+          @input="changeContents"
           v-autosize="item.contents"
           class="ee-card__contents"
           placeholder="Содержание не указано"
@@ -132,12 +136,10 @@ export default {
   data() {
     return {
       // annotation: this.item.annotation,
+      file: '',
     };
   },
   computed: {
-    cover() {
-      return this.item.cover ? this.item.cover : noCover;
-    },
     authors() {
       return this.item.authors
         ? this.item.authors.join(', ')
@@ -147,15 +149,61 @@ export default {
       return `${this.authors} - ${this.item.title}`;
     },
     ...mapState({
-      item: state => state.editState.selected,
-      images: state => state.editState.selected.images,
+      item: state => state.edit.selected,
+      images: state => state.edit.selected.images,
+      cover: state => {
+        return state.edit.selected.cover ? state.edit.selected.cover : noCover;
+      },
     }),
   },
   methods: {
+    loadXML() {
+      this.file = this.$refs.xml.files[0];
+      this.$refs.xml.type = 'text';
+      this.$refs.xml.type = 'file';
+      this.uploadXML();
+    },
+    uploadXML() {
+      this.$store.dispatch('syncState');
+      let formData = new FormData();
+      formData.append('file', this.file);
+      formData.append('id', this.item.id);
+      this.$axios
+        .$post('/cms/edit/xml', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(res => {
+          this.$store.commit('setState', res);
+          console.log('Uploaded XML');
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    changeAnnotation(e) {
+      this.$store.commit('edit/set', {
+        item: this.item,
+        field: 'annotation',
+        to: e.target.value,
+      });
+    },
+    changeContents(e) {
+      this.$store.commit('edit/set', {
+        item: this.item,
+        field: 'contents',
+        to: e.target.value,
+      });
+    },
     onPICoverChange(image) {
       if (image) {
         console.log('Picture loaded.');
-        this.$set(this.item, 'cover', image);
+        this.$store.commit('edit/set', {
+          item: this.item,
+          field: 'cover',
+          to: image,
+        });
       } else {
         console.log('FileReader API not supported: use the <form>, Luke!');
       }
@@ -164,19 +212,19 @@ export default {
       if (image) {
         console.log('Picture loaded.');
         if (!this.item.images) {
-          this.$set(this.item, 'images', []);
+          this.$store.commit('edit/set', {
+            item: this.item,
+            field: 'images',
+            to: [],
+          });
         }
-        this.$store.dispatch('addImage', image);
-        // this.$set(this.item, 'images', this.item.images.concat(image));
+        this.$store.commit('edit/addImage', image);
       } else {
         console.log('FileReader API not supported: use the <form>, Luke!');
       }
     },
     removeImageAt(index) {
-      this.$store.dispatch('removeImageAt', index);
-    },
-    changeTitle() {
-      this.$store.dispatch('setTitle', 'Blah');
+      this.$store.commit('edit/removeImageAt', index);
     },
   },
 };

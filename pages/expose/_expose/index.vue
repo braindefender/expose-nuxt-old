@@ -61,7 +61,6 @@
         </div>
 
       </div>
-      <!-- <button @click="showData"></button> -->
     </div>
   </div>
 </template>
@@ -92,10 +91,6 @@ export default {
     return {
       mode: 0,
       source: 0,
-      dates: {
-        from: '2018-08-07',
-        to: '2018-08-14',
-      },
       maker: 'this.maker',
       list: [],
       real: {},
@@ -127,7 +122,7 @@ export default {
     stack() {
       if (this.options) {
         if (this.options.cms) {
-          return this.$store.state.state.stack;
+          return this.$store.state.stacks.stack;
         }
       } else {
         this.expose.stack;
@@ -136,7 +131,7 @@ export default {
     expose() {
       if (this.options) {
         if (this.options.cms) {
-          return this.$store.state.state.info;
+          return this.$store.state.info;
         }
       } else {
         return this.real;
@@ -157,8 +152,8 @@ export default {
         source:
           this.expose.mode !== 0 ? sourceList[this.expose.source].title : '',
         date: {
-          from: this.date(this.expose.dates.from),
-          to: this.date(this.expose.dates.to),
+          from: this.date(this.expose.dateFrom),
+          to: this.date(this.expose.dateTo),
         },
         prev: undefined,
         next: undefined,

@@ -32,7 +32,12 @@ module.exports = {
         });
       }
     },
-    vendor: ['vue-textarea-autosize', 'vue-picture-input', 'axios'],
+    vendor: [
+      'vue-textarea-autosize',
+      'vue-multiselect',
+      'vue-picture-input',
+      'axios',
+    ],
   },
   axios: {
     baseURL: 'http://10.3.6.27:3333/api',
@@ -42,5 +47,6 @@ module.exports = {
     { src: '~plugins/vue-autosize', ssr: false },
     { src: '~plugins/vue-picture-input', ssr: false },
     { src: '~plugins/vue-affix', ssr: false },
+    { src: '~plugins/vue-multiselect', ssr: false },
   ],
 };

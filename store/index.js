@@ -4,10 +4,10 @@ import weekly1 from '@/assets/images/janko-ferlic-174927-unsplash.jpg';
 export const state = () => ({
   currentPage: 0,
   pageList: [
-    { name: 'info', title: 'Информация' },
-    { name: 'sort', title: 'Сортировка' },
-    { name: 'edit', title: 'Редактирование' },
-    { name: 'demo', title: 'Предпоказ' },
+    { name: 'Info', title: 'Информация' },
+    { name: 'Sort', title: 'Сортировка' },
+    { name: 'Edit', title: 'Редактирование' },
+    { name: 'Demo', title: 'Предпоказ' },
   ],
   modeList: [
     { index: 0, mode: 'weekly', title: 'Еженедельная выставка' },
@@ -34,7 +34,62 @@ export const state = () => ({
 });
 
 export const mutations = {
-  setState(state, payload) {
-    state.state = payload;
+  setState(state, { stacks, info }) {
+    state.stacks = stacks;
+    state.info = info;
+  },
+  syncState(state) {
+    this.$axios
+      .$post('/cms/state', { state: state.stacks, info: state.info })
+      .catch(err => console.log(`[Error] Cannot post state to server: ${err}`));
+  },
+  setInfoState(state, payload) {
+    state.info = payload;
+  },
+  pushFinalState(state) {
+    this.$axios
+      .post('/cms/final', { state: state.stacks, info: state.info })
+      .catch(err =>
+        console.log(`[Error] Cannot post final state to server: ${err}`),
+      );
+  },
+};
+
+export const actions = {
+  fetchState({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      this.$axios
+        .$get('/cms/state')
+        .then(res => {
+          if (res !== '') {
+            commit('setState', res, { root: true });
+            console.log('Got response from server:', res);
+            resolve(res);
+          } else {
+            console.log('Got empty response from server');
+            resolve(state);
+          }
+        })
+        .catch(err => {
+          console.log(`[Error] Cannot get state from server: ${err}`);
+          reject(err);
+        });
+    });
+  },
+  syncState({ state }) {
+    this.$axios
+      .$post('/cms/state', {
+        stacks: state.stacks,
+        info: state.info,
+      })
+      .catch(err => console.log(`[Error] Cannot post state to server: ${err}`));
+  },
+  syncInfoState({ commit, dispatch }, payload) {
+    commit('setInfoState', payload);
+    dispatch('syncState', null, { root: true });
+  },
+  pushFinalState({ commit }) {
+    commit('syncState');
+    commit('pushFinalState', { root: true });
   },
 };

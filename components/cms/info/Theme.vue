@@ -95,6 +95,10 @@
 
     <div class="ec__column">
       <div class="ec__item">
+        <div class="ec__title">Категория:</div>
+        <category-picker @updateCategories="changeCategories"></category-picker>
+      </div>
+      <div class="ec__item">
         <div class="ec__title">Описание:</div>
         <textarea
           placeholder="Измените описание выставки"
@@ -111,7 +115,9 @@
 
 <script>
 import { TheMask } from 'vue-the-mask';
+
 import Select from '~/components/cms/Select';
+import CategoryPicker from '~/components/cms/info/CategoryPicker';
 
 export default {
   name: 'Theme',
@@ -125,7 +131,7 @@ export default {
     'phone',
     'annotation',
   ],
-  components: { Select, TheMask },
+  components: { CategoryPicker, Select, TheMask },
   data() {
     return {};
   },
@@ -137,16 +143,16 @@ export default {
       this.$emit('set', 'source', id);
     },
     changeDateFrom(e) {
-      this.$emit('changeDateFrom', e.target.value);
+      this.$emit('set', 'dateFrom', e.target.value);
     },
     changeDateTo(e) {
-      this.$emit('changeDateTo', e.target.value);
+      this.$emit('set', 'dateTo', e.target.value);
     },
     changeEmailTo(e) {
       this.$emit('set', 'email', e.target.value);
     },
     changePhoneTo(e) {
-      this.$emit('set', 'email', e);
+      this.$emit('set', 'phone', e);
     },
     changeTitleTo(e) {
       this.$emit('set', 'title', e.target.value);
@@ -154,10 +160,13 @@ export default {
     changeAnnotationTo(e) {
       this.$emit('set', 'annotation', e.target.value);
     },
+    changeCategories(value) {
+      this.$emit('set', 'categories', value);
+    },
     onPICoverChange(image) {
       if (image) {
         console.log('Picture loaded.');
-        this.$emit('changeImage', image);
+        this.$emit('set', 'image', image);
       } else {
         console.log('FileReader API not supported: use the <form>, Luke!');
       }

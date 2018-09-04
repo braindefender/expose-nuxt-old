@@ -4,8 +4,15 @@
     <div class="container">
       <div class="es">
         <div class="es__side es__side--left">
-          <input type="file" ref="xml" @change="setFile">
-          <button @click="uploadXML">Отправить XML</button>
+          <div class="es__side-top">
+            <input
+              class="hidden"
+              id="xml"
+              type="file"
+              ref="xml"
+              @input="setFile"/>
+            <label for="xml" class="button">Загрузить XML</label>
+          </div>
           <test-stack
             :options="{
               left: true,
@@ -36,9 +43,11 @@ import ESCard from '@/components/cms/ESCard';
 import TestStack from '@/components/cms/TestStack';
 
 export default {
-  name: 'PageTwo',
+  name: 'Sort',
   mounted() {
-    this.fetchState();
+    if (this.$route.params.cms !== true) {
+      this.fetchState();
+    }
   },
   beforeDestroy() {
     this.syncState();
@@ -50,10 +59,10 @@ export default {
   computed: {},
   methods: {
     fetchState() {
-      this.$store.dispatch('state/fetchState');
+      this.$store.dispatch('fetchState');
     },
     syncState() {
-      this.$store.dispatch('state/syncState');
+      this.$store.dispatch('syncState');
     },
     uploadXML() {
       this.syncState();
@@ -75,6 +84,9 @@ export default {
     },
     setFile() {
       this.file = this.$refs.xml.files[0];
+      this.$refs.xml.type = 'text';
+      this.$refs.xml.type = 'file';
+      this.uploadXML();
     },
   },
 };
@@ -104,7 +116,6 @@ export default {
           margin-bottom: 6px
     &__side-top
       padding-left: 20px
-      margin-bottom: 10px
       display: flex
       flex-direction: row
       justify-content: space-between

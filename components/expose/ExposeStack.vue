@@ -39,7 +39,21 @@ export default {
   },
   computed: {
     info() {
-      return `Документов: ${this.stack.list.length}`;
+      return `Документов: ${this.count}`;
+    },
+    count() {
+      return this.countList(this.stack);
+    },
+  },
+  methods: {
+    countList(stack) {
+      return stack.list.reduce((acc, item) => {
+        if (item.kind === 'stack') {
+          return (acc += this.countList(item));
+        } else {
+          return (acc += 1);
+        }
+      }, 0);
     },
   },
 };

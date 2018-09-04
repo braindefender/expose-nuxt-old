@@ -88,7 +88,7 @@ export default {
         .join(', ');
     },
     selected() {
-      return this.item === this.$store.state.editState.selected;
+      return this.item === this.$store.state.edit.selected;
     },
 
     errorAnnotation() {
@@ -100,7 +100,7 @@ export default {
   },
   methods: {
     select() {
-      this.$store.commit('selectOnEditScreen', this.item);
+      this.$store.commit('edit/selectOnEditScreen', this.item);
     },
     check() {
       this.$emit('check');
@@ -118,7 +118,11 @@ export default {
       }
       this.progress = (1 + progress) / 3;
       this.progressbar.animate(this.progress);
-      this.item.progress = this.progress;
+      this.$store.commit('stacks/set', {
+        item: this.item,
+        field: 'progress',
+        to: this.progress,
+      });
     },
   },
 };
@@ -133,10 +137,10 @@ export default {
     display: flex
     flex-direction: row
     &__letter
-      padding-top: 5px
+      padding-top: 6px
       flex: 0 0 auto
       width: 10px
-      margin-right: 10px
+      margin-right: 9px
       text-align: right
       font-size: 14px
       line-height: 20px

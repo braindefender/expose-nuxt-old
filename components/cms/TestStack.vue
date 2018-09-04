@@ -34,7 +34,7 @@
             v-if="this.renameMode"
             class="es-stack__title-input"
             v-model="innerStack.title"
-            @keyup.enter="rename">
+            @keyup.enter="changeRenameMode">
         </div>
         <transition name="slide-fade" mode="out-in">
           <div
@@ -44,12 +44,12 @@
             <button
               v-if="!isMain && !this.renameMode"
               class="button-small button-small--rename"
-              type="button" @click="rename">
+              type="button" @click="changeRenameMode">
             </button>
             <button
               v-if="!isMain && this.renameMode"
               class="button-small button-small--ok"
-              type="button" @click="rename">
+              type="button" @click="changeRenameMode">
             </button>
             <button
               v-if="!isMain"
@@ -89,13 +89,7 @@
           ? 'es-stack-main__content'
           : 'es-stack__content'"
         ref="stackContent">
-        <transition name="content"
-            v-on:before-enter="beforeEnter"
-            v-on:enter="enter"
-            v-on:after-enter="afterEnter"
-            v-on:before-leave="beforeLeave"
-            v-on:leave="leave"
-            v-on:after-leave="afterLeave">
+        <transition name="content">
           <div class="es-stack__list" v-if="!this.innerStack.compact" ref="stackList">
             <div
               v-for="(item, index) in innerStack.list" :key="index"
@@ -148,6 +142,7 @@ export default {
     return {
       listHeight: Number,
       renameMode: false,
+      // title: this.innerStack.title,
       showLetters: false || this.options.showLetters,
     };
   },
@@ -157,7 +152,7 @@ export default {
     },
   },
   mounted() {
-    this.$on('resize', this.resize);
+    // this.$on('resize', this.resize);
   },
   updated() {
     this.cleanup();
@@ -174,7 +169,11 @@ export default {
     },
     className() {
       if (this.isMain) {
-        return 'es-stack-main';
+        if (this.options.left) {
+          return 'es-stack-main es-stack-main--left';
+        } else {
+          return 'es-stack-main es-stack-main--right';
+        }
       } else {
         if (this.innerStack.compact) {
           return 'es-stack';
@@ -195,16 +194,16 @@ export default {
     },
     innerStack() {
       if (this.options.left) {
-        return this.$store.state.state.leftStack;
+        return this.$store.state.stacks.leftStack;
       }
       if (this.options.right) {
-        return this.$store.state.state.stack;
+        return this.$store.state.stacks.stack;
       }
       return this.stack;
     },
     ...mapState({
-      checkedList: state => state.state.checkedList,
-      checkedHeadersList: state => state.state.checkedHeadersList,
+      checkedList: state => state.stacks.checkedList,
+      checkedHeadersList: state => state.stacks.checkedHeadersList,
     }),
   },
   methods: {
@@ -212,11 +211,11 @@ export default {
       const canTogggle =
         !this.options.left && !this.options.right && !this.renameMode;
       if (canTogggle) {
-        this.innerStack.compact = !this.innerStack.compact;
-        this.$emit('resize');
+        this.$store.commit('stacks/toggleStack', this.innerStack);
+        // this.$emit('resize');
       }
     },
-    rename() {
+    changeRenameMode() {
       this.renameMode = !this.renameMode;
       if (this.renameMode) {
         this.$nextTick(() => {
@@ -229,32 +228,27 @@ export default {
       }
     },
     setChecked(item, to) {
-      if (item.kind === 'stack') {
-        item.list.forEach(el => this.setChecked(el, to));
-      }
-      item.checked = to;
+      this.$store.dispatch('stacks/setChecked', { item, to });
     },
     setCleanup(item) {
-      if (item.kind === 'stack') {
-        item.list.forEach(el => this.setCleanup(el));
-      }
-      if (!item.main) {
-        item.clean = true;
-      }
-      item.checked = false;
+      this.$store.dispatch('stacks/setCleanup', item);
     },
     remove() {
       const newList = JSON.parse(JSON.stringify(this.checkedList));
       newList.forEach(item => {
         this.setChecked(item, false);
       });
-      this.$store.commit('state/addToUnsorted', newList);
+      this.$store.commit('stacks/addToUnsorted', newList);
       if (this.innerStack.checked) {
         this.setCleanup(this.innerStack);
       } else {
         this.checkedHeadersList.forEach(item => this.setCleanup(item));
       }
       this.updateCheckState();
+      this.$store.commit(
+        'stacks/sortStackList',
+        this.$store.state.stacks.leftStack,
+      );
     },
     copyTo() {
       const list = this.checkedList;
@@ -262,17 +256,10 @@ export default {
         this.setChecked(item, false);
       });
       const newList = JSON.parse(JSON.stringify(list));
-      this.innerStack.list = this.innerStack.list.concat(newList);
-      this.updateCheckState();
-    },
-    moveTo() {
-      const list = this.checkedHeadersList;
-      list.forEach(item => {
-        this.setChecked(item, false);
+      this.$store.commit('stacks/updateStackList', {
+        stack: this.innerStack,
+        list: this.innerStack.list.concat(newList),
       });
-      const newList = JSON.parse(JSON.stringify(list));
-      this.innerStack.list = this.innerStack.list.concat(newList);
-      list.forEach(item => this.setCleanup(item));
       this.updateCheckState();
     },
     moveItems() {
@@ -280,7 +267,10 @@ export default {
       newList.forEach(item => {
         this.setChecked(item, false);
       });
-      this.innerStack.list = this.innerStack.list.concat(newList);
+      this.$store.commit('stacks/updateStackList', {
+        stack: this.innerStack,
+        list: this.innerStack.list.concat(newList),
+      });
       this.checkedHeadersList.forEach(item => this.setCleanup(item));
       this.updateCheckState();
     },
@@ -289,64 +279,49 @@ export default {
       const checkedHeadersList = this.checkedHeadersList.slice();
       list.forEach(item => this.setChecked(item, false));
       const newList = JSON.parse(JSON.stringify(list));
-      this.innerStack.list.push({
-        title: 'Новая категория',
-        checked: false,
-        compact: false,
-        kind: 'stack',
+      this.$store.commit('stacks/addNewStack', {
+        stack: this.innerStack,
         list: newList,
       });
       list.forEach(item => this.setCleanup(item));
       checkedHeadersList.forEach(item => this.setCleanup(item));
       this.updateCheckState();
     },
-    moveUp() {
-      this.$emit('moveUp');
-    },
     handleMoveUp(position) {
       if (position > 0) {
-        const item = this.innerStack.list[position];
-        this.$set(
-          this.innerStack.list,
-          position,
-          this.innerStack.list[position - 1],
-        );
-        this.$set(this.innerStack.list, position - 1, item);
+        this.$store.commit('stacks/swapPosition', {
+          stack: this.innerStack,
+          pos1: position,
+          pos2: position - 1,
+        });
       }
+    },
+    handleMoveDown(position) {
+      if (position < this.stacks - 1) {
+        this.$store.commit('stacks/swapPosition', {
+          stack: this.innerStack,
+          pos1: position,
+          pos2: position + 1,
+        });
+      }
+    },
+    moveUp() {
+      this.$emit('moveUp');
     },
     moveDown() {
       this.$emit('moveDown');
     },
-    handleMoveDown(position) {
-      if (position < this.stacks - 1) {
-        const item = this.innerStack.list[position];
-        this.innerStack.list[position] = this.innerStack.list[position + 1];
-        this.$set(this.innerStack.list, position + 1, item);
-      }
-    },
     cleanup() {
       const clean = this.innerStack.list.filter(item => !item.clean);
       if (clean.length !== this.innerStack.list.length) {
-        this.innerStack.list = clean;
+        this.$store.commit('stacks/updateStackList', {
+          stack: this.innerStack,
+          list: clean,
+        });
       }
     },
-    sortList() {
-      this.innerStack.list.sort((el1, el2) => {
-        if (el1.kind === 'stack') {
-          if (el2.kind === 'stack') {
-            return 0;
-          } else {
-            return -1;
-          }
-        }
-        if (el2.kind === 'stack') {
-          return 1;
-        } else {
-          const cmp1 = el1.author ? el1.author : el1.title;
-          const cmp2 = el2.author ? el2.author : el2.title;
-          return cmp1 < cmp2 ? -1 : cmp1 > cmp2;
-        }
-      });
+    sort() {
+      this.$store.commit('stacks/sortStackList', this.innerStack);
     },
     countStacks(stack) {
       return stack.list.reduce(
@@ -365,45 +340,36 @@ export default {
     },
     updateCheckState() {
       this.cleanup();
-      this.sortList();
-      let list = this.innerStack.list;
-      const number = list.reduce(
+      this.sort();
+      const number = this.innerStack.list.reduce(
         (acc, item) => (item.checked ? (acc += 1) : acc),
         0,
       );
       if (this.innerStack.list.length > 0) {
-        this.innerStack.checked = number === list.length;
+        const to = number === this.innerStack.list.length;
+        this.$store.commit('stacks/set', {
+          item: this.innerStack,
+          field: 'checked',
+          to,
+        });
       } else {
-        this.innerStack.checked = false;
+        this.$store.commit('stacks/set', {
+          item: this.innerStack,
+          field: 'checked',
+          to: false,
+        });
       }
-      this.$set(this.innerStack, 'list', list);
       this.getChecked(this.innerStack);
       this.getCheckedHeaders(this.innerStack);
       this.$emit('updateCheckState');
     },
     checkItem(index) {
-      const item = this.innerStack.list[index];
-      item.checked = !item.checked;
+      this.$store.commit('stacks/checkItem', this.innerStack.list[index]);
       this.updateCheckState();
-      this.$emit('updateCheckState');
     },
-    checkStack(e, st, to) {
-      const stack = st || this.innerStack;
-      if (to !== undefined) {
-        stack.checked = to;
-      } else {
-        stack.checked = !stack.checked;
-      }
-      const toChange = to !== undefined ? to : stack.checked;
-      stack.list.forEach(item => {
-        if (item.kind === 'stack') {
-          this.checkStack(e, item, toChange);
-        } else {
-          item.checked = toChange;
-        }
-      });
+    checkStack() {
+      this.$store.dispatch('stacks/checkStack', { stack: this.innerStack });
       this.updateCheckState();
-      this.$emit('updateCheckState');
     },
     getChecked(stack) {
       let checkedList = [];
@@ -417,7 +383,7 @@ export default {
         }
       });
       if (this.isMain) {
-        this.$store.commit('state/setCheckedList', checkedList);
+        this.$store.commit('stacks/setCheckedList', checkedList);
       }
       return checkedList;
     },
@@ -439,18 +405,9 @@ export default {
         });
       }
       if (this.isMain) {
-        this.$store.commit('state/setCheckedHeadersList', checkedHeadersList);
+        this.$store.commit('stacks/setCheckedHeadersList', checkedHeadersList);
       }
       return checkedHeadersList;
-    },
-    beforeEnter() {},
-    enter() {},
-    afterEnter() {},
-    beforeLeave() {},
-    leave() {},
-    afterLeave() {},
-    resize() {
-      // this.$refs.stackContent.velocity({ height: 'auto' }, { duration: 250 });
     },
   },
 };
@@ -471,6 +428,14 @@ export default {
     display: flex
     flex-direction: column
     position: relative
+    &--left
+      >.es-stack__background
+        >.es-stack__top
+          padding-left: 15px
+    &--right
+      >.es-stack__background
+        >.es-stack__top
+          padding-left: 9px
     >.es-stack__background
       &--third
         background: none
@@ -479,8 +444,6 @@ export default {
         padding-right: 0
         &:hover
           box-shadow: none
-      >.es-stack__top
-        padding-left: 9px
     &__content
       .es-stack__background--active
         background-color: rgba(black, 0.05)

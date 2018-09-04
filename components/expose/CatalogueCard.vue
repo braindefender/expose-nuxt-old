@@ -81,7 +81,7 @@ export default {
       transition: all ease 0.3s
       &-container
         img
-          animation: slide 15s alternate infinite linear
+          animation: slide 20s alternate infinite linear
     &__content
       padding: 20px
       color: white

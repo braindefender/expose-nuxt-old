@@ -1,3 +1,5 @@
+import Vue from 'vue';
+
 export const state = () => ({
   selected: {
     selected: false,
@@ -14,13 +16,15 @@ export const mutations = {
   updateSelected(state, item) {
     state.selected = item;
   },
-};
-
-export const actions = {
-  removeImageAt({ commit, state }, payload) {
-    state.selected.images.splice(payload, 1);
+  set(state, { item, field, to }) {
+    Vue.set(item, field, to);
   },
-  addImage({ commit, state }, payload) {
+  addImage(state, payload) {
     state.selected.images.push(payload);
   },
+  removeImageAt(state, payload) {
+    state.selected.images.splice(payload, 1);
+  },
 };
+
+export const actions = {};

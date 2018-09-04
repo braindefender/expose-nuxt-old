@@ -63,10 +63,10 @@ export default {
       this.$emit('set', 'source', id);
     },
     changeDateFrom(e) {
-      this.$emit('changeDateFrom', e.target.value);
+      this.$emit('set', 'dateFrom', e.target.value);
     },
     changeDateTo(e) {
-      this.$emit('changeDateTo', e.target.value);
+      this.$emit('set', 'dateTo', e.target.value);
     },
   },
 };

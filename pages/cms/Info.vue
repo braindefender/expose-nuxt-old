@@ -8,10 +8,8 @@
           v-if="expose.mode === 0"
           :mode="expose.mode"
           :source="expose.source"
-          :dateTo="dates.to"
-          :dateFrom="dates.from"
-          @changeDateTo="changeDateTo"
-          @changeDateFrom="changeDateFrom"
+          :dateTo="dateTo"
+          :dateFrom="dateFrom"
           @set="set">
         </Weekly>
 
@@ -22,12 +20,10 @@
           :phone="expose.phone"
           :email="expose.email"
           :source="expose.source"
-          :dateTo="dates.to"
-          :dateFrom="dates.from"
+          :dateTo="dateTo"
+          :dateFrom="dateFrom"
           :annotation="expose.annotation"
-          @set="set"
-          @changeDateFrom="changeDateFrom"
-          @changeDateTo="changeDateTo">
+          @set="set">
         </Theme>
 
         <Cover :options="options"></Cover>
@@ -70,17 +66,13 @@ export default {
     this.syncState();
   },
   mounted() {
-    this.fetchState();
+    if (this.$route.params.cms !== true) {
+      this.fetchState();
+    }
   },
   data() {
     return {
       sourceList: this.$store.state.sourceList,
-      dates: {
-        from: this.getDateInYYYYMMDD(new Date()),
-        to: this.getDateInYYYYMMDD(
-          new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
-        ),
-      },
     };
   },
   computed: {
@@ -90,6 +82,12 @@ export default {
     info() {
       return this.expose.mode === 0 ? this.weekly : this.theme;
     },
+    dateFrom() {
+      return this.$store.state.info.dateFrom;
+    },
+    dateTo() {
+      return this.$store.state.info.dateTo;
+    },
     weekly() {
       return {
         mode: 0,
@@ -97,7 +95,9 @@ export default {
         phone: this.sourceList[this.expose.source].phone,
         email: this.sourceList[this.expose.source].email,
         source: this.expose.source,
-        dates: this.dates,
+        dateFrom: this.dateFrom,
+        dateTo: this.dateTo,
+        image: '',
       };
     },
     theme() {
@@ -109,7 +109,9 @@ export default {
         email: this.expose.email,
         image: this.expose.image,
         annotation: this.expose.annotation,
-        dates: this.dates,
+        dateFrom: this.dateFrom,
+        dateTo: this.dateTo,
+        categories: this.expose.categories,
       };
     },
     options() {
@@ -131,8 +133,8 @@ export default {
         image,
         source,
         date: {
-          from: this.getDateFrom(this.dates.from),
-          to: this.getDateFrom(this.dates.to),
+          from: this.getDateFrom(this.dateFrom),
+          to: this.getDateFrom(this.dateTo),
         },
         prev: undefined,
         next: undefined,
@@ -141,21 +143,10 @@ export default {
   },
   methods: {
     fetchState() {
-      this.$store.dispatch('state/fetchState').then(res => {
-        // this.expose = { ...this.expose, ...res.info };
-        if (res.info.dates) {
-          this.dates = res.info.dates;
-        }
-      });
+      this.$store.dispatch('fetchState');
     },
     syncState() {
-      this.$store.dispatch('state/syncInfoState', this.info);
-    },
-    changeDateFrom(value) {
-      this.dates.from = value;
-    },
-    changeDateTo(value) {
-      this.dates.to = value;
+      this.$store.dispatch('syncInfoState', this.info);
     },
     set(field, value) {
       this.$store.commit('info/set', { field, value });

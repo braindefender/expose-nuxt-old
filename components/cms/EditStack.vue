@@ -112,7 +112,7 @@ export default {
     },
     innerStack() {
       if (this.options.left) {
-        return this.$store.state.state.stack;
+        return this.$store.state.stacks.stack;
       }
       return this.stack;
     },
@@ -151,7 +151,7 @@ export default {
       const canTogggle =
         !this.options.left && !this.options.right && !this.renameMode;
       if (canTogggle) {
-        this.innerStack.compact = !this.innerStack.compact;
+        this.$store.commit('state/toggleStack', this.innerStack);
         // this.$emit('resize');
       }
     },

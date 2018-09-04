@@ -28,14 +28,45 @@
 </template>
 
 <script>
+import cover from '~/assets/images/alfons-morales-410757-unsplash.jpg';
+
 import CategoryCard from '@/components/expose/CategoryCard';
 
 export default {
   name: 'Category',
   components: { CategoryCard },
-  props: ['list'],
   data() {
-    return {};
+    return {
+      cover,
+      list: [],
+      currentPage: 1,
+      pages: null,
+    };
+  },
+  mounted() {
+    this.$axios.$get(`/catalogue`).then(res => {
+      this.list = res.catalogueList;
+      this.pages = res.pages;
+    });
+  },
+  methods: {
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage -= 1;
+        this.fetchPage();
+      }
+    },
+    nextPage() {
+      if (this.currentPage < pages) {
+        this.currentPage += 1;
+        this.fetchPage();
+      }
+    },
+    fetchPage() {
+      this.$axios.$get(`/catalogue?page=${currentPage}`).then(res => {
+        Vue.$set(this, 'list', res.catalogueList);
+      });
+    },
   },
 };
 </script>

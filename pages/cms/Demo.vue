@@ -9,7 +9,7 @@
 
 <script>
 import Navigation from '@/components/cms/Navigation';
-import Expose from '@/pages/expose/_expose';
+import Expose from '@/pages/expose/_expose/index';
 
 export default {
   name: 'Demo',
@@ -18,7 +18,9 @@ export default {
     return {};
   },
   mounted() {
-    this.fetchState();
+    if (this.$route.params.cms !== true) {
+      this.fetchState();
+    }
   },
   beforeDestroy() {},
   methods: {

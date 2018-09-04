@@ -11,16 +11,17 @@
         </div>
       </div>
 
-      <!-- <Slider></Slider> -->
+      <slider></slider>
 
-      <CataloguePreview
+      <catalogue-preview
         v-if="catalogueList !== ''"
         :list="catalogueList">
-      </CataloguePreview>
-      <CategoryPreview
+      </catalogue-preview>
+
+      <category-preview
         v-if="categoryList !== undefined"
         :list="categoryList">
-      </CategoryPreview>
+      </category-preview>
 
     </div>
   </div>
@@ -50,43 +51,3 @@ export default {
   },
 };
 </script>
-
-<style lang="sass">
-
-  @import '~/styles/mixins.sass'
-
-  .expose-main
-    &__cover
-      width: 100%
-      height: 320px
-      position: relative
-      color: white
-      background-color: #333
-      &-inner
-        +posa(0)
-        pointer-events: none
-      &-content
-        display: flex
-        justify-content: center
-        align-items: center
-        pointer-events: auto
-      &-title
-        text-align: center
-        max-width: 680px
-        font-weight: bold
-        font-size: 32px
-        line-height: 36px
-        white-space: pre
-      &-image
-        display: flex
-        justify-content: center
-        align-items: center
-        overflow: hidden
-        &::after
-          +posa(0)
-          content: ''
-          background-color: rgba(black, 0.4)
-        img
-          width: 100%
-
-</style>

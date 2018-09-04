@@ -7,14 +7,20 @@ export const state = () => ({
   email: '',
   phone: '',
   author: 'Автор выставки',
-  dates: {},
+  dateFrom: '',
+  dateTo: '',
+  categories: [],
 });
 
 export const mutations = {
   set(state, { field, value }) {
     state[field] = value;
   },
-  setInfoState(state, payload) {
-    state = payload;
+};
+
+export const actions = {
+  syncInfoState({ commit, dispatch }, payload) {
+    commit('setInfoState', payload);
+    dispatch('syncState', null, { root: true });
   },
 };

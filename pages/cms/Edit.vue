@@ -26,11 +26,26 @@ import EditStack from '@/components/cms/EditStack';
 export default {
   name: 'Edit',
   components: { Navigation, EECard, EditStack },
+  mounted() {
+    if (this.$route.params.cms !== true) {
+      this.fetchState();
+    }
+  },
+  beforeDestroy() {
+    this.syncState();
+  },
   data() {
     return {};
   },
   computed: {},
-  methods: {},
+  methods: {
+    fetchState() {
+      this.$store.dispatch('fetchState');
+    },
+    syncState() {
+      this.$store.dispatch('syncState');
+    },
+  },
 };
 </script>
 

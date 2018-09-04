@@ -23,6 +23,9 @@
     box-sizing: border-box
     margin: 0
 
+  .hidden
+    display: none
+
   body
     margin: 0
     padding: 0
@@ -202,5 +205,89 @@
   .component-fade-leave
     opacity: 1
     transform: translateX(0px)
+
+  // Main screen
+  .expose-main
+    &__cover
+      width: 100%
+      height: 320px
+      position: relative
+      color: white
+      background-color: #333
+      &-inner
+        +posa(0)
+        pointer-events: none
+      &-content
+        display: flex
+        justify-content: center
+        align-items: center
+        pointer-events: auto
+      &-title
+        text-align: center
+        max-width: 680px
+        font-weight: bold
+        font-size: 32px
+        line-height: 36px
+        white-space: pre
+      &-image
+        display: flex
+        justify-content: center
+        align-items: center
+        overflow: hidden
+        &::after
+          +posa(0)
+          content: ''
+          background-color: rgba(black, 0.4)
+        img
+          width: 100%
+
+  // Category / Catalogue layouts
+  .cat-layout
+    max-width: 810px
+    padding-bottom: 20px
+    &__grid
+      display: grid
+      grid-template-columns: repeat(auto-fill, 395px)
+      grid-auto-row: auto
+      grid-gap: 30px 20px
+      grid-auto-flow: row
+    &__slider
+      width: 100%
+      height: 226px
+      background-color: #333
+      border-radius: 5px
+    &__panel
+      display: flex
+      flex-direction: row
+      justify-content: space-between
+      align-items: center
+      height: 64px
+    &__title
+      font-size: 20px
+      font-weight: bold
+      font-family: 'PT Sans'
+    &__action
+      cursor: pointer
+      font-size: 14px
+      color: #4680ff
+      +tdn
+    &__sort
+      font-size: 0
+    &__sort-button
+      margin: 0
+      padding: 0
+      font-family: 'PT Sans'
+      cursor: pointer
+      color: #4680ff
+      border: none
+      outline: none
+      background: none
+      font-size: 14px
+      margin-right: 20px
+      &:last-child
+        margin-right: 0
+      &--active
+        font-weight: bold
+        color: black
 
 </style>
