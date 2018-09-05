@@ -167,7 +167,7 @@ export default {
       this.$store.dispatch('syncState');
       let formData = new FormData();
       formData.append('file', this.file);
-      formData.append('id', this.item.id);
+      formData.append('id', this.item._id);
       this.$axios
         .$post('/cms/edit/xml', formData, {
           headers: {
