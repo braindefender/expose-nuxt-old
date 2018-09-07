@@ -150,6 +150,43 @@
     &--rename
       background: url('/assets/icon-small-rename.svg') center center no-repeat
 
+  .checkbox
+    user-select: none
+    position: relative
+    display: block
+    width: 22px
+    height: 22px
+    background-color: rgba(black, 0.12)
+    border-radius: 7px
+    cursor: pointer
+    transition: all ease 0.15s
+    &::before
+      +posa(3px)
+      content: ''
+      border-radius: 5px
+      background-color: white
+      transition: all ease 0.15s
+    &::after
+      +posa(5px)
+      content: ''
+      border-radius: 3px
+      transition: all ease 0.15s
+    &:hover
+      &::after
+        background-color: rgba(black, 0.12)
+    &:active
+      &::after
+        background-color: $color-accent
+    &.checkbox--checked
+      &::after
+        background-color: $color-accent
+      &:hover
+        &::after
+          box-shadow: 0px 3px 6px rgba(70, 128, 255, 0.4)
+      &:active
+        &::after
+          background-color: rgba(black, 0.12)
+
   .container
     width: 1170px
     padding-left: 10px
