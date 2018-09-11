@@ -15,10 +15,8 @@
       <div class="es-stack__top">
         <div class="es-stack__controls">
           <div
-            class="es-card__check"
+            :class="innerStack.checked ? 'checkbox checkbox--checked' : 'checkbox'"
             @click="checkStack">
-            <input type="checkbox" :checked="this.innerStack.checked">
-            <label></label>
           </div>
         </div>
         <div class="es-stack__info" @click="toggle">
@@ -473,7 +471,6 @@ export default {
           &:hover
             box-shadow: none
 
-
   .es-stack
     position: relative
     border-radius: 10px
@@ -588,16 +585,14 @@ export default {
         &:last-child
           margin-bottom: 0
 
-  .slide-fade-enter-active
-    transition: all 0.15s ease-in-out
+  // stack controls animation
 
-  .slide-fade-leave-active
-    transition: all 0.15s ease-in-out
-
-  .slide-fade-enter, .slide-fade-leave-to
-    opacity: 0
-    margin-right: 3px
-
-  .slide-fade-enter-to, .slide-fade-leave
-    opacity: 1
+  .slide-fade
+    &-enter, &-leave-to
+      opacity: 0
+      margin-right: 3px
+    &-enter-active, &-leave-active
+      transition: all 0.15s ease-in-out
+    &-enter-to, &-leave
+      opacity: 1
 </style>

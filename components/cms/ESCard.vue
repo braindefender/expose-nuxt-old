@@ -11,9 +11,8 @@
       <div class="es-card__controls">
         <div
           v-if="!selectMode"
-          class="es-card__check" @click="options.checkOnClick ? '' : check">
-          <input type="checkbox" :checked="item.checked">
-          <label></label>
+          :class="item.checked ? 'checkbox checkbox--checked' : 'checkbox'"
+          @click="options.checkOnClick ? '' : check">
         </div>
         <div
           v-else
@@ -201,47 +200,6 @@ export default {
       display: flex
       flex-direction: column
       align-items: center
-    &__check
-      user-select: none
-      input
-        display: none
-        opacity: 0
-        -webkit-appearance: none
-      label
-        position: relative
-        display: block
-        width: 22px
-        height: 22px
-        background-color: rgba(black, 0.12)
-        border-radius: 7px
-        cursor: pointer
-        transition: all ease 0.15s
-        &::before
-          transition: all ease 0.15s
-          +posa(3px)
-          border-radius: 5px
-          content: ''
-          background-color: white
-        &:after
-          transition: all ease 0.15s
-          +posa(5px)
-          border-radius: 3px
-          content: ''
-        &:hover
-          &::after
-            background-color: rgba(black, 0.12)
-        &:active
-          &::after
-            background-color: $color-accent
-      input:checked + label
-        &::after
-          background-color: $color-accent
-        &:hover
-          &::after
-            box-shadow: 0px 3px 6px rgba(70, 128, 255, 0.4)
-        &:active
-          &::after
-            background-color: rgba(black, 0.12)
     &__badge-box
       padding-top: 2px
       padding-bottom: 2px
