@@ -30,7 +30,7 @@
 
         <Annotation
           v-if="expose.mode !== 0"
-          :text="expose.annotation">
+          :text="annotation">
         </Annotation>
 
       </div>
@@ -76,6 +76,9 @@ export default {
     };
   },
   computed: {
+    annotation() {
+      return this.$store.state.info.annotation;
+    },
     expose() {
       return this.$store.state.info;
     },
@@ -98,6 +101,7 @@ export default {
         dateFrom: this.dateFrom,
         dateTo: this.dateTo,
         image: '',
+        annotation: '',
       };
     },
     theme() {

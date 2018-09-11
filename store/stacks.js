@@ -1,5 +1,26 @@
 import Vue from 'vue';
 
+const sortByYear = function(stack, inverse) {
+  stack.list.sort((v1, v2) => {
+    if (v1.kind === stack) {
+      return -1;
+    }
+    if (v2.kind === stack) {
+      return 1;
+    }
+    if (inverse) {
+      return v1.year > v2.year;
+    } else {
+      return v1.year < v2.year;
+    }
+  });
+  stack.list.forEach(item => {
+    if (item.kind === 'stack') {
+      sortByYear(item, inverse);
+    }
+  });
+};
+
 export const state = () => ({
   checkedHeadersList: [],
   checkedList: [],
@@ -61,6 +82,9 @@ export const mutations = {
         return cmp1 < cmp2 ? -1 : cmp1 > cmp2;
       }
     });
+  },
+  sortByYear(state, { stack, inverse }) {
+    sortByYear(stack, inverse);
   },
   updateStackList(state, { stack, list }) {
     stack.list = list;

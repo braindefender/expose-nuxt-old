@@ -14,7 +14,8 @@
             class="expose-page__sort-button">
             по автору</button>
           <button type="button"
-            class="expose-page__sort-button">
+            class="expose-page__sort-button"
+            @click="sortByYear">
             по году</button>
         </div>
         <div class="expose-page__panel expose-page__search">
@@ -30,7 +31,7 @@
            v-for="(item, index) in stack.list"
            :key="index"
            :stack="item">
-           </expose-stack>
+          </expose-stack>
 
         </div>
         <div class="expose-page__content-selector">
@@ -94,6 +95,7 @@ export default {
       maker: 'this.maker',
       list: [],
       real: {},
+      inverse: false,
     };
   },
   methods: {
@@ -110,6 +112,13 @@ export default {
     },
     dateYYYYMMDD(date) {
       return date.toISOString().split('T')[0];
+    },
+    sortByYear() {
+      this.$store.commit('stacks/sortByYear', {
+        stack: this.stack,
+        inverse: this.inverse,
+      });
+      this.inverse = !this.inverse;
     },
   },
   computed: {

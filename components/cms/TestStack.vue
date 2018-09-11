@@ -33,7 +33,8 @@
           <input type="text" ref="titleInput"
             v-if="this.renameMode"
             class="es-stack__title-input"
-            v-model="innerStack.title"
+            @input="changeTitle"
+            :value="innerStack.title"
             @keyup.enter="changeRenameMode">
         </div>
         <transition name="slide-fade" mode="out-in">
@@ -207,6 +208,13 @@ export default {
     }),
   },
   methods: {
+    changeTitle(e) {
+      this.$store.commit('stacks/set', {
+        item: this.innerStack,
+        field: 'title',
+        to: e.target.value,
+      });
+    },
     toggle() {
       const canTogggle =
         !this.options.left && !this.options.right && !this.renameMode;
@@ -216,6 +224,13 @@ export default {
       }
     },
     changeRenameMode() {
+      if (this.innerStack.title === '') {
+        this.$store.commit('stacks/set', {
+          item: this.innerStack,
+          field: 'title',
+          to: 'Измените название категории',
+        });
+      }
       this.renameMode = !this.renameMode;
       if (this.renameMode) {
         this.$nextTick(() => {

@@ -226,7 +226,7 @@ export default {
         right: auto
         width: 15px
         content: ''
-        background: url('../assets/icon-chevron-left.svg') center center no-repeat
+        background: url('~/assets/icon-chevron-left.svg') center center no-repeat
     &__wrapper
       display: flex
       flex-direction: row

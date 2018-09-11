@@ -37,24 +37,45 @@
 export default {
   name: 'BookCard',
   props: ['item'],
+  watch: {
+    'item.year'(oldVal, newVal) {
+      this.year = newVal;
+      this.info = this.getInfo();
+    },
+    'item.source'(oldVal, newVal) {
+      this.source = newVal;
+      this.info = this.getInfo();
+    },
+    'item.pages'(oldVal, newVal) {
+      this.pages = newVal;
+      this.info = this.getInfo();
+    },
+  },
   data() {
     return {
       source: this.item.source || '',
       year: this.item.year || '',
       pages: this.item.pages ? `${this.item.pages} с.` : '',
       author: this.item.author || 'Автор не указан',
+      info: this.getInfo(),
     };
   },
   computed: {
-    info() {
-      return [this.source, this.year, this.pages]
-        .filter(el => el !== '')
-        .join(', ');
-    },
     meta() {
       return `${this.author} — ${this.item.title}, ${this.source}, ${
         this.year
       }`;
+    },
+  },
+  methods: {
+    getInfo() {
+      return [
+        this.item.source || '',
+        this.item.year || '',
+        this.item.pages ? `${this.item.pages} с.` : '',
+      ]
+        .filter(el => el !== '')
+        .join(', ');
     },
   },
 };

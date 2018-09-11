@@ -35,6 +35,8 @@ export default {
     max-width: 250px
     text-align: left
     &__list
+      max-height: calc(100vh - 70px)
+      overflow-y: auto
       position: relative
       left: 13px
       &::after
