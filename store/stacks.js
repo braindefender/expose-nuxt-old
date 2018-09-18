@@ -21,6 +21,33 @@ const sortByYear = function(stack, inverse) {
   });
 };
 
+const sortByAuthor = function(stack, inverse) {
+  stack.list.sort((v1, v2) => {
+    if (v1.kind === stack) {
+      return 0;
+    }
+    if (v2.kind === stack) {
+      return 0;
+    }
+    if (v1.author === undefined) {
+      return 1;
+    }
+    if (v2.author === undefined) {
+      return -1;
+    }
+    if (inverse) {
+      return v1.author > v2.author;
+    } else {
+      return v1.author < v2.author;
+    }
+  });
+  stack.list.forEach(item => {
+    if (item.kind === 'stack') {
+      sortByAuthor(item, inverse);
+    }
+  });
+};
+
 export const state = () => ({
   checkedHeadersList: [],
   checkedList: [],
@@ -92,6 +119,9 @@ export const mutations = {
   },
   sortByYear(state, { stack, inverse }) {
     sortByYear(stack, inverse);
+  },
+  sortByAuthor(state, { stack, inverse }) {
+    sortByAuthor(stack, inverse);
   },
   updateStackList(state, { stack, list }) {
     stack.list = list;

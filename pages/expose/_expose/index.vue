@@ -11,7 +11,8 @@
             class="expose-page__sort-button expose-page__sort-button--active">
             по названию</button>
           <button type="button"
-            class="expose-page__sort-button">
+            class="expose-page__sort-button"
+            @click="sortByAuthor">
             по автору</button>
           <button type="button"
             class="expose-page__sort-button"
@@ -119,6 +120,13 @@ export default {
     },
     sortByYear() {
       this.$store.commit('stacks/sortByYear', {
+        stack: this.stack,
+        inverse: this.inverse,
+      });
+      this.inverse = !this.inverse;
+    },
+    sortByAuthor() {
+      this.$store.commit('stacks/sortByAuthor', {
         stack: this.stack,
         inverse: this.inverse,
       });
