@@ -47,13 +47,17 @@ export default {
   },
   methods: {
     countList(stack) {
-      return stack.list.reduce((acc, item) => {
-        if (item.kind === 'stack') {
-          return (acc += this.countList(item));
-        } else {
-          return (acc += 1);
-        }
-      }, 0);
+      if (stack.list) {
+        return stack.list.reduce((acc, item) => {
+          if (item.kind === 'stack') {
+            return (acc += this.countList(item));
+          } else {
+            return (acc += 1);
+          }
+        }, 0);
+      } else {
+        return 0;
+      }
     },
   },
 };

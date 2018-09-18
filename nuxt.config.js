@@ -48,5 +48,6 @@ module.exports = {
     { src: '~plugins/vue-picture-input', ssr: false },
     { src: '~plugins/vue-affix', ssr: false },
     { src: '~plugins/vue-multiselect', ssr: false },
+    { src: '~plugins/vue-awesome-swiper', ssr: false },
   ],
 };

@@ -18,9 +18,9 @@ export default {
     return {};
   },
   mounted() {
-    if (this.$route.params.cms !== true) {
-      this.fetchState();
-    }
+    // if (this.$route.params.cms !== true) {
+    // }
+    this.fetchState();
   },
   beforeDestroy() {},
   methods: {

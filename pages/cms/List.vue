@@ -1,6 +1,6 @@
 <template>
   <div class="cms-new-page">
-    <!-- <sidebar></sidebar> -->
+    <sidebar></sidebar>
     <div class="cms-new-page__content">
       <div class="cms-table">
         <div class="cms-table__row cms-table__headers">
@@ -27,11 +27,13 @@
 
 <script>
 import ListItem from '~/components/cms/list/ListItem';
+import Sidebar from '~/components/cms/Sidebar';
 
 export default {
   name: 'List',
   components: {
     ListItem,
+    Sidebar,
   },
   data() {
     return {
@@ -54,6 +56,10 @@ export default {
   @import '~/styles/vars.sass'
 
   .cms-new-page
+    display: flex
+    flex-direction: row
+    &__content
+      height: 100vh
     &__title
       font-weight: bold
       font-size: 18px

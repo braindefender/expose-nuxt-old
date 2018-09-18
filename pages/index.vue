@@ -36,6 +36,7 @@ import Slider from '~/components/expose/Slider';
 
 export default {
   components: { CataloguePreview, CategoryPreview, Slider },
+  name: 'Main',
   data() {
     return {
       cover,

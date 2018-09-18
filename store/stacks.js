@@ -38,30 +38,25 @@ export const state = () => ({
     checked: false,
     compact: false,
     main: true,
-    list: [{
-      kind: 'book',
-      checked: false,
-      compact: false,
-      title: 'asdash sdhajfk'
-    }],
+    list: [
+      {
+        kind: 'book',
+        checked: false,
+        compact: false,
+        title: 'book title',
+      },
+    ],
   },
 });
 
 export const mutations = {
-  swapPosition(state, {
-    stack,
-    pos1,
-    pos2
-  }) {
+  swapPosition(state, { stack, pos1, pos2 }) {
     const item1 = stack.list[pos1];
     const item2 = stack.list[pos2];
     Vue.set(stack.list, pos1, item2);
     Vue.set(stack.list, pos2, item1);
   },
-  addNewStack(state, {
-    stack,
-    list
-  }) {
+  addNewStack(state, { stack, list }) {
     stack.list.push({
       title: 'Новая категория',
       checked: false,
@@ -74,11 +69,7 @@ export const mutations = {
   toggleStack(state, stack) {
     stack.compact = !stack.compact;
   },
-  set(state, {
-    item,
-    field,
-    to
-  }) {
+  set(state, { item, field, to }) {
     Vue.set(item, field, to);
   },
   sortStackList(state, stack) {
@@ -122,18 +113,12 @@ export const mutations = {
 };
 
 export const actions = {
-  checkStack({
-    commit,
-    dispatch
-  }, {
-    stack,
-    to
-  }) {
+  checkStack({ commit, dispatch }, { stack, to }) {
     if (to !== undefined) {
       commit('set', {
         item: stack,
         field: 'checked',
-        to
+        to,
       });
     } else {
       commit('checkItem', stack);
@@ -143,40 +128,33 @@ export const actions = {
       if (item.kind === 'stack') {
         dispatch('checkStack', {
           stack: item,
-          to: toChange
+          to: toChange,
         });
       } else {
         commit('set', {
           item,
           field: 'checked',
-          to: toChange
+          to: toChange,
         });
       }
     });
   },
-  setChecked({
-    commit,
-    dispatch
-  }, {
-    item,
-    to
-  }) {
+  setChecked({ commit, dispatch }, { item, to }) {
     if (item.kind === 'stack') {
-      item.list.forEach(el => dispatch('setChecked', {
-        item: el,
-        to
-      }));
+      item.list.forEach(el =>
+        dispatch('setChecked', {
+          item: el,
+          to,
+        }),
+      );
     }
     commit('set', {
       item,
       field: 'checked',
-      to
+      to,
     });
   },
-  setCleanup({
-    commit,
-    dispatch
-  }, item) {
+  setCleanup({ commit, dispatch }, item) {
     if (item.kind === 'stack') {
       item.list.forEach(el => dispatch('setCleanup', el));
     }
@@ -184,13 +162,13 @@ export const actions = {
       commit('set', {
         item,
         field: 'clean',
-        to: true
+        to: true,
       });
     }
     commit('set', {
       item,
       field: 'checked',
-      to: false
+      to: false,
     });
   },
 };

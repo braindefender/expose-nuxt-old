@@ -75,10 +75,14 @@ export default {
       return `\n`;
     },
     todayDate() {
-      return this.generateFullDate(
-        this.options.date.from,
-        this.options.date.to,
-      );
+      if (this.options.date) {
+        return this.generateFullDate(
+          this.options.date.from,
+          this.options.date.to,
+        );
+      } else {
+        return '\n';
+      }
     },
   },
   methods: {

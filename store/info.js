@@ -1,14 +1,14 @@
 export const state = () => ({
-  mode: 0,
+  mode: 1,
   source: 0,
-  title: 'Измените название выставки',
-  annotation: 'Измените описание выставки',
+  title: '',
+  annotation: '',
   image: '',
   email: '',
   phone: '',
   author: 'Автор выставки',
-  dateFrom: '',
-  dateTo: '',
+  dateFrom: '1984-01-01',
+  dateTo: '1984-01-01',
   categories: [],
 });
 

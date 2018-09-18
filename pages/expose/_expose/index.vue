@@ -85,6 +85,7 @@ export default {
         })
         .catch(err => {
           console.log(`Error: get expose named: ${this.path}`, err);
+          this.$router.push({ path: '/' });
         });
     }
   },
@@ -94,7 +95,10 @@ export default {
       source: 0,
       maker: 'this.maker',
       list: [],
-      real: {},
+      real: {
+        info: { source: 0 },
+        stacks: {},
+      },
       inverse: false,
     };
   },
@@ -122,38 +126,34 @@ export default {
     },
   },
   computed: {
-    info() {
-      return `Документов: ${this.list.length}`;
+    expose() {
+      if (this.options && this.options.cms) {
+        return this.$store.state.info;
+      } else {
+        return this.real.info;
+      }
+    },
+    stack() {
+      if (this.options && this.options.cms) {
+        return this.$store.state.stacks.stack;
+      } else {
+        return this.real.stacks;
+      }
     },
     path() {
       return $nuxt.$route.path.split('/').pop();
-    },
-    stack() {
-      if (this.options) {
-        if (this.options.cms) {
-          return this.$store.state.stacks.stack;
-        }
-      } else {
-        this.expose.stack;
-      }
-    },
-    expose() {
-      if (this.options) {
-        if (this.options.cms) {
-          return this.$store.state.info;
-        }
-      } else {
-        return this.real;
-      }
     },
     phone() {
       return `+${this.expose.phone.replace(/\D/g, '')}`;
     },
     coverOptions() {
       const sourceList = this.$store.state.sourceList;
-      const image = this.expose.image
-        ? this.expose.image
-        : sourceList[this.expose.source].image;
+      let image;
+      if (this.expose && this.expose.image) {
+        image = this.expose.image;
+      } else {
+        image = sourceList[this.expose.source].image;
+      }
       return {
         nav: true,
         title: this.expose.title,
