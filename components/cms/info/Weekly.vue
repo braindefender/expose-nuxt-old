@@ -1,57 +1,55 @@
 <template>
   <div class="ec__box ec__weekly">
 
-    <div class="ec__column">
-      <div class="ec__item">
-        <div class="ec__title">Тип выставки:</div>
-        <div class="ec__toggle">
-          <Select
-            :list="this.$store.state.modeList"
-            :check="mode"
-            :call="setModeTo"></Select>
-        </div>
+    <div class="ec__row">
+      <div class="ec__title">Тип выставки</div>
+      <div class="ec__toggle">
+        <Toggle
+          :list="this.$store.state.modeList"
+          :check="mode"
+          :call="setModeTo"></Toggle>
       </div>
     </div>
 
-    <div class="ec__column">
-      <div class="ec__item">
-        <div class="ec__title">Место проведения:</div>
-        <div class="ec__toggle">
-          <Select
-            :list="this.$store.state.sourceList"
-            :check="source"
-            :call="setSourceTo">
-          </Select>
-        </div>
+    <div class="ec__row">
+      <div class="ec__title">Место проведения</div>
+      <div class="ec__toggle">
+        <Toggle
+          :list="this.$store.state.sourceList"
+          :check="source"
+          :call="setSourceTo">
+        </Toggle>
       </div>
     </div>
 
-    <div class="ec__column">
-      <div class="ec__item">
-        <div class="ec__title">Даты проведения:</div>
+    <div class="ec__row">
+        <div class="ec__title">Даты проведения</div>
         <div class="ec__date-picker">
-          <span>от</span>
-          <input
-            @change="changeDateFrom" :value="dateFrom"
-            type="date" max="9999-12-31">
-          <span>до</span>
-          <input
-            @change="changeDateTo" :value="dateTo"
-            type="date" max="9999-12-31">
+          <div class="ec__date-picker-half">
+            <span>Начало</span>
+            <input
+              @change="changeDateFrom" :value="dateFrom"
+              type="date" max="9999-12-31">
+          </div>
+          <div class="ec__date-picker-half">
+            <span>Конец</span>
+            <input
+              @change="changeDateTo" :value="dateTo"
+              type="date" max="9999-12-31">
+          </div>
         </div>
       </div>
-    </div>
 
   </div>
 </template>
 
 <script>
-import Select from '~/components/cms/Select';
+import Toggle from '~/components/cms/common/Toggle';
 
 export default {
   name: 'Weekly',
   props: ['mode', 'source', 'dateFrom', 'dateTo'],
-  components: { Select },
+  components: { Toggle },
   data() {
     return {};
   },

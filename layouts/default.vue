@@ -328,4 +328,16 @@
         font-weight: bold
         color: black
 
+  .cms-new-page
+    display: flex
+    flex-direction: row
+    &__content
+      width: 100%
+      height: 100vh
+      display: flex
+      flex-grow: 1
+    &__title
+      font-weight: bold
+      font-size: 18px
+
 </style>

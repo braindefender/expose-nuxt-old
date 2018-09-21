@@ -3,6 +3,11 @@ import weekly1 from '@/assets/images/janko-ferlic-174927-unsplash.jpg';
 
 export const state = () => ({
   currentPage: 0,
+  statusList: [
+    { name: 'public', title: 'Опубликованные' },
+    { name: 'waiting', title: 'Ожидающие публикации' },
+    { name: 'hidden', title: 'Скрытые' },
+  ],
   pageList: [
     { name: 'Info', title: 'Информация' },
     { name: 'Sort', title: 'Сортировка' },
@@ -10,8 +15,8 @@ export const state = () => ({
     { name: 'Demo', title: 'Предпоказ' },
   ],
   modeList: [
-    { index: 0, mode: 'weekly', title: 'Еженедельная выставка' },
-    { index: 1, mode: 'theme', title: 'Тематическая выставка' },
+    { index: 0, mode: 'weekly', title: 'Еженедельная' },
+    { index: 1, mode: 'theme', title: 'Тематическая' },
   ],
   sourceList: [
     {

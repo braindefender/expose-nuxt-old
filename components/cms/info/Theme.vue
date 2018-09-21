@@ -1,31 +1,58 @@
 <template>
   <div class="ec__box ec__theme">
 
-    <div class="ec__column">
-
-      <div class="ec__item">
+      <div class="ec__row">
         <div class="ec__title">Тип выставки:</div>
         <div class="ec__toggle">
-          <Select
+          <Toggle
             :list="this.$store.state.modeList"
             :check="mode"
-            :call="setModeTo"></Select>
+            :call="setModeTo"></Toggle>
         </div>
       </div>
 
-      <div class="ec__item">
-        <div class="ec__title">Название:</div>
+      <div class="ec__row">
+        <div class="ec__title">Место проведения</div>
+        <div class="ec__toggle">
+          <Toggle
+            :list="this.$store.state.sourceList"
+            :check="source"
+            :call="setSourceTo">
+          </Toggle>
+        </div>
+      </div>
+
+      <div class="ec__row">
+        <div class="ec__title">Даты проведения</div>
+        <div class="ec__date-picker">
+          <div class="ec__date-picker-half">
+            <span>Начало</span>
+            <input
+              @change="changeDateFrom" :value="dateFrom"
+              type="date" max="9999-12-31">
+          </div>
+          <div class="ec__date-picker-half">
+            <span>Конец</span>
+            <input
+              @change="changeDateTo" :value="dateTo"
+              type="date" max="9999-12-31">
+          </div>
+        </div>
+      </div>
+
+      <div class="ec__row">
+        <div class="ec__title">Название</div>
         <textarea
           placeholder="Измените название выставки"
-          class="ec__textarea ec__textarea--bold ec__textarea--title"
+          class="ec__textarea ec__textarea--title"
           name="title" cols="30" rows="1"
           :value="title" v-autosize="title"
           @input="changeTitleTo">
         </textarea>
       </div>
 
-      <div class="ec__item">
-        <div class="ec__title">Обложка:</div>
+      <div class="ec__row">
+        <div class="ec__title">Обложка</div>
         <div class="ec__loader">
 
           <picture-input
@@ -37,52 +64,23 @@
           </picture-input>
 
           <p class="ec__loader-comment">
-            Рекомендуемое разрешение
-            <br>
-            не менее 1150x320px
+            Рекомендуемое разрешение не менее 1150x320px
           </p>
         </div>
       </div>
 
-    </div>
 
-    <div class="ec__column">
 
-      <div class="ec__item">
-        <div class="ec__title">Место проведения:</div>
-        <div class="ec__toggle">
-          <Select
-            :list="this.$store.state.sourceList"
-            :check="source"
-            :call="setSourceTo">
-          </Select>
-        </div>
-      </div>
-
-      <div class="ec__item">
-        <div class="ec__title">Даты проведения:</div>
-        <div class="ec__date-picker">
-          <span>от</span>
-          <input
-            @change="changeDateFrom" :value="dateFrom"
-            type="date" max="9999-12-31">
-          <span>до</span>
-          <input
-            @change="changeDateTo" :value="dateTo"
-            type="date" max="9999-12-31">
-        </div>
-      </div>
-
-      <div class="ec__item">
-        <div class="ec__title">Email:</div>
+      <div class="ec__row">
+        <div class="ec__title">Email</div>
         <input
           placeholder="Не указан"
           type="email" class="ec__input"
           :value="email" @change="changeEmailTo"/>
       </div>
 
-      <div class="ec__item">
-        <div class="ec__title">Телефон:</div>
+      <div class="ec__row">
+        <div class="ec__title">Телефон</div>
         <the-mask
           placeholder="+7 (999) 999 9999"
           type="tel" class="ec__input"
@@ -91,15 +89,12 @@
           :value="phone" @input="changePhoneTo"/>
       </div>
 
-    </div>
-
-    <div class="ec__column">
-      <div class="ec__item">
-        <div class="ec__title">Категория:</div>
+      <div class="ec__row">
+        <div class="ec__title">Категория</div>
         <category-picker @updateCategories="changeCategories"></category-picker>
       </div>
-      <div class="ec__item">
-        <div class="ec__title">Описание:</div>
+      <div class="ec__row">
+        <div class="ec__title">Описание</div>
         <textarea
           placeholder="Измените описание выставки"
           class="ec__textarea ec__textarea--description"
@@ -108,7 +103,7 @@
           @input="changeAnnotationTo">
         </textarea>
       </div>
-    </div>
+
 
   </div>
 </template>
@@ -117,6 +112,7 @@
 import { TheMask } from 'vue-the-mask';
 
 import Select from '~/components/cms/Select';
+import Toggle from '~/components/cms/common/Toggle';
 import CategoryPicker from '~/components/cms/info/CategoryPicker';
 
 export default {
@@ -131,7 +127,7 @@ export default {
     'phone',
     'annotation',
   ],
-  components: { CategoryPicker, Select, TheMask },
+  components: { CategoryPicker, Select, Toggle, TheMask },
   data() {
     return {};
   },

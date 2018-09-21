@@ -1,31 +1,32 @@
 <template>
-  <div class="cms-page">
-    <Navigation></Navigation>
-    <div class="container">
-      <div class="ec">
+  <div class="cms-new-page">
+    <!-- <Navigation></Navigation> -->
+    <sidebar></sidebar>
+    <div class="cms-new-page__content">
+      <Weekly
+        v-if="expose.mode === 0"
+        :mode="expose.mode"
+        :source="expose.source"
+        :dateTo="dateTo"
+        :dateFrom="dateFrom"
+        @set="set">
+      </Weekly>
 
-        <Weekly
-          v-if="expose.mode === 0"
-          :mode="expose.mode"
-          :source="expose.source"
-          :dateTo="dateTo"
-          :dateFrom="dateFrom"
-          @set="set">
-        </Weekly>
+      <Theme
+        v-if="expose.mode === 1"
+        :title="expose.title"
+        :mode="expose.mode"
+        :phone="expose.phone"
+        :email="expose.email"
+        :source="expose.source"
+        :dateTo="dateTo"
+        :dateFrom="dateFrom"
+        :annotation="expose.annotation"
+        @set="set">
+      </Theme>
 
-        <Theme
-          v-if="expose.mode === 1"
-          :title="expose.title"
-          :mode="expose.mode"
-          :phone="expose.phone"
-          :email="expose.email"
-          :source="expose.source"
-          :dateTo="dateTo"
-          :dateFrom="dateFrom"
-          :annotation="expose.annotation"
-          @set="set">
-        </Theme>
 
+      <div class="ec__preview">
         <Cover :options="options"></Cover>
 
         <Annotation
@@ -33,13 +34,17 @@
           :text="annotation">
         </Annotation>
 
+        <div class="ec__preview-image"></div>
       </div>
+
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+
+import Sidebar from '~/components/cms/sidebar/Sidebar';
 
 import Annotation from '@/components/expose/Annotation';
 import Cover from '@/components/expose/Cover';
@@ -55,6 +60,7 @@ import weekly1 from '@/assets/images/janko-ferlic-174927-unsplash.jpg';
 export default {
   name: 'Info',
   components: {
+    Sidebar,
     Annotation,
     Cover,
     Select,
@@ -186,17 +192,40 @@ export default {
     opacity: 0
 
   .ec
-    box-sizing: border-box
     background-color: white
-    padding-top: 36px
+    &__preview
+      overflow: hidden
+      min-height: 100vh
+      display: flex
+      justify-content: flex-start
+      align-items: flex-start
+      flex-direction: column
+      flex: 1 0 auto
+    &__preview-image
+      margin-top: 40px
+      width: 100%
+      flex-grow: 1
+      background: url('~/assets/expose-preview.svg') top left no-repeat
     &__box
       padding-left: 20px
       padding-right: 20px
+      padding-top: 30px
+      flex-shrink: 0
+      width: 410px
+      height: 100vh
       display: flex
-      flex-direction: row
-      justify-content: space-between
+      flex-direction: column
       align-items: flex-start
       padding-bottom: 36px
+      overflow: auto
+    &__row
+      display: flex
+      flex-direction: column
+      width: 100%
+      flex: 0 0 auto
+      margin-bottom: 25px
+      &:last-child
+        margin-bottom: 0
     &__column
       display: flex
       flex-direction: column
@@ -204,14 +233,9 @@ export default {
       align-items: flex-start
     &__title
       font-weight: bold
-      font-size: 14px
+      font-size: 16px
       line-height: 20px
-      margin-bottom: 5px
-    &__item
-      margin-bottom: 20px
-      &:last-child
-        margin-bottom: 0
-    &__toggle
+      margin-bottom: 6px
     &__toggle-item
       margin-bottom: 10px
       &:last-child
@@ -224,16 +248,19 @@ export default {
       font-family: 'PT Sans'
       font-size: 14px
       line-height: 20px
-      border: 2px solid rgba(black, 0.1)
+      border: 1px solid rgba(black, 0.2)
       padding-top: 4px
       padding-bottom: 4px
       padding-left: 15px
       padding-right: 15px
       font-weight: bold
-      min-width: 200px
+      width: 100%
+      min-height: 32px
       &::placeholder
         color: rgba(black, 0.4)
     &__textarea
+      min-height: 32px
+      width: 100%
       border: none
       outline: none
       box-sizing: border-box
@@ -245,7 +272,7 @@ export default {
       padding-left: 15px
       padding-right: 15px
       resize: none
-      border: 2px solid rgba(black, 0.1)
+      border: 1px solid rgba(black, 0.2)
       &::placeholder
         color: rgba(black, 0.4)
       &--bold
@@ -254,12 +281,9 @@ export default {
         font-size: 14px
         height: 32px
         line-height: 15px
-        min-width: 200px
       &--description
         font-size: 14px
         line-height: 20px
-        min-height: 190px
-        min-width: 480px
     &__loader
       &-comment
         margin: 0
@@ -269,13 +293,24 @@ export default {
         line-height: 17px
         color: rgba(black, 0.6)
     &__date-picker
+      display: flex
+      flex-direction: row
+      &-half
+        width: 50%
+        display: flex
+        justify-content: space-between
+        align-items: center
+        padding-left: 15px
+        flex: 0 0 auto
+        &:first-child
+          padding-left: 0
       input[type=date]
         margin: 0
         padding: 0
         box-sizing: border-box
         border: none
         outline: none
-        border: 2px solid rgba(black, 0.1)
+        border: 1px solid rgba(black, 0.2)
         border-radius: 5px
         padding-left: 8px
         padding-right: 4px
@@ -308,10 +343,6 @@ export default {
         font-size: 14px
         line-height: 20px
         font-weight: bold
-        margin-right: 10px
-        margin-left: 10px
-        &:first-child
-          margin-left: 0
 
   .picture-input
     padding: 0

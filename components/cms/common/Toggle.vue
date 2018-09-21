@@ -1,0 +1,52 @@
+<template>
+  <div class="cms-toggle">
+    <div
+      v-for="(item, index) in list"
+      class="cms-toggle__item"
+      @click="call(item.index)"
+      :class="check == item.index ? 'cms-toggle__item--active' : ''"
+      :key="index">{{item.title}}</div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Select',
+  props: ['list', 'call', 'check'],
+  data() {
+    return {};
+  },
+};
+</script>
+
+<style lang="sass">
+  @import 'styles/vars.sass'
+
+  .cms-toggle
+    display: flex
+    align-items: center
+    width: 100%
+    border-radius: 5px
+    box-shadow: inset 0 0 1px rgba(black, 0.2)
+    font-size: 14px
+    height: 32px
+    &__item
+      cursor: pointer
+      display: flex
+      align-items: center
+      justify-content: center
+      flex-grow: 1
+      flex-shrink: 0
+      flex-basis: max-content
+      height: 32px
+      border-radius: 5px
+      border: 2px solid rgba($color-accent, 0)
+      padding-left: 15px
+      padding-right: 15px
+      color: rgba(black, 0.6)
+      &--active
+        border: 2px solid rgba($color-accent, 1)
+        font-weight: bold
+        color: $color-accent
+
+</style>

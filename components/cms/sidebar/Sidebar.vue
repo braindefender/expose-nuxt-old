@@ -1,62 +1,44 @@
 <template>
   <div class="sidebar">
-    <div class="sidebar__panel">
-      Конструктор выставок
-    </div>
-    <div class="sidebar__content">
+    <div class="sidebar__panel">{{ title }}</div>
 
-      <div class="sidebar-account">
-        <div class="sidebar-account__avatar-box">
-          <div class="sidebar-account__avatar"></div>
-        </div>
-        <div class="sidebar-account__text">
-          <div class="sidebar-account__name">Васильева Елена Семёновна</div>
-          <div class="sidebar-account__mail">makakakakala@gpntbsib.ru</div>
-        </div>
-        <div class="sidebar-account__panel">
-          <p>Модерируемых выставок:</p>
-          <p>3</p>
-        </div>
-      </div>
+    <sidebar-account
+      v-if="$nuxt.$route.path.split('/').pop() === 'list'">
+    </sidebar-account>
 
-      <div class="sidebar-button-box">
-        <div class="sidebar-button">
-          <div class="sidebar-button__icon"></div>
-          <div class="sidebar-button__text">Информация</div>
-        </div>
-        <div class="sidebar-button">
-          <div class="sidebar-button__icon"></div>
-          <div class="sidebar-button__text">Сортировка</div>
-        </div>
-        <div class="sidebar-button">
-          <div class="sidebar-button__icon"></div>
-          <div class="sidebar-button__text">Редактирование</div>
-        </div>
-        <div class="sidebar-button">
-          <div class="sidebar-button__icon"></div>
-          <div class="sidebar-button__text">Предпоказ</div>
-        </div>
-      </div>
-
-      <div class="sidebar-button">
-        <div class="sidebar-button__icon"></div>
-        <div class="sidebar-button__text">Выйти из аккаунта</div>
-      </div>
-
-    </div>
+    <sidebar-navigation v-else></sidebar-navigation>
   </div>
 </template>
 
 <script>
+import SidebarAccount from '~/components/cms/sidebar/SidebarAccount';
+import SidebarNavigation from '~/components/cms/sidebar/SidebarNavigation';
+
 export default {
   name: 'Sidebar',
+  components: { SidebarAccount, SidebarNavigation },
   data() {
-    return {};
+    return {
+      pageList: this.$store.state.pageList,
+    };
+  },
+  computed: {
+    title() {
+      const currentPage = this.$route.path.split('/').pop();
+      if (currentPage === 'list') {
+        return 'Конструктор выставок';
+      }
+      if (this.pageList.map(page => page.name).includes(currentPage)) {
+        return 'Создание выставки';
+      }
+    },
   },
 };
 </script>
 
 <style lang="sass">
+  @import 'styles/mixins.sass'
+
   .sidebar
     background-color: #262640
     color: white
@@ -104,17 +86,43 @@ export default {
     border-radius: 10px
     transition: all ease 0.15s
     cursor: pointer
-    &__icon
-      width: 24px
-      height: 24px
-      margin-right: 20px
-      background-color: rgba(white, 0.05)
+    +tdn
+    &:hover
+      background-color: rgba(white, 0.1)
+    &--active
+      background-color: rgba(white, 0.1)
+      &:hover
+        background-color: rgba(white, 0.15)
     &__text
       font-weight: bold
       color: rgba(white, 0.5)
       font-size: 18px
-    &:hover
-      background-color: rgba(white, 0.1)
+    &__icon
+      width: 24px
+      height: 24px
+      margin-right: 20px
+      opacity: 0.6
+      background: center center no-repeat
+      &--home
+        background-image: url('~/assets/sidebar/sidebar-icon-home.svg');
+      &--info
+        background-image: url('~/assets/sidebar/sidebar-icon-info.svg');
+      &--sort
+        background-image: url('~/assets/sidebar/sidebar-icon-sort.svg');
+      &--edit
+        background-image: url('~/assets/sidebar/sidebar-icon-edit.svg');
+      &--demo
+        background-image: url('~/assets/sidebar/sidebar-icon-demo.svg');
+      &--public
+        background-image: url('~/assets/sidebar/sidebar-icon-check.svg');
+      &--waiting
+        background-image: url('~/assets/sidebar/sidebar-icon-wait.svg');
+      &--hidden
+        background-image: url('~/assets/sidebar/sidebar-icon-eye.svg');
+      &--exit
+        background-image: url('~/assets/sidebar/sidebar-icon-exit.svg');
+      &--save
+        background-image: url('~/assets/sidebar/sidebar-icon-save.svg');
 
   .sidebar-account
     padding-top: 30px

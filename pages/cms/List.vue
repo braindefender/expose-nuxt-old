@@ -27,7 +27,7 @@
 
 <script>
 import ListItem from '~/components/cms/list/ListItem';
-import Sidebar from '~/components/cms/Sidebar';
+import Sidebar from '~/components/cms/sidebar/Sidebar';
 
 export default {
   name: 'List',
@@ -39,15 +39,30 @@ export default {
     return {
       items: [
         {
+          card: {
+            image: undefined,
+            source: 0,
+          },
           status: 'waiting',
           dateCreate: '2018-08-18',
           dateUpdate: '2018-08-26',
         },
-        {
-          status: 'public',
-        },
       ],
     };
+  },
+  mounted() {
+    this.$axios.$get('/main').then(res => {
+      this.items = res.catalogueList.map(item => {
+        return {
+          card: item,
+          status: 'hidden',
+          dateCreate: '2018-08-16',
+          dateUpdate: '2018-08-17',
+          authors: 'Авторы',
+        };
+      });
+      this.categoryList = res.categoryList;
+    });
   },
 };
 </script>
@@ -55,21 +70,17 @@ export default {
 <style lang="sass">
   @import '~/styles/vars.sass'
 
-  .cms-new-page
-    display: flex
-    flex-direction: row
-    &__content
-      height: 100vh
-    &__title
-      font-weight: bold
-      font-size: 18px
   .cms-table
     display: flex
     flex-direction: column
+    flex-grow: 1
+    overflow-y: auto
     &__row
       display: flex
       width: 100%
       align-items: center
+      margin-bottom: 20px
+      flex: 0 0 auto
     &__headers
       height: 60px
       box-shadow: 0 1px 0 rgba(black, 0.1)

@@ -1,12 +1,7 @@
 <template>
   <div class="cms-table__row">
     <div class="cms-table__list-item cms-table__list-item--main">
-      <!-- <catalogue-card></catalogue-card> -->
-    </div>
-    <div
-      :class='className'
-      class="cms-table__list-item cms-table__list-item--status">
-      {{ statusText }}
+      <catalogue-card :item="item.card"></catalogue-card>
     </div>
     <div class="cms-table__list-item cms-table__list-item--date">
       {{ item.dateCreate }}
@@ -48,6 +43,14 @@ export default {
           return '';
       }
     },
+  },
+  methods: {
+    log() {
+      console.log(this.item.image);
+    },
+  },
+  mounted() {
+    this.log();
   },
 };
 </script>
