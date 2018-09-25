@@ -28,7 +28,9 @@ export default {
   components: { Navigation, EECard, EditStack },
   mounted() {
     if (this.$route.params.cms !== true) {
-      this.fetchState();
+      // redirect if came from link instead of cms
+      this.$router.push({ path: '/cms/list' });
+      // this.fetchState();
     }
   },
   beforeDestroy() {

@@ -2,7 +2,7 @@
   <div class="ec__box ec__theme">
 
       <div class="ec__row">
-        <div class="ec__title">Тип выставки:</div>
+        <div class="ec__title">Тип выставки</div>
         <div class="ec__toggle">
           <Toggle
             :list="this.$store.state.modeList"
@@ -54,22 +54,28 @@
       <div class="ec__row">
         <div class="ec__title">Обложка</div>
         <div class="ec__loader">
-
-          <picture-input
-            ref="piCover" button-class="button"
-            width="172" height="36" size="2"
-            accept="image/jpeg,image/jpg,image/png"
-            :zIndex=200 :plain="true" :hideChangeButton="true"
-            @change="onPICoverChange">
-          </picture-input>
-
+          <no-ssr>
+            <picture-input
+              ref="piCover" button-class="button"
+              size="2" height="36" width="370"
+              accept="image/jpeg,image/jpg,image/png"
+              :zIndex=20 :plain="true" :hideChangeButton="true"
+              @change="onPICoverChange">
+            </picture-input>
+          </no-ssr>
+          <!-- <input
+            class="ec__loader-input"
+            type="file"
+            name="image-cover"
+            @change="onImageChange">
+          <label
+            class="ec__loader-label"
+            for="image-cover"></label> -->
           <p class="ec__loader-comment">
             Рекомендуемое разрешение не менее 1150x320px
           </p>
         </div>
       </div>
-
-
 
       <div class="ec__row">
         <div class="ec__title">Email</div>
@@ -159,6 +165,9 @@ export default {
     changeCategories(value) {
       this.$emit('set', 'categories', value);
     },
+    onImageChange(e) {
+      const file = e.target.files[0];
+    },
     onPICoverChange(image) {
       if (image) {
         console.log('Picture loaded.');
@@ -168,5 +177,6 @@ export default {
       }
     },
   },
+  mounted() {},
 };
 </script>

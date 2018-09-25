@@ -7,9 +7,6 @@
           <div class="cms-table__header cms-table__header--main cms-table__header--title">
             Модерируемые выставки
           </div>
-          <div class="cms-table__header cms-table__header--status">
-            Статус
-          </div>
           <div class="cms-table__header cms-table__header--date">Дата создания</div>
           <div class="cms-table__header cms-table__header--date">Дата обновления</div>
           <div class="cms-table__header cms-table__header">Редакторы</div>
@@ -114,9 +111,19 @@ export default {
         flex: 0 0 auto
       &--authors
         font-size: 14px
+    &__header
       &--actions
         padding-right: 20px
-        width: 180px
+        width: 320px
         flex: 0 0 auto
+    &__list-item
+      &--actions
+        padding-right: 20px
+        width: 320px
+        flex: 0 0 auto
+        display: grid
+        grid-template-rows: 1fr 1fr
+        grid-template-columns: 1fr 1fr
+        grid-gap: 10px
 
 </style>

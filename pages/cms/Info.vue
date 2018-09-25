@@ -154,6 +154,7 @@ export default {
   methods: {
     fetchState() {
       this.$store.dispatch('fetchState');
+      this.$store.dispatch('fetchCategoryList');
     },
     syncState() {
       this.$store.dispatch('syncInfoState', this.info);
@@ -285,6 +286,14 @@ export default {
         font-size: 14px
         line-height: 20px
     &__loader
+      z-index: 10
+      &-input
+        opacity: 0
+        display: none
+      &-label
+        width: 100%
+        height: 32px
+        background-color: #555
       &-comment
         margin: 0
         padding: 0
@@ -346,7 +355,7 @@ export default {
 
   .picture-input
     padding: 0
-    width: 172px
+    width: 100%
     height: 32px
     border-radius: 5px
     overflow: hidden
@@ -354,6 +363,9 @@ export default {
     box-shadow: 0px 3px 6px rgba(black, 0)
     &:hover
       box-shadow: 0px 3px 6px rgba($color-accent, 0.4)
+    .picture-preview
+      width: 100%
+      height: 32px
     .preview-container
       position: relative
       overflow: hidden

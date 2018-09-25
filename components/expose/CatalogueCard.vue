@@ -10,7 +10,8 @@
     <div class="cat-card__inner cat-card__image">
       <img :src="this.image" :alt="meta">
     </div>
-    <div class="cat-card__inner cat-card__content cat-card__content--catalogue">
+    <div @click="redirect"
+      class="cat-card__inner cat-card__content cat-card__content--catalogue">
       <div class="cat-card__content-title">{{ this.item.title }}</div>
       <div class="cat-card__content-date">{{ this.item.date }}</div>
     </div>
@@ -22,7 +23,7 @@
 <script>
 export default {
   name: 'CatalogueCard',
-  props: ['item'],
+  props: ['item', 'options'],
   data() {
     return {};
   },
@@ -34,6 +35,19 @@ export default {
       return this.item.image
         ? this.item.image
         : this.$store.state.sourceList[this.item.source].image;
+    },
+  },
+  methods: {
+    redirect() {
+      if (this.options && this.options.cms) {
+        this.$router.push({ path: '/cms/info' });
+      } else {
+        this.$router.push({
+          path: `/expose/${this.item.title.split(' ').join('_')}-${
+            this.item.plainDate
+          }`,
+        });
+      }
     },
   },
 };

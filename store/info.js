@@ -10,6 +10,7 @@ export const state = () => ({
   dateFrom: '1984-01-01',
   dateTo: '1984-01-01',
   categories: [],
+  _id: '',
 });
 
 export const mutations = {

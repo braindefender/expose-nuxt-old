@@ -26,7 +26,8 @@
       </div>
     </div>
 
-    <div class="sidebar-button">
+    <div class="sidebar-button"
+      @click="test">
       <div class="sidebar-button__icon sidebar-button__icon--exit"></div>
       <div class="sidebar-button__text">Выйти из аккаунта</div>
     </div>
@@ -41,6 +42,11 @@ export default {
       statusList: this.$store.state.statusList,
       pageName: '',
     };
+  },
+  methods: {
+    test() {
+      this.$axios.$get('/cms/new').then(res => console.log(res));
+    },
   },
 };
 </script>

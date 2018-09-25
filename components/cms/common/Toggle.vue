@@ -27,10 +27,13 @@ export default {
     align-items: center
     width: 100%
     border-radius: 5px
-    box-shadow: inset 0 0 1px rgba(black, 0.2)
+    // box-shadow: inset 0 0 1px rgba(black, 0.2)
+    border: 1px solid rgba(black, 0.2)
     font-size: 14px
     height: 32px
     &__item
+      margin-left: -1px
+      margin-right: -1px
       cursor: pointer
       display: flex
       align-items: center

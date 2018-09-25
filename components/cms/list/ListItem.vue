@@ -1,7 +1,7 @@
 <template>
   <div class="cms-table__row">
     <div class="cms-table__list-item cms-table__list-item--main">
-      <catalogue-card :item="item.card"></catalogue-card>
+      <catalogue-card :item="item.card" :options="{ cms: true }"></catalogue-card>
     </div>
     <div class="cms-table__list-item cms-table__list-item--date">
       {{ item.dateCreate }}
@@ -11,6 +11,13 @@
     </div>
     <div class="cms-table__list-item cms-table__list-item--authors">
       {{ item.authors }}
+    </div>
+    <div class="cms-table__list-item cms-table__list-item--actions">
+      <div class="button"
+        v-for="(item, index) in pages"
+        :key="index"
+        @click="redirect(item.name)">{{ item.title }}
+      </div>
     </div>
   </div>
 </template>
@@ -25,12 +32,11 @@ export default {
   },
   props: ['item'],
   data() {
-    return {};
+    return {
+      pages: this.$store.state.pageList,
+    };
   },
   computed: {
-    className() {
-      return `cms-table__list-item--status--${this.item.status}`;
-    },
     statusText() {
       switch (this.item.status) {
         case 'hidden':
@@ -47,6 +53,9 @@ export default {
   methods: {
     log() {
       console.log(this.item.image);
+    },
+    redirect(name) {
+      this.$router.push({ name: `cms-${name}`, params: { cms: true } });
     },
   },
   mounted() {

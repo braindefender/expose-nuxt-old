@@ -1,16 +1,18 @@
 <template>
   <div class="cp">
-    <multiselect
-      v-model="value"
-      :multiple="true"
-      :options="categories"
-      selectLabel=""
-      deselectLabel=""
-      placeholder="Выберите категорию"
-      @input="onInput"
-      :hideSelected="true"
-      :close-on-select="false">
-    </multiselect>
+    <no-ssr>
+      <multiselect
+        v-model="value"
+        :multiple="true"
+        :options="categories"
+        selectLabel=""
+        deselectLabel=""
+        placeholder="Выберите категорию"
+        @input="onInput"
+        :hideSelected="true"
+        :close-on-select="false">
+      </multiselect>
+    </no-ssr>
   </div>
 </template>
 
@@ -20,20 +22,17 @@ export default {
   data() {
     return {
       value: [],
-      categories: [],
     };
   },
+  computed: {
+    categories() {
+      return this.$store.state.categoryList;
+    },
+  },
   mounted() {
-    this.fetchCategoryList();
     this.value = this.$store.state.info.categories;
   },
   methods: {
-    fetchCategoryList() {
-      this.$axios.get('/cms/categories').then(res => {
-        // console.log(res.data);
-        this.categories = res.data;
-      });
-    },
     onInput(value) {
       this.$emit('updateCategories', value);
     },
@@ -43,4 +42,11 @@ export default {
 
 <style lang="sass">
   @import '~/styles/multiselect.sass'
+
+  .cp
+    position: relative
+    z-index: 500
+  .multiselect
+    position: relative
+    z-index: 500
 </style>

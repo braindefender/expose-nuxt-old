@@ -4,9 +4,7 @@
       <img :src="item.image" :alt="meta">
     </div>
     <div class="slider-item__inner slider-item__content">
-      <div class="slider-item__title">
-        {{ item.title }}
-      </div>
+      <div class="slider-item__title">{{ item.title }}</div>
       <div class="slider-item__info">
         <div class="slider-item__date">
           {{ item.date }}
