@@ -1,7 +1,7 @@
 <template>
-  <div class="cms-page">
-    <Navigation></Navigation>
-    <div class="container">
+  <div class="cms-new-page">
+    <sidebar></sidebar>
+    <div class="cms-new-page__content">
       <div class="es">
         <div class="es__side es__side--left">
           <div class="es__side-top">
@@ -38,7 +38,8 @@
 </template>
 
 <script>
-import Navigation from '@/components/cms/Navigation';
+import Sidebar from '~/components/cms/sidebar/Sidebar';
+
 import ESCard from '@/components/cms/ESCard';
 import TestStack from '@/components/cms/TestStack';
 
@@ -54,7 +55,7 @@ export default {
   beforeDestroy() {
     this.syncState();
   },
-  components: { Navigation, ESCard, TestStack },
+  components: { Sidebar, ESCard, TestStack },
   data() {
     return {};
   },
@@ -68,8 +69,11 @@ export default {
     },
     uploadXML() {
       this.syncState();
+      const _id = this.$store.state.info._id;
+      console.log(_id);
       let formData = new FormData();
       formData.append('file', this.file);
+      formData.append('exposeid', _id);
       this.$axios
         .$post('/cms/xml', formData, {
           headers: {
@@ -104,20 +108,20 @@ export default {
     z-index: 1
     display: flex
     flex-direction: row
-    padding-top: 10px
+    width: 100%
     &__side
       width: 50%
       overflow-y: scroll
-      height: calc(100vh - 58px)
-      &--left
-        padding-right: 5px
-        margin-right: 5px
+      height: 100vh
+      background-color: $color-bg
+      padding-left: 3%
+      padding-right: 3%
       &--right
-        padding-right: 5px
         .es-stack
           margin-bottom: 6px
     &__side-top
       padding-left: 20px
+      margin-bottom: 10px
       display: flex
       flex-direction: row
       justify-content: space-between

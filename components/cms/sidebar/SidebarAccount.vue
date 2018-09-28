@@ -14,10 +14,17 @@
       </div>
     </div>
 
+    <div class="sidebar-button"
+      @click="create">
+      <div class="sidebar-button__icon sidebar-button__icon--create"></div>
+      <div class="sidebar-button__text">Создать выставку</div>
+    </div>
+
     <div class="sidebar-button-box">
       <div
         v-for="(page, index) in statusList"
         :key="index"
+        @click="getPages(page.name)"
         :class="pageName === page.name
           ? 'sidebar-button sidebar-button--active'
           : 'sidebar-button'">
@@ -27,7 +34,7 @@
     </div>
 
     <div class="sidebar-button"
-      @click="test">
+      @click="create">
       <div class="sidebar-button__icon sidebar-button__icon--exit"></div>
       <div class="sidebar-button__text">Выйти из аккаунта</div>
     </div>
@@ -44,8 +51,14 @@ export default {
     };
   },
   methods: {
-    test() {
-      this.$axios.$get('/cms/new').then(res => console.log(res));
+    getPages(type) {
+      this.$store.dispatch('fetchExposeList', type);
+    },
+    create() {
+      // this.$axios.$get('/cms/new').then(res => console.log(res));
+      this.$store.dispatch('createNewExpose').then(() => {
+        this.$router.push({ name: 'cms-Info' });
+      });
     },
   },
 };

@@ -13,6 +13,7 @@
           <div class="cms-table__header cms-table__header--actions">Действия</div>
         </div>
         <list-item
+          v-if="items.length !== 0"
           v-for="(item, index) in items"
           :key="index"
           :item="item">
@@ -34,31 +35,17 @@ export default {
   },
   data() {
     return {
-      items: [
-        {
-          card: {
-            image: undefined,
-            source: 0,
-          },
-          status: 'waiting',
-          dateCreate: '2018-08-18',
-          dateUpdate: '2018-08-26',
-        },
-      ],
+      items: this.$store.state.exposeList,
     };
   },
+  computed: {},
   mounted() {
-    this.$axios.$get('/main').then(res => {
-      this.items = res.catalogueList.map(item => {
-        return {
-          card: item,
-          status: 'hidden',
-          dateCreate: '2018-08-16',
-          dateUpdate: '2018-08-17',
-          authors: 'Авторы',
-        };
-      });
-      this.categoryList = res.categoryList;
+    // this.$axios.$get('/main').then(res => {
+    //   this.items = res.catalogueList;
+    // });
+    // this.items = this.$store.exposeList;
+    this.$store.dispatch('fetchExposeList', 'public').then(res => {
+      this.items = this.$store.state.exposeList;
     });
   },
 };

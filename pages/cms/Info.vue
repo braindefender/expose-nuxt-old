@@ -49,7 +49,6 @@ import Sidebar from '~/components/cms/sidebar/Sidebar';
 import Annotation from '@/components/expose/Annotation';
 import Cover from '@/components/expose/Cover';
 import Select from '@/components/cms/Select';
-import Navigation from '@/components/cms/Navigation';
 
 import Weekly from '~/components/cms/info/Weekly';
 import Theme from '~/components/cms/info/Theme';
@@ -64,7 +63,6 @@ export default {
     Annotation,
     Cover,
     Select,
-    Navigation,
     Weekly,
     Theme,
   },
@@ -72,9 +70,9 @@ export default {
     this.syncState();
   },
   mounted() {
-    if (this.$route.params.cms !== true) {
-      this.fetchState();
-    }
+    // if (this.$route.params.cms !== true) {
+    //   this.fetchState();
+    // }
   },
   data() {
     return {
@@ -108,6 +106,7 @@ export default {
         dateTo: this.dateTo,
         image: '',
         annotation: '',
+        _id: this.expose._id,
       };
     },
     theme() {
@@ -122,6 +121,7 @@ export default {
         dateFrom: this.dateFrom,
         dateTo: this.dateTo,
         categories: this.expose.categories,
+        _id: this.expose._id,
       };
     },
     options() {

@@ -1,7 +1,7 @@
 <template>
   <div class="cms-table__row">
     <div class="cms-table__list-item cms-table__list-item--main">
-      <catalogue-card :item="item.card" :options="{ cms: true }"></catalogue-card>
+      <catalogue-card :item="item" :options="{ cms: true }"></catalogue-card>
     </div>
     <div class="cms-table__list-item cms-table__list-item--date">
       {{ item.dateCreate }}
@@ -14,9 +14,9 @@
     </div>
     <div class="cms-table__list-item cms-table__list-item--actions">
       <div class="button"
-        v-for="(item, index) in pages"
+        v-for="(it, index) in pages"
         :key="index"
-        @click="redirect(item.name)">{{ item.title }}
+        @click="redirect({item, it})">{{ it.title }}
       </div>
     </div>
   </div>
@@ -54,8 +54,11 @@ export default {
     log() {
       console.log(this.item.image);
     },
-    redirect(name) {
-      this.$router.push({ name: `cms-${name}`, params: { cms: true } });
+    redirect({ item, it }) {
+      console.log(item);
+      this.$store.dispatch('fetchState', item._id).then(() => {
+        this.$router.push({ name: `cms-${it.name}`, params: { cms: true } });
+      });
     },
   },
   mounted() {

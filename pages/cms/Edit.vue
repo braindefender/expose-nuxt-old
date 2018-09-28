@@ -1,7 +1,8 @@
 <template>
-  <div class="cms-page">
-    <Navigation></Navigation>
-    <div class="container">
+  <div class="cms-new-page">
+    <!-- <Navigation></Navigation> -->
+    <sidebar></sidebar>
+    <div class="cms-new-page__content">
       <div class="ee">
         <div class="ee__side ee__side--left">
           <edit-stack
@@ -19,13 +20,14 @@
 </template>
 
 <script>
-import Navigation from '@/components/cms/Navigation';
+import Sidebar from '~/components/cms/sidebar/Sidebar';
+
 import EECard from '@/components/cms/EECard';
 import EditStack from '@/components/cms/EditStack';
 
 export default {
   name: 'Edit',
-  components: { Navigation, EECard, EditStack },
+  components: { Sidebar, EECard, EditStack },
   mounted() {
     if (this.$route.params.cms !== true) {
       // redirect if came from link instead of cms
@@ -52,21 +54,22 @@ export default {
 </script>
 
 <style lang="sass">
+  @import '@/styles/vars.sass'
+
   .ee
     position: relative
     z-index: 1
     display: flex
     flex-direction: row
-    padding-top: 10px
+    width: 100%
     &__side
       width: 50%
       overflow-y: scroll
-      height: calc(100vh - 58px)
-      &--left
-        padding-right: 5px
-        margin-right: 5px
+      height: 100vh
+      background-color: $color-bg
+      padding-left: 3%
+      padding-right: 3%
       &--right
-        padding-right: 5px
         .es-stack
           margin-bottom: 6px
     &__side-top

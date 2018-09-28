@@ -168,6 +168,7 @@ export default {
       let formData = new FormData();
       formData.append('file', this.file);
       formData.append('id', this.item._id);
+      formData.append('exposeid', this.$store.state.info._id);
       this.$axios
         .$post('/cms/edit/xml', formData, {
           headers: {
@@ -240,7 +241,6 @@ export default {
     display: flex
     flex-direction: column
     background-color: white
-    border-radius: 5px
     overflow: hidden
     padding-top: 15px
     padding-bottom: 15px

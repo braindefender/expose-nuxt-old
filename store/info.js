@@ -7,6 +7,8 @@ export const state = () => ({
   email: '',
   phone: '',
   author: 'Автор выставки',
+  dateCreate: '1984-01-01',
+  dateUpdate: '1984-01-01',
   dateFrom: '1984-01-01',
   dateTo: '1984-01-01',
   categories: [],

@@ -1,9 +1,12 @@
+import Vue from 'vue';
+
 import weekly0 from '@/assets/images/jamie-taylor-110195-unsplash.jpg';
 import weekly1 from '@/assets/images/janko-ferlic-174927-unsplash.jpg';
 
 export const state = () => ({
   currentPage: 0,
   categoryList: [],
+  exposeList: [],
   statusList: [
     { name: 'public', title: 'Опубликованные' },
     { name: 'waiting', title: 'Ожидающие публикации' },
@@ -55,6 +58,9 @@ export const mutations = {
   setCategoryList(state, payload) {
     state.categoryList = payload;
   },
+  setExposeList(state, payload) {
+    Vue.set(state, 'exposeList', payload);
+  },
   pushFinalState(state) {
     this.$axios
       .post('/cms/final', { stacks: state.stacks, info: state.info })
@@ -65,10 +71,43 @@ export const mutations = {
 };
 
 export const actions = {
-  fetchState({ commit, state }) {
+  createNewExpose({ commit, state }) {
     return new Promise((resolve, reject) => {
       this.$axios
-        .$get('/cms/state')
+        .$get('/cms/new')
+        .then(res => {
+          commit('setState', res, { root: true });
+          console.log('Got response from server:', res);
+          resolve(res);
+        })
+        .catch(err => {
+          console.log(`[Error] Cannot create new expose: ${err}`);
+          reject(err);
+        });
+    });
+  },
+  fetchExposeList({ commit, state }, payload) {
+    return new Promise((resolve, reject) => {
+      this.$axios
+        .$get(`/cms/list/${payload}`)
+        .then(res => {
+          commit('setExposeList', res);
+          console.log(`Got ${payload} expose list from server:`, res);
+          resolve(res);
+        })
+        .catch(err => {
+          console.log(
+            `[Error] Cannot get ${payload} expose list from server:`,
+            err,
+          );
+          reject(err);
+        });
+    });
+  },
+  fetchState({ commit, state }, payload) {
+    return new Promise((resolve, reject) => {
+      this.$axios
+        .$get('/cms/state', { params: { _id: payload } })
         .then(res => {
           if (res !== '') {
             commit('setState', res, { root: true });

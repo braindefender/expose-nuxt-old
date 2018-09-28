@@ -13,7 +13,7 @@
     <div @click="redirect"
       class="cat-card__inner cat-card__content cat-card__content--catalogue">
       <div class="cat-card__content-title">{{ this.item.title }}</div>
-      <div class="cat-card__content-date">{{ this.item.date }}</div>
+      <div class="cat-card__content-date">{{ this.item.dateFrom }}</div>
     </div>
 
   </div>
@@ -29,7 +29,7 @@ export default {
   },
   computed: {
     meta() {
-      return `${this.item.title} - ${this.item.date}`;
+      return `${this.item.title} - ${this.item.dateFrom}`;
     },
     image() {
       return this.item.image
