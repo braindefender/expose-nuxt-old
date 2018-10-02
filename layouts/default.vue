@@ -336,6 +336,7 @@
       height: 100vh
       display: flex
       flex-grow: 1
+      overflow: auto
     &__title
       font-weight: bold
       font-size: 18px

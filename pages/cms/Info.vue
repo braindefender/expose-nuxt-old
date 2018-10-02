@@ -67,15 +67,21 @@ export default {
     Theme,
   },
   beforeDestroy() {
-    this.syncState();
+    if (this.canSyncState) {
+      this.syncState();
+    }
   },
   mounted() {
-    // if (this.$route.params.cms !== true) {
-    //   this.fetchState();
-    // }
+    if (this.$route.params.cms !== true) {
+      this.$router.push({ path: '/cms/list' });
+      this.canSyncState = false;
+    } else {
+      this.$store.dispatch('fetchCategoryList');
+    }
   },
   data() {
     return {
+      canSyncState: true,
       sourceList: this.$store.state.sourceList,
     };
   },
@@ -152,10 +158,6 @@ export default {
     },
   },
   methods: {
-    fetchState() {
-      this.$store.dispatch('fetchState');
-      this.$store.dispatch('fetchCategoryList');
-    },
     syncState() {
       this.$store.dispatch('syncInfoState', this.info);
     },

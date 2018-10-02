@@ -57,7 +57,7 @@ export default {
     create() {
       // this.$axios.$get('/cms/new').then(res => console.log(res));
       this.$store.dispatch('createNewExpose').then(() => {
-        this.$router.push({ name: 'cms-Info' });
+        this.$router.push({ name: 'cms-Info', params: { cms: true } });
       });
     },
   },

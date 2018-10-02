@@ -48,6 +48,91 @@ const sortByAuthor = function(stack, inverse) {
   });
 };
 
+const cleanup = function(item) {
+  if (item.kind === 'stack') {
+    item.list = item.list.filter(item => !item.clean);
+    item.list.forEach(item => cleanup(item));
+  }
+};
+
+const getCheckedListOf = function(stack) {
+  let checkedList = [];
+  console.log('checked!', stack);
+  stack.list.forEach(el => {
+    if (el.kind === 'stack') {
+      checkedList = checkedList.concat(getCheckedListOf(el));
+    } else {
+      if (el.checked) {
+        checkedList.push(el);
+      }
+    }
+  });
+  return checkedList;
+};
+
+const getCheckedHeadersListOf = function(stack) {
+  let checkedHeadersList = [];
+  if (stack.checked) {
+    checkedHeadersList.push(stack);
+  } else {
+    stack.list.forEach(el => {
+      if (el.checked) {
+        checkedHeadersList.push(el);
+      } else {
+        if (el.kind === 'stack') {
+          checkedHeadersList = checkedHeadersList.concat(
+            getCheckedHeadersListOf(el),
+          );
+        }
+      }
+    });
+  }
+  return checkedHeadersList;
+};
+
+const sort = function(item) {
+  if (item.kind === 'stack') {
+    item.list.forEach(el => sort(el));
+    const stacks = item.list.filter(el => el.kind === 'stack');
+    const nonStacks = item.list.filter(el => el.kind !== 'stack');
+    nonStacks.sort((v1, v2) => {
+      const cmp1 = v1.author ? v1.author : v1.title;
+      const cmp2 = v2.author ? v2.author : v2.title;
+      return cmp1 < cmp2 ? -1 : cmp1 > cmp2;
+    });
+    item.list = stacks.concat(nonStacks);
+  }
+};
+
+const update = function(item) {
+  if (item.kind === 'stack') {
+    // Очистка удалённых
+    item.list.forEach(el => cleanup(el));
+    // Если пустой, то ставим маркер удаления
+    if (item.list.length === 0) {
+      item.checked = false;
+      if (!item.main) {
+        item.clean = true;
+      }
+    } else {
+      // Сортировка
+      item.list.forEach(el => sort(el));
+      // Рекурсивный вызов для внутренностей
+      item.list.forEach(el => update(el));
+      // Количество отмеченных
+      const checkedCount = item.list.reduce(
+        (acc, el) => (el.checked ? (acc += 1) : acc),
+        0,
+      );
+      if (checkedCount === item.list.length) {
+        item.checked = true;
+      } else {
+        item.checked = false;
+      }
+    }
+  }
+};
+
 export const state = () => ({
   checkedHeadersList: [],
   checkedList: [],
@@ -65,14 +150,7 @@ export const state = () => ({
     checked: false,
     compact: false,
     main: true,
-    list: [
-      {
-        kind: 'book',
-        checked: false,
-        compact: false,
-        title: 'book title',
-      },
-    ],
+    list: [],
   },
 });
 
@@ -91,10 +169,6 @@ export const mutations = {
       kind: 'stack',
       list,
     });
-  },
-  renameStack(state, stack) {},
-  toggleStack(state, stack) {
-    stack.compact = !stack.compact;
   },
   set(state, { item, field, to }) {
     Vue.set(item, field, to);
@@ -126,7 +200,7 @@ export const mutations = {
   updateStackList(state, { stack, list }) {
     stack.list = list;
   },
-  checkItem(state, item, to) {
+  checkItem(state, item) {
     item.checked = !item.checked;
   },
   setCheckedList(state, list) {
@@ -140,32 +214,27 @@ export const mutations = {
       state.leftStack.list.push(el);
     });
   },
+  toggleStack(state, stack) {
+    stack.compact = !stack.compact;
+  },
+  update(state) {
+    update(state.stack);
+  },
 };
 
 export const actions = {
   checkStack({ commit, dispatch }, { stack, to }) {
     if (to !== undefined) {
-      commit('set', {
-        item: stack,
-        field: 'checked',
-        to,
-      });
+      commit('set', { item: stack, field: 'checked', to });
     } else {
       commit('checkItem', stack);
     }
     const toChange = to !== undefined ? to : stack.checked;
     stack.list.forEach(item => {
       if (item.kind === 'stack') {
-        dispatch('checkStack', {
-          stack: item,
-          to: toChange,
-        });
+        dispatch('checkStack', { stack: item, to: toChange });
       } else {
-        commit('set', {
-          item,
-          field: 'checked',
-          to: toChange,
-        });
+        commit('set', { item, field: 'checked', to: toChange });
       }
     });
   },
@@ -178,27 +247,28 @@ export const actions = {
         }),
       );
     }
-    commit('set', {
-      item,
-      field: 'checked',
-      to,
-    });
+    commit('set', { item, field: 'checked', to });
   },
   setCleanup({ commit, dispatch }, item) {
     if (item.kind === 'stack') {
       item.list.forEach(el => dispatch('setCleanup', el));
     }
     if (!item.main) {
-      commit('set', {
-        item,
-        field: 'clean',
-        to: true,
-      });
+      commit('set', { item, field: 'clean', to: true });
     }
-    commit('set', {
-      item,
-      field: 'checked',
-      to: false,
-    });
+    commit('set', { item, field: 'checked', to: false });
+  },
+  update({ commit, dispatch, state }) {
+    commit('update');
+    commit(
+      'setCheckedList',
+      getCheckedListOf(state.stack).concat(getCheckedListOf(state.leftStack)),
+    );
+    commit(
+      'setCheckedHeadersList',
+      getCheckedHeadersListOf(state.stack).concat(
+        getCheckedHeadersListOf(state.leftStack),
+      ),
+    );
   },
 };

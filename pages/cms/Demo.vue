@@ -16,15 +16,24 @@ import Expose from '@/pages/expose/_expose/index';
 export default {
   name: 'Demo',
   components: { Sidebar, Expose },
-  data() {
-    return {};
-  },
   mounted() {
-    // if (this.$route.params.cms !== true) {
-    // }
-    this.fetchState();
+    if (this.$route.params.cms !== true) {
+      this.$router.push({ path: '/cms/list' });
+      this.canSyncState = false;
+    } else {
+      this.fetchState();
+    }
   },
-  beforeDestroy() {},
+  beforeDestroy() {
+    if (this.canSyncState) {
+      this.syncState();
+    }
+  },
+  data() {
+    return {
+      canSyncState: true,
+    };
+  },
   methods: {
     fetchState() {
       this.$store.dispatch('fetchState');

@@ -1,13 +1,17 @@
 <template>
   <div class="slider-item">
-    <div class="slider-item__inner slider-item__image">
+    <div
+      v-if="item.image"
+      class="slider-item__inner slider-item__image">
       <img :src="item.image" :alt="meta">
     </div>
     <div class="slider-item__inner slider-item__content">
       <div class="slider-item__title">{{ item.title }}</div>
       <div class="slider-item__info">
-        <div class="slider-item__date">
-          {{ item.date }}
+        <div
+          v-if="item.dateFrom"
+          class="slider-item__date">
+          {{ item.dateFrom }}
         </div>
         <div class="slider-item__place">
           {{ source }}
@@ -26,7 +30,7 @@ export default {
   },
   computed: {
     meta() {
-      return `${this.item.title}, ${this.item.date}, ${this.item.source}`;
+      return `${this.item.title}, ${this.item.dateFrom}, ${this.item.source}`;
     },
     source() {
       switch (this.item.source) {

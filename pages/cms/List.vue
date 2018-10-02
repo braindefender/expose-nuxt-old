@@ -34,19 +34,15 @@ export default {
     Sidebar,
   },
   data() {
-    return {
-      items: this.$store.state.exposeList,
-    };
+    return {};
   },
-  computed: {},
+  computed: {
+    items() {
+      return this.$store.state.exposeList;
+    },
+  },
   mounted() {
-    // this.$axios.$get('/main').then(res => {
-    //   this.items = res.catalogueList;
-    // });
-    // this.items = this.$store.exposeList;
-    this.$store.dispatch('fetchExposeList', 'public').then(res => {
-      this.items = this.$store.state.exposeList;
-    });
+    this.$store.dispatch('fetchExposeList', 'public');
   },
 };
 </script>

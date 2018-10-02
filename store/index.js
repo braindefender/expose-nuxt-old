@@ -136,7 +136,7 @@ export const actions = {
     commit('setInfoState', payload);
     dispatch('syncState', null, { root: true });
   },
-  fetchCategoryList({ commit, dispatch, state }) {
+  fetchCategoryList({ commit }) {
     this.$axios.get('/cms/categories').then(res => {
       commit('setCategoryList', res.data);
     });

@@ -28,14 +28,22 @@
           <div class="ec__date-picker-half">
             <span>Начало</span>
             <input
-              @change="changeDateFrom" :value="dateFrom"
-              type="date" max="9999-12-31">
+              type="date"
+              min="1980-01-01"
+              max="9999-12-31"
+              :value="dateFrom"
+              @change="set('dateFrom', $event.target.value)"
+              >
           </div>
           <div class="ec__date-picker-half">
             <span>Конец</span>
             <input
-              @change="changeDateTo" :value="dateTo"
-              type="date" max="9999-12-31">
+              type="date"
+              min="1980-01-01"
+              max="9999-12-31"
+              :value="dateTo"
+              @change="set('dateTo', $event.target.value)"
+              >
           </div>
         </div>
       </div>
@@ -47,7 +55,7 @@
           class="ec__textarea ec__textarea--title"
           name="title" cols="30" rows="1"
           :value="title" v-autosize="title"
-          @input="changeTitleTo">
+          @input="set('title', $event.target.value)">
         </textarea>
       </div>
 
@@ -63,14 +71,6 @@
               @change="onPICoverChange">
             </picture-input>
           </no-ssr>
-          <!-- <input
-            class="ec__loader-input"
-            type="file"
-            name="image-cover"
-            @change="onImageChange">
-          <label
-            class="ec__loader-label"
-            for="image-cover"></label> -->
           <p class="ec__loader-comment">
             Рекомендуемое разрешение не менее 1150x320px
           </p>
@@ -104,9 +104,11 @@
         <textarea
           placeholder="Измените описание выставки"
           class="ec__textarea ec__textarea--description"
-          name="description" cols="30" rows="1"
-          :value="annotation" v-autosize="annotation"
-          @input="changeAnnotationTo">
+          name="description"
+          cols="30" rows="1"
+          :value="annotation"
+          v-autosize="annotation"
+          @input="set('annotation', $event.target.value)">
         </textarea>
       </div>
 
@@ -138,29 +140,20 @@ export default {
     return {};
   },
   methods: {
+    set(field, value) {
+      this.$emit('set', field, value);
+    },
     setModeTo(id) {
       this.$emit('set', 'mode', id);
     },
     setSourceTo(id) {
       this.$emit('set', 'source', id);
     },
-    changeDateFrom(e) {
-      this.$emit('set', 'dateFrom', e.target.value);
-    },
-    changeDateTo(e) {
-      this.$emit('set', 'dateTo', e.target.value);
-    },
     changeEmailTo(e) {
       this.$emit('set', 'email', e.target.value);
     },
     changePhoneTo(e) {
       this.$emit('set', 'phone', e);
-    },
-    changeTitleTo(e) {
-      this.$emit('set', 'title', e.target.value);
-    },
-    changeAnnotationTo(e) {
-      this.$emit('set', 'annotation', e.target.value);
     },
     changeCategories(value) {
       this.$emit('set', 'categories', value);
@@ -177,6 +170,5 @@ export default {
       }
     },
   },
-  mounted() {},
 };
 </script>

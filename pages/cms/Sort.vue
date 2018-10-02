@@ -2,7 +2,9 @@
   <div class="cms-new-page">
     <sidebar></sidebar>
     <div class="cms-new-page__content">
-      <div class="es">
+      <div
+        v-if="!isEmpty"
+        class="es">
         <div class="es__side es__side--left">
           <div class="es__side-top">
             <input
@@ -32,6 +34,21 @@
           </test-stack>
         </div>
       </div>
+
+      <div
+        v-else
+        class="es-empty">
+        <div class="es-empty__text">
+          Пока здесь ничего нет. Пожалуйста, загрузите
+          <input
+            class="hidden"
+            id="xml"
+            type="file"
+            ref="xml"
+            @input="setFile"/>
+          <label for="xml" class="button">XML файл</label>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -46,24 +63,32 @@ import TestStack from '@/components/cms/TestStack';
 export default {
   name: 'Sort',
   mounted() {
+    // redirect if came from link instead of cms
     if (this.$route.params.cms !== true) {
-      // redirect if came from link instead of cms
       this.$router.push({ path: '/cms/list' });
-      // this.fetchState();
+      this.canSyncState = false;
     }
   },
   beforeDestroy() {
-    this.syncState();
+    if (this.canSyncState) {
+      this.syncState();
+    }
   },
   components: { Sidebar, ESCard, TestStack },
   data() {
-    return {};
+    return {
+      canSyncState: true,
+    };
   },
-  computed: {},
-  methods: {
-    fetchState() {
-      this.$store.dispatch('fetchState');
+  computed: {
+    isEmpty() {
+      return (
+        this.$store.state.stacks.leftStack.list.length === 0 &&
+        this.$store.state.stacks.stack.list.length === 0
+      );
     },
+  },
+  methods: {
     syncState() {
       this.$store.dispatch('syncState');
     },
@@ -102,6 +127,23 @@ export default {
 
   @import '@/styles/vars.sass'
   @import '@/styles/mixins.sass'
+
+  .es-empty
+    width: 600px
+    padding: 40px
+    margin: 0 auto
+    margin-top: 80px
+    background-color: rgba(black, 0.05)
+    border-radius: 5px
+    height: 120px
+    display: flex
+    flex-direction: column
+    align-items: center
+    &__text
+      display: flex
+      align-items: center
+      .button
+        margin-left: 10px
 
   .es
     position: relative

@@ -193,6 +193,7 @@ export default {
     padding-right: 60px
     padding-top: 30px
     padding-bottom: 30px
+    margin: 0 auto
     &__return
       max-width: 770px
       margin-bottom: 30px

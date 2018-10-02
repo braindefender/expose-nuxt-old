@@ -29,17 +29,21 @@ export default {
   name: 'Edit',
   components: { Sidebar, EECard, EditStack },
   mounted() {
+    // redirect if came from link instead of cms
     if (this.$route.params.cms !== true) {
-      // redirect if came from link instead of cms
       this.$router.push({ path: '/cms/list' });
-      // this.fetchState();
+      this.canSyncState = false;
     }
   },
   beforeDestroy() {
-    this.syncState();
+    if (this.canSyncState) {
+      this.syncState();
+    }
   },
   data() {
-    return {};
+    return {
+      canSyncState: true,
+    };
   },
   computed: {},
   methods: {

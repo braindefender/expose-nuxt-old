@@ -36,23 +36,9 @@ export default {
       pages: this.$store.state.pageList,
     };
   },
-  computed: {
-    statusText() {
-      switch (this.item.status) {
-        case 'hidden':
-          return 'Скрыто';
-        case 'waiting':
-          return 'Ожидает публикации';
-        case 'public':
-          return 'Опубликовано';
-        default:
-          return '';
-      }
-    },
-  },
   methods: {
     log() {
-      console.log(this.item.image);
+      // console.log(this.item.image);
     },
     redirect({ item, it }) {
       console.log(item);

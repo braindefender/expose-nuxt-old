@@ -150,9 +150,6 @@ export default {
       // this.cleanup();
     },
   },
-  mounted() {
-    // this.$on('resize', this.resize);
-  },
   updated() {
     this.cleanup();
   },
@@ -352,29 +349,28 @@ export default {
       }, 0);
     },
     updateCheckState() {
-      this.cleanup();
-      this.sort();
-      const number = this.innerStack.list.reduce(
-        (acc, item) => (item.checked ? (acc += 1) : acc),
-        0,
-      );
-      if (this.innerStack.list.length > 0) {
-        const to = number === this.innerStack.list.length;
-        this.$store.commit('stacks/set', {
-          item: this.innerStack,
-          field: 'checked',
-          to,
-        });
-      } else {
-        this.$store.commit('stacks/set', {
-          item: this.innerStack,
-          field: 'checked',
-          to: false,
-        });
-      }
-      this.getChecked(this.innerStack);
-      this.getCheckedHeaders(this.innerStack);
-      this.$emit('updateCheckState');
+      //new
+      this.$store.dispatch('stacks/update');
+      //old
+      // const number = this.innerStack.list.reduce(
+      //   (acc, item) => (item.checked ? (acc += 1) : acc),
+      //   0,
+      // );
+      // if (this.innerStack.list.length > 0) {
+      //   const to = number === this.innerStack.list.length;
+      //   this.$store.commit('stacks/set', {
+      //     item: this.innerStack,
+      //     field: 'checked',
+      //     to,
+      //   });
+      // } else {
+      //   this.$store.commit('stacks/set', {
+      //     item: this.innerStack,
+      //     field: 'checked',
+      //     to: false,
+      //   });
+      // }
+      // this.$emit('updateCheckState');
     },
     checkItem(index) {
       this.$store.commit('stacks/checkItem', this.innerStack.list[index]);
@@ -383,44 +379,6 @@ export default {
     checkStack() {
       this.$store.dispatch('stacks/checkStack', { stack: this.innerStack });
       this.updateCheckState();
-    },
-    getChecked(stack) {
-      let checkedList = [];
-      stack.list.forEach(item => {
-        if (item.kind === 'stack') {
-          checkedList = checkedList.concat(this.getChecked(item));
-        } else {
-          if (item.checked) {
-            checkedList.push(item);
-          }
-        }
-      });
-      if (this.isMain) {
-        this.$store.commit('stacks/setCheckedList', checkedList);
-      }
-      return checkedList;
-    },
-    getCheckedHeaders(stack) {
-      let checkedHeadersList = [];
-      if (stack.checked) {
-        checkedHeadersList.push(stack);
-      } else {
-        stack.list.forEach(item => {
-          if (item.checked) {
-            checkedHeadersList.push(item);
-          } else {
-            if (item.kind === 'stack') {
-              checkedHeadersList = checkedHeadersList.concat(
-                this.getCheckedHeaders(item),
-              );
-            }
-          }
-        });
-      }
-      if (this.isMain) {
-        this.$store.commit('stacks/setCheckedHeadersList', checkedHeadersList);
-      }
-      return checkedHeadersList;
     },
   },
 };
