@@ -21,12 +21,12 @@ export default {
       this.$router.push({ path: '/cms/list' });
       this.canSyncState = false;
     } else {
-      this.fetchState();
+      // this.fetchState();
     }
   },
   beforeDestroy() {
     if (this.canSyncState) {
-      this.syncState();
+      // this.syncState();
     }
   },
   data() {
