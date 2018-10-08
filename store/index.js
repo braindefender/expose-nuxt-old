@@ -13,10 +13,10 @@ export const state = () => ({
     { name: 'hidden', title: 'Скрытые' },
   ],
   pageList: [
-    { name: 'Info', title: 'Информация' },
-    { name: 'Sort', title: 'Сортировка' },
-    { name: 'Edit', title: 'Редактирование' },
-    { name: 'Demo', title: 'Предпоказ' },
+    { name: 'Info', title: '1. Информация' },
+    { name: 'Sort', title: '2. Сортировка' },
+    { name: 'Edit', title: '3. Редактирование' },
+    { name: 'Demo', title: '4. Предпоказ' },
   ],
   modeList: [
     { index: 0, mode: 'weekly', title: 'Еженедельная' },

@@ -40,7 +40,7 @@
             <affix
               class="expose-page__menu"
               relative-element-selector=".expose-page__content-selector"
-              :offset="{ top: 10, bottom: 0 }">
+              :offset="{ top: 10, bottom: 0, scrollAffix: false, scrollContainerSelector: '.cms-new-page' }">
               <ContentSelector :stack="stack"></ContentSelector>
 
               <div class="expose-page__info">

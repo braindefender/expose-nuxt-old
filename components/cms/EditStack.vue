@@ -151,7 +151,7 @@ export default {
       const canTogggle =
         !this.options.left && !this.options.right && !this.renameMode;
       if (canTogggle) {
-        this.$store.commit('state/toggleStack', this.innerStack);
+        this.$store.commit('stacks/toggleStack', this.innerStack);
         // this.$emit('resize');
       }
     },

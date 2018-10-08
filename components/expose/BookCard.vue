@@ -1,5 +1,5 @@
 <template>
-  <div class="book-card" v-if="this.item.cover">
+  <div class="book-card" v-if="this.item.annotation || this.item.cover">
     <div class="book-card__image">
       <img :src="this.item.cover" :alt="this.item.meta">
     </div>

@@ -11,11 +11,6 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      {
-        rel: 'stylesheet',
-        type: 'text',
-        href: '~/assets/fonts/PTSans/stylesheet.css',
-      },
     ],
   },
   /*

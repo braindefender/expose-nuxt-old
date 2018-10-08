@@ -180,7 +180,7 @@ export default {
       flex: 0 0 auto
       color: $color-accent
       &--gray
-        color: rgba(black, 0.4)
+        color: rgba(black, 0.3)
     &__info
       font-size: 14px
       line-height: 15px
@@ -219,8 +219,8 @@ export default {
       border-radius: 4em
       margin-right: 5px
       &--warning
-        background-color: rgba($color-warning, 0.6)
+        background-color: rgba($color-warning, 0.5)
       &--error
-        background-color: rgba($color-error, 0.6)
+        background-color: rgba($color-error, 0.5)
 
 </style>

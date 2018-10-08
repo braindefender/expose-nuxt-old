@@ -27,6 +27,7 @@ export default {
       line-height: 22px
       font-style: italic
       width: 640px
-      white-space: pre
+      white-space: pre-wrap
+      text-align: justify
 
 </style>

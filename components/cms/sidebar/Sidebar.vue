@@ -86,16 +86,17 @@ export default {
     border-radius: 10px
     transition: all ease 0.15s
     cursor: pointer
+    color: rgba(white, 0.5)
     +tdn
     &:hover
       background-color: rgba(white, 0.1)
     &--active
-      background-color: rgba(white, 0.1)
+      background-color: rgba(white, 0.25)
+      color: white
       &:hover
-        background-color: rgba(white, 0.15)
+        background-color: rgba(white, 0.3)
     &__text
       font-weight: bold
-      color: rgba(white, 0.5)
       font-size: 18px
     &__icon
       width: 24px
