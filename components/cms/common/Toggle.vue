@@ -2,10 +2,11 @@
   <div class="cms-toggle">
     <div
       v-for="(item, index) in list"
+      :key="index"
+      :class="check == item.index ? 'cms-toggle__item--active' : ''"
       class="cms-toggle__item"
       @click="call(item.index)"
-      :class="check == item.index ? 'cms-toggle__item--active' : ''"
-      :key="index">{{item.title}}</div>
+      >{{item.title}}</div>
   </div>
 </template>
 
@@ -27,7 +28,6 @@ export default {
     align-items: center
     width: 100%
     border-radius: 5px
-    // box-shadow: inset 0 0 1px rgba(black, 0.2)
     border: 1px solid rgba(black, 0.2)
     font-size: 14px
     height: 32px

@@ -56,15 +56,19 @@
       </div>
     </div>
 
-    <div class="ee-card__item">
+    <div
+      v-if="item.info"
+      class="ee-card__item"
+      >
       <div class="ee-card__item-title">Информация об издании:</div>
       <div class="ee-card__item-content ee-card__info">
-        <p class="bold">Тип документа:</p>
-        <p>Статья, документ или книга</p>
-        <p class="bold">Тип документа:</p>
-        <p>Статья, документ или книга</p>
-        <p class="bold">Информация<br>об источнике:</p>
-        <p>Статья, документ или книга</p>
+        <div
+          v-for="(info, index) in item.info"
+          :key="index"
+          class="ee-card__info-line">
+          <div class="ee-card__info-cell bold">{{ info.name }}</div>
+          <div class="ee-card__info-cell">{{ info.value }}</div>
+        </div>
       </div>
     </div>
 
@@ -425,21 +429,23 @@ export default {
       padding: 15px
       font-size: 14px
       line-height: 16px
-      display: grid
-      grid-template-columns: auto 1fr
-      grid-template-rows: 1fr
-      grid-column-gap: 10px
-      grid-row-gap: 6px
-      align-items: end
-      justify-content: center
-      grid-auto-columns: min-content
-      p
-        margin: 0
-        padding: 0
-        &:nth-child(odd)
-          text-align: right
-        &:last-child
-          margin-right: 0
+      display: flex
+      flex-direction: column
+    &__info-line
+      width: 100%
+      display: flex
+      flex-direction: row
+      justify-content: space-between
+      margin-bottom: 6px
+      &:last-child
+        margin-bottom: 0
+    &__info-cell
+      font-size: 14px
+      line-height: 16px
+      &:first-child
+        text-align: left
+      &:last-child
+        text-align: right
     &__annotation
       textarea
         +outline-card(5px)

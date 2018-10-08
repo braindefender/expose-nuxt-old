@@ -244,21 +244,12 @@ export default {
       this.$store.dispatch('stacks/setCleanup', item);
     },
     remove() {
-      const newList = JSON.parse(JSON.stringify(this.checkedList));
-      newList.forEach(item => {
-        this.setChecked(item, false);
-      });
-      this.$store.commit('stacks/addToUnsorted', newList);
-      if (this.innerStack.checked) {
-        this.setCleanup(this.innerStack);
-      } else {
-        this.checkedHeadersList.forEach(item => this.setCleanup(item));
-      }
-      this.updateCheckState();
-      this.$store.commit(
-        'stacks/sortStackList',
-        this.$store.state.stacks.leftStack,
-      );
+      // if (this.innerStack.checked) {
+      //   this.setCleanup(this.innerStack);
+      // } else {
+      //   this.checkedHeadersList.forEach(item => this.setCleanup(item));
+      // }
+      this.$store.dispatch('stacks/remove');
     },
     copyTo() {
       const list = this.checkedList;
@@ -266,6 +257,7 @@ export default {
         this.setChecked(item, false);
       });
       const newList = JSON.parse(JSON.stringify(list));
+      newList.forEach(el => (el.position = 1));
       this.$store.commit('stacks/updateStackList', {
         stack: this.innerStack,
         list: this.innerStack.list.concat(newList),
@@ -276,6 +268,7 @@ export default {
       const newList = JSON.parse(JSON.stringify(this.checkedList));
       newList.forEach(item => {
         this.setChecked(item, false);
+        item.position = 1;
       });
       this.$store.commit('stacks/updateStackList', {
         stack: this.innerStack,
@@ -287,8 +280,11 @@ export default {
     addStack() {
       const list = this.checkedList.slice();
       const checkedHeadersList = this.checkedHeadersList.slice();
-      list.forEach(item => this.setChecked(item, false));
+      list.forEach(item => {
+        this.setChecked(item, false);
+      });
       const newList = JSON.parse(JSON.stringify(list));
+      newList.forEach(el => (el.position = 1));
       this.$store.commit('stacks/addNewStack', {
         stack: this.innerStack,
         list: newList,

@@ -50,6 +50,7 @@ const sortByAuthor = function(stack, inverse) {
 
 const cleanup = function(item) {
   if (item.kind === 'stack') {
+    // item.list.forEach(el => console.log(el.title));
     item.list = item.list.filter(item => !item.clean);
     item.list.forEach(item => cleanup(item));
   }
@@ -57,7 +58,7 @@ const cleanup = function(item) {
 
 const getCheckedListOf = function(stack) {
   let checkedList = [];
-  console.log('checked!', stack);
+  // console.log('checked!', stack);
   stack.list.forEach(el => {
     if (el.kind === 'stack') {
       checkedList = checkedList.concat(getCheckedListOf(el));
@@ -107,7 +108,9 @@ const sort = function(item) {
 const update = function(item) {
   if (item.kind === 'stack') {
     // Очистка удалённых
-    item.list.forEach(el => cleanup(el));
+    // console.log('l1: ', item.list.length);
+    cleanup(item);
+    // console.log('l2: ', item.list.length);
     // Если пустой, то ставим маркер удаления
     if (item.list.length === 0) {
       item.checked = false;
@@ -211,6 +214,7 @@ export const mutations = {
   },
   addToUnsorted(state, items) {
     items.forEach(el => {
+      el.position = 0;
       state.leftStack.list.push(el);
     });
   },
@@ -219,6 +223,7 @@ export const mutations = {
   },
   update(state) {
     update(state.stack);
+    update(state.leftStack);
   },
 };
 
@@ -257,6 +262,18 @@ export const actions = {
       commit('set', { item, field: 'clean', to: true });
     }
     commit('set', { item, field: 'checked', to: false });
+  },
+  remove({ state, dispatch, commit }) {
+    let checked = JSON.parse(JSON.stringify(state.checkedList));
+    state.checkedHeadersList.forEach(item => dispatch('setCleanup', item));
+    checked = checked.filter(item => item.position !== 0);
+    checked.forEach(item => {
+      dispatch('setChecked', { item, to: false });
+      item.position = 0;
+    });
+    commit('addToUnsorted', checked);
+    dispatch('update');
+    commit('sortStackList', state.leftStack);
   },
   update({ commit, dispatch, state }) {
     commit('update');

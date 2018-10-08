@@ -1,166 +1,72 @@
 <template>
 
   <div class="book-page">
-    <div class="book-page__return">
+    <div class="book-page__return" v-if="book.expose">
       <div class="book-page__return-image">
-        <img :src="image1" alt="">
+        <img :src="book.cover" alt="">
       </div>
-      <a href="#" class="book-page__return-link">
-        Еженедельная выставка новых поступлений отделения ГПНТБ СО РАН
+      <a
+        :href="`/expose/${expose.link}`"
+        class="book-page__return-link">
+        {{ book.expose.name }}
       </a>
     </div>
     <div class="book-page__wrapper">
       <div class="book-page__side">
-        <div class="book-image">
+        <div
+          v-if="book.cover"
+          class="book-image">
           <div class="book-image__blur">
             <div class="book-image__blur-container">
-              <img :src="image" alt="">
+              <img :src="cover" :alt="meta">
             </div>
           </div>
           <div class="book-image__image">
-            <img :src="image" alt="">
+            <img :src="cover" :alt="meta">
           </div>
+        </div>
+        <div
+          v-else
+          class="book-ph">
+          <div class="book-ph__author">{{ book.author }}</div>
+          <div class="book-ph__title">{{ book.title }}</div>
+          <div class="book-ph__info">{{ sourceAndYear }}</div>
         </div>
         <div class="book-page__button">
           <a href="#" class="button">Перейти в каталог</a>
         </div>
       </div>
       <div class="book-page__content">
-        <div class="book-page__authors">
-          Белов Н.А., Белов В.Д., Дашкевич Н.И.
-        </div>
-        <div class="book-page__title">
-          Фазовый состав многокомпонентных гамма-сплавов
-          на основе алюминидов титана: учеб. пособие
-        </div>
-        <div class="book-page__source">
-          ВИАМ, 2018
-        </div>
-        <div class="book-page__annotation">
-          В&nbsp;учебном пособии обобщены результаты экспериментальных и&nbsp;
-          расчетных исследований авторов в&nbsp;области многокомпонентных
-          гамма-сплавов на&nbsp;основе алюминидов титана. С&nbsp;использованием
-          программы Thermo-Calc проанализировано влияние наиболее часто
-          используемых легирующих элементов на&nbsp;структуру и&nbsp;фазовый
-          состав. Приведены результаты экспериментальных плавок
-          по&nbsp;приготовлению гамма-сплавов типа TNM.
-          <br>
-          <br>
-          Книга рассчитана на&nbsp;широкий круг специалистов,
-          которые используют для работы гамма-сплавы, а&nbsp;также
-          может быть полезна аспирантам и&nbsp;магистрантам,
-          обучающимся по&nbsp;материаловедческим специальностям,
-          прежде всего в&nbsp;области легких сплавов,
-          при выполнении диссертационных и&nbsp;квалификационных работ,
-          связанных с&nbsp;гамма-сплавами.
-        </div>
-        <div class="book-page__info">
-          <div class="book-page__info-line">
-            <div class="book-page__info-cell book-page__info-cell--bold">Страниц:</div>
-            <div class="book-page__info-cell">335</div>
-          </div>
-          <div class="book-page__info-line">
-            <div class="book-page__info-cell book-page__info-cell--bold">Тип документа:</div>
-            <div class="book-page__info-cell">Статья, Книга или Патент</div>
-          </div>
-          <div class="book-page__info-line">
-            <div class="book-page__info-cell book-page__info-cell--bold">
-              Информация<br>об источнике:
-            </div>
-            <div class="book-page__info-cell">
-              Из какого журнала, книги.<br>
-              Информация об ее авторе и т.п.
-            </div>
-          </div>
-          <div class="book-page__info-line">
-            <div class="book-page__info-cell book-page__info-cell--bold">ISBN:</div>
-            <div class="book-page__info-cell">8-800555-3535</div>
-          </div>
-          <div class="book-page__info-line">
-            <div class="book-page__info-cell book-page__info-cell--bold">Место хранения:</div>
-            <div class="book-page__info-cell">Отделение ГПНТБ СО РАН</div>
-          </div>
-          <div class="book-page__info-line">
-            <div class="book-page__info-cell book-page__info-cell--bold">Шифр:</div>
-            <div class="book-page__info-cell">К2-Б435</div>
+        <div class="book-page__authors">{{ authors }}</div>
+        <div class="book-page__title">{{ book.title }}</div>
+        <div class="book-page__source">{{ sourceAndYear }}</div>
+        <div class="book-page__annotation">{{ book.annotation }}</div>
+        <div
+          v-if="book.info !== 0"
+          class="book-page__info">
+          <div
+            v-for="(item, index) in book.info"
+            :key="index"
+            class="book-page__info-line">
+            <div class="book-page__info-cell bold">{{ item.name }}</div>
+            <div class="book-page__info-cell">{{ item.value }}</div>
           </div>
         </div>
       </div>
     </div>
-    <div class="book-page__images">
-      <div class="book-page__image"></div>
-      <div class="book-page__image"></div>
-      <div class="book-page__image"></div>
-      <div class="book-page__image"></div>
-      <div class="book-page__image"></div>
+    <div
+      v-if="book.images !== 0"
+      class="book-page__images">
+      <div
+        v-for="(image, index) in book.images"
+        :key="index"
+        class="book-page__image">
+        <img :src="image" :alt="`${meta}-${index}`">
+      </div>
     </div>
-    <div class="book-contents">
+    <div class="book-contents" v-if="book.contents">
       <div class="book-contents__title">Содержание</div>
-      <div class="book-contents__text">
-        Введение .......................................................... 5<br>
-        <br>
-        ГЛАВА 1. О государственной политике в сфере науки и инноваций ..... 7<br>
-        <br>
-        ГЛАВА 2. Теоретические и методические основы бюджетирования,<br>
-                ориентированного на результат ........................... 19<br>
-        <br>
-        Концепция БОР .................................................... 19<br>
-        <br>
-        Практический опыт внедрения системы БОР .......................... 28<br>
-        <br>
-        ГЛАВА 3. Программно-целевое формирование бюджета на 2012 г.<br>
-                и плановый период 2013-2014 гг. ......................... 35<br>
-        <br>
-        Основные параметры ............................................... 35<br>
-        <br>
-        Программно-целевое формирование бюджета 2012-2014 гг.<br>
-        и проблемы бюджетного финансирования науки ....................... 39<br>
-        <br>
-        ГЛАВА 4. Новые механизмы бюджетного обеспечения  деятельности<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        государственных академий наук ........................... 50<br>
-        <br>
-        Методические основы .............................................. 51<br>
-        <br>
-        Автономные, бюджетные и казенные учреждения ...................... 53<br>
-        <br>
-        Формирование государственного (муниципального) задания ........... 59<br>
-        <br>
-        Разработка нормативов затрат на оказание государственных услуг ... 63<br>
-        <br>
-        Механизм субсидий ................................................ 67<br>
-        <br>
-        «Академические» проблемы ......................................... 74<br>
-        <br>
-        ГЛАВА 5. ДРОНД как инструмент бюджетирования, ориентированного<br>
-                на результат ............................................ 78<br>
-        <br>
-        Методические подходы ............................................. 78<br>
-        <br>
-        ДРОНД Минобрнауки России ......................................... 83<br>
-        <br>
-        ДРОНД Минэкономразвития России ................................... 89<br>
-        <br>
-        ГЛАВА 6. Особенности налогообложения государственных<br>
-                (муниципальных) предприятий ............................ 101<br>
-        <br>
-        Общие проблемы налогообложения .................................. 102<br>
-        <br>
-        Направления реформирования системы налогов и сборов в сфере<br>
-        науки и инноваций ............................................... 110<br>
-        <br>
-        ПРИЛОЖЕНИЕ 1. Зарубежный опыт организации бюджетирования,<br>
-        ориентированного на результат ................................... 117<br>
-        <br>
-        ПРИЛОЖЕНИЕ 2. Порядок разработки, реализации и оценки<br>
-        эффективности государственных программ Российской Федерации ..... 163<br>
-        <br>
-        ПРИЛОЖЕНИЕ 3. Концепция государственной программы<br>
-        «Единая программа фундаментальных исследований на 2013-2020<br>
-        годы» ........................................................... 181<br>
-        <br>
-        Литература ...................................................... 206<br>
-      </div>
+      <div class="book-contents__text">{{ book.contents }}</div>
     </div>
   </div>
 
@@ -172,11 +78,41 @@ import image1 from '@/assets/images/janko-ferlic-174927-unsplash.jpg';
 
 export default {
   name: 'BookPage',
+  props: ['book'],
   data() {
     return {
       image,
       image1,
     };
+  },
+  computed: {
+    sourceAndYear() {
+      return `${this.book.source}, ${this.book.year}`;
+    },
+    meta() {
+      return `${this.book.author} — ${this.book.title}, ${this.book.source}, ${
+        this.book.year
+      }`;
+    },
+    authors() {
+      if (this.book.authors) {
+        return this.book.authors.join(', ');
+      } else {
+        return this.book.author;
+      }
+    },
+  },
+  methods: {
+    fetchExpose() {
+      this.$axios
+        .$get('expose/return', { params: { _id: book.exposeId } })
+        .then(res => {
+          this.expose = res;
+        })
+        .catch(err => {
+          console.log('Error: cannot get return object', err);
+        });
+    },
   },
 };
 </script>
@@ -259,6 +195,7 @@ export default {
       text-align: justify
       margin-bottom: 20px
       opacity: 0.8
+      white-space: pre-wrap
     &__info
       margin-bottom: 30px
     &__info-line
@@ -276,8 +213,6 @@ export default {
         text-align: left
       &:last-child
         text-align: right
-      &--bold
-        font-weight: bold
     &__images
       width: 100%
       display: flex
@@ -307,5 +242,24 @@ export default {
       font-family: 'PT Mono'
       text-align: justify
       display: inline-block
+
+  .book-ph
+    width: 100%
+    height: 350px
+    background: white
+    margin-bottom: 30px
+    border-radius: 5px
+    display: flex
+    align-items: center
+    flex-direction: column
+    justify-content: space-between
+    padding: 40px 20px
+    font-size: 12px
+    color: black
+    box-shadow: 0 5px 25px rgba(black, 0.1)
+    &__title
+      font-weight: bold
+      text-align: center
+      font-size: 12px
 
 </style>

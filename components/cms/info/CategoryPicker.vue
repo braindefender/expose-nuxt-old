@@ -3,14 +3,15 @@
     <no-ssr>
       <multiselect
         v-model="value"
-        :multiple="true"
-        :options="categories"
         selectLabel=""
         deselectLabel=""
         placeholder="Выберите категорию"
-        @input="onInput"
+        :options="categories"
+        :multiple="true"
         :hideSelected="true"
-        :close-on-select="false">
+        :close-on-select="false"
+        @input="onInput"
+        >
       </multiselect>
     </no-ssr>
   </div>
