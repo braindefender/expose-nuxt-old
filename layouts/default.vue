@@ -7,6 +7,7 @@
 </template>
 
 <style lang="sass">
+
   html
     font-family: 'PT Sans', -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif
     font-size: 16px
