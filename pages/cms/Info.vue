@@ -7,9 +7,9 @@
         v-if="expose.mode === 0"
         :mode="expose.mode"
         :source="expose.source"
-        :dateTo="dateTo"
-        :dateFrom="dateFrom"
-        @set="set">
+        :dates="expose.dates"
+        @set="set"
+        @setDate="setDate">
       </Weekly>
 
       <Theme
@@ -19,10 +19,10 @@
         :phone="expose.phone"
         :email="expose.email"
         :source="expose.source"
-        :dateTo="dateTo"
-        :dateFrom="dateFrom"
+        :dates="expose.dates"
         :annotation="expose.annotation"
-        @set="set">
+        @set="set"
+        @setDate="setDate">
       </Theme>
 
 
@@ -95,39 +95,45 @@ export default {
     info() {
       return this.expose.mode === 0 ? this.weekly : this.theme;
     },
-    dateFrom() {
-      return this.$store.state.info.dateFrom;
-    },
-    dateTo() {
-      return this.$store.state.info.dateTo;
+    common() {
+      return {
+        source: this.expose.source,
+        dates: {
+          create: this.$store.state.info.dates.create,
+          update: this.$store.state.info.dates.update,
+          public: this.$store.state.info.dates.public,
+          from: this.$store.state.info.dates.from,
+          to: this.$store.state.info.dates.to,
+        },
+        workerID: this.expose.workerID,
+        _id: this.expose._id,
+      };
     },
     weekly() {
       return {
-        mode: 0,
-        title: this.sourceList[this.expose.source].weekly,
-        phone: this.sourceList[this.expose.source].phone,
-        email: this.sourceList[this.expose.source].email,
-        source: this.expose.source,
-        dateFrom: this.dateFrom,
-        dateTo: this.dateTo,
-        image: '',
-        annotation: '',
-        _id: this.expose._id,
+        ...this.common,
+        ...{
+          mode: 0,
+          title: this.sourceList[this.expose.source].weekly,
+          phone: this.sourceList[this.expose.source].phone,
+          email: this.sourceList[this.expose.source].email,
+          image: '',
+          annotation: '',
+        },
       };
     },
     theme() {
       return {
-        mode: 1,
-        source: this.expose.source,
-        title: this.expose.title,
-        phone: this.expose.phone,
-        email: this.expose.email,
-        image: this.expose.image,
-        annotation: this.expose.annotation,
-        dateFrom: this.dateFrom,
-        dateTo: this.dateTo,
-        categories: this.expose.categories,
-        _id: this.expose._id,
+        ...this.common,
+        ...{
+          mode: 1,
+          title: this.expose.title,
+          phone: this.expose.phone,
+          email: this.expose.email,
+          image: this.expose.image,
+          annotation: this.expose.annotation,
+          categories: this.expose.categories,
+        },
       };
     },
     options() {
@@ -143,15 +149,20 @@ export default {
         this.expose.mode === 0
           ? this.sourceList[this.expose.source].weekly
           : this.expose.title;
+      let date = {};
+      if (this.expose.dates.from) {
+        date.from = this.getDateFrom(this.expose.dates.from);
+        date.to = this.getDateFrom(this.expose.dates.to);
+      } else {
+        date.from = this.getDateFrom(this.expose.dates.public);
+        date.to = undefined;
+      }
       return {
         nav: true,
+        date,
         title,
         image,
         source,
-        date: {
-          from: this.getDateFrom(this.dateFrom),
-          to: this.getDateFrom(this.dateTo),
-        },
         prev: undefined,
         next: undefined,
       };
@@ -163,6 +174,9 @@ export default {
     },
     set(field, value) {
       this.$store.commit('info/set', { field, value });
+    },
+    setDate(field, value) {
+      this.$store.commit('info/setDate', { field, value });
     },
     getDateInYYYYMMDD(date) {
       return date.toISOString().split('T')[0];

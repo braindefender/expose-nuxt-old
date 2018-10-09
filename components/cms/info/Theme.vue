@@ -31,8 +31,8 @@
               type="date"
               min="1980-01-01"
               max="9999-12-31"
-              :value="dateFrom"
-              @change="set('dateFrom', $event.target.value)"
+              :value="dates.from"
+              @change="setDate('from', $event.target.value)"
               >
           </div>
           <div class="ec__date-picker-half">
@@ -41,8 +41,24 @@
               type="date"
               min="1980-01-01"
               max="9999-12-31"
-              :value="dateTo"
-              @change="set('dateTo', $event.target.value)"
+              :value="dates.to"
+              @change="setDate('to', $event.target.value)"
+              >
+          </div>
+        </div>
+      </div>
+
+      <div class="ec__row">
+        <div class="ec__title">Дата публикации</div>
+        <div class="ec__date-picker">
+          <div class="ec__date-picker-half">
+            <span>Начало</span>
+            <input
+              type="date"
+              min="1980-01-01"
+              max="9999-12-31"
+              :value="dates.public"
+              @change="setDate('public', $event.target.value)"
               >
           </div>
         </div>
@@ -125,16 +141,7 @@ import CategoryPicker from '~/components/cms/info/CategoryPicker';
 
 export default {
   name: 'Theme',
-  props: [
-    'mode',
-    'source',
-    'dateFrom',
-    'dateTo',
-    'title',
-    'email',
-    'phone',
-    'annotation',
-  ],
+  props: ['mode', 'source', 'dates', 'title', 'email', 'phone', 'annotation'],
   components: { CategoryPicker, Select, Toggle, TheMask },
   data() {
     return {};
@@ -142,6 +149,9 @@ export default {
   methods: {
     set(field, value) {
       this.$emit('set', field, value);
+    },
+    setDate(field, value) {
+      this.$emit('setDate', field, value);
     },
     setModeTo(id) {
       this.$emit('set', 'mode', id);

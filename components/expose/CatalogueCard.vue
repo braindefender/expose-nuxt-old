@@ -13,7 +13,7 @@
     <div @click="redirect"
       class="cat-card__inner cat-card__content cat-card__content--catalogue">
       <div class="cat-card__content-title">{{ this.item.title }}</div>
-      <div class="cat-card__content-date">{{ this.item.dateFrom }}</div>
+      <div class="cat-card__content-date">{{ prettyDate }}</div>
     </div>
 
   </div>
@@ -28,6 +28,13 @@ export default {
     return {};
   },
   computed: {
+    prettyDate() {
+      const date = new Date(this.item.dates.public);
+      const months = this.$store.state.months;
+      return `${date.getDate()} ${
+        months[date.getMonth()]
+      }, ${date.getFullYear()}`;
+    },
     meta() {
       return `${this.item.title} - ${this.item.dateFrom}`;
     },

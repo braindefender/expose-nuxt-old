@@ -297,6 +297,7 @@
       height: 226px
       background-color: #333
       border-radius: 5px
+      // overflow: hidden
     &__panel
       display: flex
       flex-direction: row

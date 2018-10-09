@@ -42,7 +42,7 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch('fetchExposeList', 'public');
+    this.$store.dispatch('fetchExposeList', 'work');
   },
 };
 </script>
@@ -80,15 +80,6 @@ export default {
         font-size: 18px
         font-weight: bold
         color: black
-      &--status
-        width: 120px
-        flex: 0 0 auto
-        &--public
-          color: $color-accent
-        &--hidden
-          color: rgba(black, 0.4)
-        &--waiting
-          color: $color-error
       &--date
         width: 160px
         flex: 0 0 auto
@@ -97,12 +88,12 @@ export default {
     &__header
       &--actions
         padding-right: 20px
-        width: 320px
+        width: 360px
         flex: 0 0 auto
     &__list-item
       &--actions
         padding-right: 20px
-        width: 320px
+        width: 360px
         flex: 0 0 auto
         display: grid
         grid-template-rows: 1fr 1fr

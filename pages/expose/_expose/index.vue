@@ -162,16 +162,21 @@ export default {
       } else {
         image = sourceList[this.expose.source].image;
       }
+      let date = {};
+      if (this.expose.dates.from) {
+        date.from = this.date(this.expose.dates.from);
+        date.to = this.date(this.expose.dates.to);
+      } else {
+        date.from = this.date(this.expose.dates.public);
+        date.to = undefined;
+      }
       return {
         nav: true,
-        title: this.expose.title,
+        date,
         image,
+        title: this.expose.title,
         source:
           this.expose.mode !== 0 ? sourceList[this.expose.source].title : '',
-        date: {
-          from: this.date(this.expose.dateFrom),
-          to: this.date(this.expose.dateTo),
-        },
         prev: undefined,
         next: undefined,
       };

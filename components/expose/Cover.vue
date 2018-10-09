@@ -39,20 +39,7 @@ export default {
   props: ['options'],
   data() {
     return {
-      months: [
-        'января',
-        'февраля',
-        'марта',
-        'апреля',
-        'мая',
-        'июня',
-        'июля',
-        'августа',
-        'сентября',
-        'октября',
-        'ноября',
-        'декабря',
-      ],
+      months: this.$store.state.months,
     };
   },
   computed: {
@@ -87,14 +74,22 @@ export default {
   },
   methods: {
     generateDate(from, to) {
-      return `с ${from.day} ${this.months[from.month]} по ${to.day} ${
-        this.months[to.month]
-      }`;
+      if (to) {
+        return `с ${from.day} ${this.months[from.month]} по ${to.day} ${
+          this.months[to.month]
+        }`;
+      } else {
+        return `от ${from.day} ${this.months[from.month]}, ${from.year}`;
+      }
     },
     generateFullDate(from, to) {
-      return `с ${from.day} ${this.months[from.month]} по ${to.day} ${
-        this.months[to.month]
-      } ${to.year}`;
+      if (to) {
+        return `с ${from.day} ${this.months[from.month]} по ${to.day} ${
+          this.months[to.month]
+        } ${to.year}`;
+      } else {
+        return `от ${from.day} ${this.months[from.month]}, ${from.year}`;
+      }
     },
   },
 };

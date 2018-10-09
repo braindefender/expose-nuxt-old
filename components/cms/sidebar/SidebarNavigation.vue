@@ -19,9 +19,17 @@
       </nuxt-link>
     </div>
 
-    <div class="sidebar-button" @click="final">
-      <div class="sidebar-button__icon sidebar-button__icon--save"></div>
-      <div class="sidebar-button__text">Сохранить</div>
+    <div class="sidebar-button-box">
+      <div class="sidebar-button" @click="save">
+        <div class="sidebar-button__icon sidebar-button__icon--save"></div>
+        <div class="sidebar-button__text">Сохранить</div>
+        <div class="sidebar-button__overlay" ref="saveButton">Сохранено</div>
+      </div>
+
+      <div class="sidebar-button" @click="final">
+        <div class="sidebar-button__icon sidebar-button__icon--save"></div>
+        <div class="sidebar-button__text">Опубликовать</div>
+      </div>
     </div>
 
   </div>
@@ -37,12 +45,29 @@ export default {
     };
   },
   methods: {
+    animateSave() {
+      const el = this.$refs.saveButton;
+      el.velocity(
+        { opacity: 1 },
+        {
+          duration: 250,
+          complete: () => {
+            el.velocity({ opacity: 0 }, { delay: 1000, duration: 250 });
+          },
+        },
+      );
+    },
     getPageName() {
       return $nuxt.$route.path.split('/').pop();
     },
     final() {
       this.$store.dispatch('pushFinalState');
       this.$router.push('list');
+    },
+    save() {
+      this.$store.dispatch('syncState').then(res => {
+        this.animateSave();
+      });
     },
   },
   mounted() {

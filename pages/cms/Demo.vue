@@ -20,8 +20,6 @@ export default {
     if (this.$route.params.cms !== true) {
       this.$router.push({ path: '/cms/list' });
       this.canSyncState = false;
-    } else {
-      // this.fetchState();
     }
   },
   beforeDestroy() {

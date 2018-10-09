@@ -5,8 +5,8 @@
         <div class="sidebar-account__avatar"></div>
       </div>
       <div class="sidebar-account__text">
-        <div class="sidebar-account__name">Васильева Елена Семёновна</div>
-        <div class="sidebar-account__mail">makakakakala@gpntbsib.ru</div>
+        <div class="sidebar-account__name">Читальный зал</div>
+        <div class="sidebar-account__mail">readinghall@gpntbsib.ru</div>
       </div>
       <div class="sidebar-account__panel">
         <p>Модерируемых выставок:</p>

@@ -23,22 +23,46 @@
     </div>
 
     <div class="ec__row">
-        <div class="ec__title">Даты проведения</div>
-        <div class="ec__date-picker">
-          <div class="ec__date-picker-half">
-            <span>Начало</span>
-            <input
-              @change="changeDateFrom" :value="dateFrom"
-              type="date" max="9999-12-31">
-          </div>
-          <div class="ec__date-picker-half">
-            <span>Конец</span>
-            <input
-              @change="changeDateTo" :value="dateTo"
-              type="date" max="9999-12-31">
-          </div>
+      <div class="ec__title">Даты проведения</div>
+      <div class="ec__date-picker">
+        <div class="ec__date-picker-half">
+          <span>Начало</span>
+          <input
+            type="date"
+            min="1980-01-01"
+            max="9999-12-31"
+            :value="dates.from"
+            @change="setDate('from', $event.target.value)"
+            >
+        </div>
+        <div class="ec__date-picker-half">
+          <span>Конец</span>
+          <input
+            type="date"
+            min="1980-01-01"
+            max="9999-12-31"
+            :value="dates.to"
+            @change="setDate('to', $event.target.value)"
+            >
         </div>
       </div>
+    </div>
+
+    <div class="ec__row">
+      <div class="ec__title">Дата публикации</div>
+      <div class="ec__date-picker">
+        <div class="ec__date-picker-half">
+          <span>Начало</span>
+          <input
+            type="date"
+            min="1980-01-01"
+            max="9999-12-31"
+            :value="dates.public"
+            @change="setDate('public', $event.target.value)"
+            >
+        </div>
+      </div>
+    </div>
 
   </div>
 </template>
@@ -48,23 +72,20 @@ import Toggle from '~/components/cms/common/Toggle';
 
 export default {
   name: 'Weekly',
-  props: ['mode', 'source', 'dateFrom', 'dateTo'],
+  props: ['mode', 'source', 'dates'],
   components: { Toggle },
   data() {
     return {};
   },
   methods: {
+    setDate(field, value) {
+      this.$emit('setDate', field, value);
+    },
     setModeTo(id) {
       this.$emit('set', 'mode', id);
     },
     setSourceTo(id) {
       this.$emit('set', 'source', id);
-    },
-    changeDateFrom(e) {
-      this.$emit('set', 'dateFrom', e.target.value);
-    },
-    changeDateTo(e) {
-      this.$emit('set', 'dateTo', e.target.value);
     },
   },
 };

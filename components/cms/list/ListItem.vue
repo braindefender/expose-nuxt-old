@@ -4,13 +4,13 @@
       <catalogue-card :item="item" :options="{ cms: true }"></catalogue-card>
     </div>
     <div class="cms-table__list-item cms-table__list-item--date">
-      {{ item.dateCreate }}
+      {{ item.dates.create }}
     </div>
     <div class="cms-table__list-item cms-table__list-item--date">
-      {{ item.dateUpdate }}
+      {{ item.dates.update }}
     </div>
     <div class="cms-table__list-item cms-table__list-item--authors">
-      {{ item.authors }}
+      <button class="button" @click="remove">Удалить</button>
     </div>
     <div class="cms-table__list-item cms-table__list-item--actions">
       <div class="button"
@@ -37,6 +37,9 @@ export default {
     };
   },
   methods: {
+    remove() {
+      this.$store.dispatch('removeExpose', this.item._id);
+    },
     log() {
       // console.log(this.item.image);
     },

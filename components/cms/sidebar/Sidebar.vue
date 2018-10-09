@@ -38,6 +38,7 @@ export default {
 
 <style lang="sass">
   @import 'styles/mixins.sass'
+  @import 'styles/vars.sass'
 
   .sidebar
     background-color: #262640
@@ -87,6 +88,7 @@ export default {
     transition: all ease 0.15s
     cursor: pointer
     color: rgba(white, 0.5)
+    position: relative
     +tdn
     &:hover
       background-color: rgba(white, 0.1)
@@ -97,6 +99,17 @@ export default {
         background-color: rgba(white, 0.3)
     &__text
       font-weight: bold
+      font-size: 18px
+    &__overlay
+      +posa(0)
+      display: flex
+      align-items: center
+      justify-content: center
+      background-color: $color-accent
+      border-radius: inherit
+      color: white
+      font-weight: bold
+      opacity: 0
       font-size: 18px
     &__icon
       width: 24px

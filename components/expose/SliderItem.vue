@@ -1,17 +1,17 @@
 <template>
   <div class="slider-item">
     <div
-      v-if="item.image"
+      v-if="image"
       class="slider-item__inner slider-item__image">
-      <img :src="item.image" :alt="meta">
+      <img :src="image" :alt="meta">
     </div>
     <div class="slider-item__inner slider-item__content">
       <div class="slider-item__title">{{ item.title }}</div>
       <div class="slider-item__info">
         <div
-          v-if="item.dateFrom"
+          v-if="item.dates.from"
           class="slider-item__date">
-          {{ item.dateFrom }}
+          {{ prettyDate }}
         </div>
         <div class="slider-item__place">
           {{ source }}
@@ -29,6 +29,11 @@ export default {
     return {};
   },
   computed: {
+    image() {
+      return this.item.image
+        ? this.item.image
+        : this.$store.state.sourceList[this.item.source].image;
+    },
     meta() {
       return `${this.item.title}, ${this.item.dateFrom}, ${this.item.source}`;
     },
@@ -39,6 +44,13 @@ export default {
         case 1:
           return 'Отделение ГПНТБ СО РАН';
       }
+    },
+    prettyDate() {
+      const date = new Date(this.item.dates.from);
+      const months = this.$store.state.months;
+      return `${date.getDate()} ${
+        months[date.getMonth()]
+      }, ${date.getFullYear()}`;
     },
   },
 };

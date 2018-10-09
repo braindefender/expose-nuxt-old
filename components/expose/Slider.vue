@@ -36,7 +36,7 @@ export default {
     //   this.list = res.catalogueList;
     // });
     this.$axios.$get('/current').then(res => {
-      // console.log(res);
+      console.log(res);
       this.list = res.current;
       this.mySwiper.updateSlides();
     });
@@ -61,9 +61,11 @@ export default {
 </script>
 
 <style lang="sass">
+
   .swiper-container
     height: 226px
     width: 100%
+    border-radius: 5px
 
   .slider
     position: relative

@@ -4,13 +4,15 @@ import weekly0 from '@/assets/images/jamie-taylor-110195-unsplash.jpg';
 import weekly1 from '@/assets/images/janko-ferlic-174927-unsplash.jpg';
 
 export const state = () => ({
+  workerID: 'dummyuser',
   currentPage: 0,
   categoryList: [],
   exposeList: [],
   statusList: [
+    { name: 'work', title: 'В работе' },
     { name: 'public', title: 'Опубликованные' },
     { name: 'waiting', title: 'Ожидающие публикации' },
-    { name: 'hidden', title: 'Скрытые' },
+    // { name: 'hidden', title: 'Скрытые' },
   ],
   pageList: [
     { name: 'Info', title: '1. Информация' },
@@ -39,6 +41,20 @@ export const state = () => ({
       email: 'abonement@gpntbsib.ru',
       phone: '+7 (913) 001-4485',
     },
+  ],
+  months: [
+    'января',
+    'февраля',
+    'марта',
+    'апреля',
+    'мая',
+    'июня',
+    'июля',
+    'августа',
+    'сентября',
+    'октября',
+    'ноября',
+    'декабря',
   ],
 });
 
@@ -74,7 +90,9 @@ export const actions = {
   createNewExpose({ commit, state }) {
     return new Promise((resolve, reject) => {
       this.$axios
-        .$get('/cms/new')
+        .$get('/cms/new', {
+          params: { workerID: state.workerID },
+        })
         .then(res => {
           commit('setState', res, { root: true });
           console.log('Got response from server:', res);
@@ -89,7 +107,9 @@ export const actions = {
   fetchExposeList({ commit, state }, payload) {
     return new Promise((resolve, reject) => {
       this.$axios
-        .$get(`/cms/list/${payload}`)
+        .$get(`/cms/list/${payload}`, {
+          params: { workerID: state.workerID },
+        })
         .then(res => {
           commit('setExposeList', res);
           console.log(`Got ${payload} expose list from server:`, res);
@@ -144,5 +164,14 @@ export const actions = {
   pushFinalState({ commit }) {
     commit('syncState');
     commit('pushFinalState', { root: true });
+  },
+  removeExpose({ commit, dispatch, state }, payload) {
+    console.log(payload);
+    this.$axios
+      .post('/cms/list/delete', {}, { params: { _id: payload } })
+      .then(res => {
+        dispatch('fetchExposeList', 'work');
+        console.log('Got list from server after delete:', res);
+      });
   },
 };
