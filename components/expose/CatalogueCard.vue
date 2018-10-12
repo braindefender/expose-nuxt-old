@@ -53,7 +53,7 @@ export default {
       } else {
         this.$router.push({
           path: `/expose/${this.item.title.split(' ').join('_')}-${
-            this.item.plainDate
+            this.item.dates.public
           }`,
         });
       }
