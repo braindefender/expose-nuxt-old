@@ -97,7 +97,7 @@ export default {
       maker: 'this.maker',
       list: [],
       real: {
-        info: { source: 0 },
+        info: { source: 0, dates: {} },
         stacks: {},
       },
       inverse: false,

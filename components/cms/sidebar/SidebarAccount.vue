@@ -16,7 +16,7 @@
 
     <div class="sidebar-button"
       @click="create">
-      <div class="sidebar-button__icon sidebar-button__icon--create"></div>
+      <div class="sidebar-button__icon sidebar-button__icon--add"></div>
       <div class="sidebar-button__text">Создать выставку</div>
     </div>
 
@@ -47,18 +47,23 @@ export default {
   data() {
     return {
       statusList: this.$store.state.statusList,
-      pageName: '',
+      pageName: 'work',
     };
   },
+  mounted() {},
   methods: {
     getPages(type) {
       this.$store.dispatch('fetchExposeList', type);
+      this.pageName = type;
     },
     create() {
       // this.$axios.$get('/cms/new').then(res => console.log(res));
       this.$store.dispatch('createNewExpose').then(() => {
         this.$router.push({ name: 'cms-Info', params: { cms: true } });
       });
+    },
+    getPageName() {
+      return $nuxt.$route.path.split('/').pop();
     },
   },
 };

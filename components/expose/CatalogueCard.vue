@@ -47,7 +47,9 @@ export default {
   methods: {
     redirect() {
       if (this.options && this.options.cms) {
-        this.$router.push({ path: '/cms/info' });
+        this.$store.dispatch('fetchState', this.item._id).then(res => {
+          this.$router.push({ name: 'cms-Info', params: { cms: true } });
+        });
       } else {
         this.$router.push({
           path: `/expose/${this.item.title.split(' ').join('_')}-${

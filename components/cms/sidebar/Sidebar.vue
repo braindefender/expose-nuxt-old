@@ -117,6 +117,8 @@ export default {
       margin-right: 20px
       opacity: 0.6
       background: center center no-repeat
+      &--add
+        background-image: url('~/assets/sidebar/sidebar-icon-add.svg');
       &--home
         background-image: url('~/assets/sidebar/sidebar-icon-home.svg');
       &--info
@@ -137,6 +139,8 @@ export default {
         background-image: url('~/assets/sidebar/sidebar-icon-exit.svg');
       &--save
         background-image: url('~/assets/sidebar/sidebar-icon-save.svg');
+      &--work
+        background-image: url('~/assets/sidebar/sidebar-icon-work.svg');
 
   .sidebar-account
     padding-top: 30px
