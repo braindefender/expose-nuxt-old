@@ -39,6 +39,7 @@ export default {
     if (this.canSyncState) {
       this.syncState();
     }
+    this.$store.commit('edit/updateSelected', { selected: false });
   },
   data() {
     return {

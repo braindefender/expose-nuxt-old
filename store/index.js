@@ -6,6 +6,7 @@ import weekly1 from '@/assets/images/janko-ferlic-174927-unsplash.jpg';
 export const state = () => ({
   workerID: 'dummyuser',
   currentPage: 0,
+  currentStatus: 'work',
   categoryList: [],
   exposeList: [],
   statusList: [
@@ -83,6 +84,10 @@ export const mutations = {
       .catch(err =>
         console.log(`[Error] Cannot post final state to server: ${err}`),
       );
+  },
+  // unified setter
+  set(state, { field, value }) {
+    state[field] = value;
   },
 };
 
@@ -165,12 +170,12 @@ export const actions = {
     commit('syncState');
     commit('pushFinalState', { root: true });
   },
-  removeExpose({ commit, dispatch, state }, payload) {
-    console.log(payload);
+  removeExpose({ commit, dispatch, state }, { _id, status }) {
+    // console.log(payload);
     this.$axios
-      .post('/cms/list/delete', {}, { params: { _id: payload } })
+      .post('/cms/list/delete', {}, { params: { _id, status } })
       .then(res => {
-        dispatch('fetchExposeList', 'work');
+        dispatch('fetchExposeList', status);
         console.log('Got list from server after delete:', res);
       });
   },

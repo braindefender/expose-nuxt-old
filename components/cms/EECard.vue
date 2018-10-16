@@ -16,26 +16,49 @@
     </div>
 
     <div class="ee-card__item">
-      <div class="ee-card__item-title">Обложка:</div>
-      <div class="ee-card__item-content ee-card__cover">
-        <image-blur :image="cover" :meta="metadata" :options="{
-            width: 125
-          }">
-        </image-blur>
-        <div class="ee-card__cover-input">
-          <picture-input
-            ref="piCover"
-            width="172"
-            height="36"
-            accept="image/jpeg,image/jpg,image/png"
-            size="2"
-            button-class="button"
-            :zIndex=200
-            :plain="true"
-            :hideChangeButton="true"
-            @change="onPICoverChange">
-          </picture-input>
+      <div class="ee-card__item-content ee-card__images">
+
+        <div class="ee-image-block">
+          <div class="ee-image-block__images">
+            <image-picker
+              :prefill="cover"
+              :meta="metadata"
+              @change="onPICoverChange"
+              @remove="onCoverRemove"/>
+          </div>
+          <div class="ee-image-block__title">Обложка</div>
         </div>
+
+        <div class="ee-image-block">
+          <div class="ee-image-block__images">
+            <div class="ee-image-picker">
+              <div class="ee-image-picker__image">
+                <image-blur
+                  :image="cover"
+                  :meta="metadata"
+                  :options="{ width: 125 }"/>
+              </div>
+              <div class="ee-image-picker__controls">
+                <div class="ee-image-picker__button ee-image-picker__button--add"></div>
+                <div class="ee-image-picker__button ee-image-picker__button--del"></div>
+              </div>
+            </div>
+            <div class="ee-image-picker">
+              <div class="ee-image-picker__image">
+                <image-blur
+                  :image="cover"
+                  :meta="metadata"
+                  :options="{ width: 125 }"/>
+              </div>
+              <div class="ee-image-picker__controls">
+                <div class="ee-image-picker__button ee-image-picker__button--add"></div>
+                <div class="ee-image-picker__button ee-image-picker__button--del"></div>
+              </div>
+            </div>
+          </div>
+          <div class="ee-image-block__title">Дополнительные изображения</div>
+        </div>
+
       </div>
     </div>
 
@@ -127,16 +150,16 @@
 
 
 <script>
-import noCover from '~/assets/default/Article.svg';
 import testCover from '~/assets/covers/public01032012112432_b.jpg';
 
 import { mapState } from 'vuex';
 
 import ImageBlur from '~/components/ImageBlur';
+import ImagePicker from '~/components/cms/common/ImagePicker';
 
 export default {
   name: 'EECard',
-  components: { ImageBlur },
+  components: { ImageBlur, ImagePicker },
   data() {
     return {
       // annotation: this.item.annotation,
@@ -155,9 +178,7 @@ export default {
     ...mapState({
       item: state => state.edit.selected,
       images: state => state.edit.selected.images,
-      cover: state => {
-        return state.edit.selected.cover ? state.edit.selected.cover : noCover;
-      },
+      cover: state => state.edit.selected.cover,
     }),
   },
   methods: {
@@ -231,6 +252,13 @@ export default {
     removeImageAt(index) {
       this.$store.commit('edit/removeImageAt', index);
     },
+    onCoverRemove() {
+      this.$store.commit('edit/set', {
+        item: this.item,
+        field: 'cover',
+        to: undefined,
+      });
+    },
   },
 };
 </script>
@@ -239,6 +267,7 @@ export default {
 <style lang="sass">
 
   @import '@/styles/mixins.sass'
+  @import '@/styles/vars.sass'
 
   .ee-card
     box-sizing: border-box
@@ -260,33 +289,6 @@ export default {
       flex: 0 0 auto
       height: 32px
       width: 172px
-      >.picture-input
-        padding: 0
-        width: 172px
-        height: 32px
-        border-radius: 5px
-        overflow: hidden
-        transition: all ease 0.15s
-        box-shadow: 0px 3px 6px rgba(black, 0)
-        &:hover
-          box-shadow: 0px 3px 6px rgba($color-accent, 0.4)
-        .preview-container
-          position: relative
-          overflow: hidden
-          &::after
-            +posa(0)
-            padding-bottom: 4px
-            z-index: 5000
-            font-weight: bold
-            display: flex
-            flex-direction: row
-            justify-content: center
-            align-items: center
-            color: white
-            font-size: 14px
-            pointer-events: none
-            content: 'Загрузить обложку'
-            background-color: rgba($color-accent, 1)
     &__not-found
       padding-top: 40px
       padding-bottom: 40px
@@ -348,8 +350,8 @@ export default {
       display: flex
       white-space: pre
     &__images
-      +outline-card(5px)
-      padding: 15px
+      display: flex
+      flex-direction: row
     &__images-container
       overflow-x: scroll
       padding-bottom: 10px
@@ -458,5 +460,18 @@ export default {
         &::placeholder
           color: rgba(black, 0.4)
 
+  .ee-image-block
+    border: 1px solid rgba(black, 0.2)
+    border-radius: 5px
+    padding: 10px
+    display: flex
+    flex-direction: column
+    &__images
+      display: flex
+      flex-direction: row
+    &__title
+      text-align: center
+      padding-top: 10px
+      font-size: 14px
 
 </style>

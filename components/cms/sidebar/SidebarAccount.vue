@@ -47,14 +47,22 @@ export default {
   data() {
     return {
       statusList: this.$store.state.statusList,
-      pageName: 'work',
     };
+  },
+  computed: {
+    pageName() {
+      return this.$store.state.currentStatus;
+    },
   },
   mounted() {},
   methods: {
     getPages(type) {
-      this.$store.dispatch('fetchExposeList', type);
-      this.pageName = type;
+      this.$store.dispatch('fetchExposeList', type).then(res => {
+        this.$store.commit('set', {
+          field: 'currentStatus',
+          value: type,
+        });
+      });
     },
     create() {
       // this.$axios.$get('/cms/new').then(res => console.log(res));

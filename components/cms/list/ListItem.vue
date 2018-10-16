@@ -38,7 +38,10 @@ export default {
   },
   methods: {
     remove() {
-      this.$store.dispatch('removeExpose', this.item._id);
+      this.$store.dispatch('removeExpose', {
+        _id: this.item._id,
+        status: this.$store.state.currentStatus,
+      });
     },
     log() {
       // console.log(this.item.image);
