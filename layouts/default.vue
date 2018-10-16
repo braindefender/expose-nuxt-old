@@ -341,8 +341,28 @@
       display: flex
       flex-grow: 1
       overflow: auto
+    &__rows
+      display: flex
+      flex-direction: column
+      flex-grow: 1
+    &__columns
+      display: flex
+      flex-direction: row
+      flex-grow: 1
     &__title
       font-weight: bold
       font-size: 18px
+    &__panel
+      height: 60px
+      display: flex
+      justify-content: space-between
+      align-items: center
+      font-weight: bold
+      font-size: 18px
+      padding-left: 30px
+      padding-right: 30px
+      z-index: 100
+      box-shadow: 0 1px 0 rgba(black, 0.1)
+      background-color: #F6F7FB
 
 </style>

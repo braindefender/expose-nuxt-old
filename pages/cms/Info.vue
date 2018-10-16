@@ -3,38 +3,51 @@
     <!-- <Navigation></Navigation> -->
     <sidebar></sidebar>
     <div class="cms-new-page__content">
-      <Weekly
-        v-if="expose.mode === 0"
-        :mode="expose.mode"
-        :source="expose.source"
-        :dates="expose.dates"
-        @set="set"
-        @setDate="setDate">
-      </Weekly>
+      <div class="cms-new-page__columns">
+        <div class="cms-new-page__rows" style="flex-grow: 0">
+          <div class="cms-new-page__panel">
+            <nuxt-link
+              class="button"
+              :to="{ name: `cms-List`, params: { cms: true } }"
+              >Назад</nuxt-link>
+            <nuxt-link
+              class="button"
+              :to="{ name: `cms-Sort`, params: { cms: true } }"
+              >Далее</nuxt-link>
+          </div>
 
-      <Theme
-        v-if="expose.mode === 1"
-        :title="expose.title"
-        :mode="expose.mode"
-        :phone="expose.phone"
-        :email="expose.email"
-        :source="expose.source"
-        :dates="expose.dates"
-        :annotation="expose.annotation"
-        @set="set"
-        @setDate="setDate">
-      </Theme>
+          <Weekly
+            v-if="expose.mode === 0"
+            :mode="expose.mode"
+            :source="expose.source"
+            :dates="expose.dates"
+            @set="set"
+            @setDate="setDate">
+          </Weekly>
 
+          <Theme
+            v-if="expose.mode === 1"
+            :title="expose.title"
+            :mode="expose.mode"
+            :phone="expose.phone"
+            :email="expose.email"
+            :source="expose.source"
+            :dates="expose.dates"
+            :annotation="expose.annotation"
+            @set="set"
+            @setDate="setDate">
+          </Theme>
+        </div>
+        <div class="ec__preview">
+          <Cover :options="options"></Cover>
 
-      <div class="ec__preview">
-        <Cover :options="options"></Cover>
+          <Annotation
+            v-if="expose.mode !== 0"
+            :text="annotation">
+          </Annotation>
 
-        <Annotation
-          v-if="expose.mode !== 0"
-          :text="annotation">
-        </Annotation>
-
-        <div class="ec__preview-image"></div>
+          <div class="ec__preview-image"></div>
+        </div>
       </div>
 
     </div>
@@ -229,7 +242,7 @@ export default {
       padding-top: 30px
       flex-shrink: 0
       width: 410px
-      height: 100vh
+      flex-grow: 1
       display: flex
       flex-direction: column
       align-items: flex-start
@@ -317,6 +330,36 @@ export default {
         font-size: 13px
         line-height: 17px
         color: rgba(black, 0.6)
+      >.picture-input
+        padding: 0
+        width: 100%
+        height: 32px
+        border-radius: 5px
+        overflow: hidden
+        transition: all ease 0.15s
+        box-shadow: 0px 3px 6px rgba(black, 0)
+        &:hover
+          box-shadow: 0px 3px 6px rgba($color-accent, 0.4)
+        .picture-preview
+          width: 100%
+          height: 32px
+        .preview-container
+          position: relative
+          overflow: hidden
+          &::after
+            +posa(0)
+            padding-bottom: 4px
+            z-index: 5000
+            font-weight: bold
+            display: flex
+            flex-direction: row
+            justify-content: center
+            align-items: center
+            color: white
+            font-size: 14px
+            pointer-events: none
+            content: 'Загрузить обложку'
+            background-color: rgba($color-accent, 1)
     &__date-picker
       display: flex
       flex-direction: row
@@ -368,36 +411,5 @@ export default {
         font-size: 14px
         line-height: 20px
         font-weight: bold
-
-  >.picture-input
-    padding: 0
-    width: 100%
-    height: 32px
-    border-radius: 5px
-    overflow: hidden
-    transition: all ease 0.15s
-    box-shadow: 0px 3px 6px rgba(black, 0)
-    &:hover
-      box-shadow: 0px 3px 6px rgba($color-accent, 0.4)
-    .picture-preview
-      width: 100%
-      height: 32px
-    .preview-container
-      position: relative
-      overflow: hidden
-      &::after
-        +posa(0)
-        padding-bottom: 4px
-        z-index: 5000
-        font-weight: bold
-        display: flex
-        flex-direction: row
-        justify-content: center
-        align-items: center
-        color: white
-        font-size: 14px
-        pointer-events: none
-        content: 'Загрузить обложку'
-        background-color: rgba($color-accent, 1)
 
 </style>

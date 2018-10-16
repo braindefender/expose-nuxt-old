@@ -16,67 +16,8 @@
     </div>
 
     <div class="ee-card__item">
-      <div class="ee-card__item-content ee-card__images">
-
-        <div class="ee-image-block">
-          <div class="ee-image-block__images">
-            <image-picker
-              :prefill="cover"
-              :meta="metadata"
-              @change="onPICoverChange"
-              @remove="onCoverRemove"/>
-          </div>
-          <div class="ee-image-block__title">Обложка</div>
-        </div>
-
-        <div class="ee-image-block">
-          <div class="ee-image-block__images">
-            <div class="ee-image-picker">
-              <div class="ee-image-picker__image">
-                <image-blur
-                  :image="cover"
-                  :meta="metadata"
-                  :options="{ width: 125 }"/>
-              </div>
-              <div class="ee-image-picker__controls">
-                <div class="ee-image-picker__button ee-image-picker__button--add"></div>
-                <div class="ee-image-picker__button ee-image-picker__button--del"></div>
-              </div>
-            </div>
-            <div class="ee-image-picker">
-              <div class="ee-image-picker__image">
-                <image-blur
-                  :image="cover"
-                  :meta="metadata"
-                  :options="{ width: 125 }"/>
-              </div>
-              <div class="ee-image-picker__controls">
-                <div class="ee-image-picker__button ee-image-picker__button--add"></div>
-                <div class="ee-image-picker__button ee-image-picker__button--del"></div>
-              </div>
-            </div>
-          </div>
-          <div class="ee-image-block__title">Дополнительные изображения</div>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="ee-card__item">
       <div class="ee-card__authors">{{ authors }}</div>
       <div class="ee-card__title">{{ item.title }}</div>
-    </div>
-
-    <div class="ee-card__item">
-      <div class="ee-card__item-title">Аннотация:</div>
-      <div class="ee-card__item-content ee-card__annotation">
-        <textarea
-          ref="annotation" name="annotation" id="ee-annotation"
-          placeholder="Аннотация не указана" cols="30" rows="1"
-          @input="changeAnnotation" :value="item.annotation"
-          v-autosize="item.annotation">
-        </textarea>
-      </div>
     </div>
 
     <div
@@ -96,34 +37,61 @@
     </div>
 
     <div class="ee-card__item">
-      <div class="ee-card__item-title">Дополнительные изображения:</div>
       <div class="ee-card__item-content ee-card__images">
-        <div class="ee-card__images-container">
-          <div class="ee-card__image"
-            v-for="(image, index) in images"
-            :key="index">
-            <button
-              @click="removeImageAt(index)"
-              class="button-remove"
-              type="button"></button>
-            <img :src="image" alt="">
-          </div>
-          <div class="ee-card__image ee-card__image--transparent">
-            <picture-input
-              ref="piImage"
-              width="125"
-              height="180"
-              accept="image/jpeg,image/jpg,image/png"
-              size="2"
-              button-class="ee-card__image-upload"
-              :zIndex=200
-              :plain="true"
-              :hideChangeButton="true"
-              :prefill="undefined"
-              @change="onPIImageChange">
-            </picture-input>
+
+        <div class="ee-image-block">
+          <div class="ee-image-block__title">Обложка</div>
+          <div class="ee-image-block__images">
+            <image-picker
+              :prefill="cover"
+              :meta="metadata"
+              @change="onPICoverChange"
+              @remove="onCoverRemove"/>
           </div>
         </div>
+
+        <div class="ee-image-block">
+          <div class="ee-image-block__title">Дополнительные изображения</div>
+          <div class="ee-image-block__images">
+            <image-picker
+              :meta="`${metadata}-1`"
+              @change="onPIImageChange"
+              @remove="removeImageAt(0)"/>
+            <image-picker
+              :meta="`${metadata}-2`"
+              @change="onPIImageChange"
+              @remove="removeImageAt(1)"/>
+            <image-picker
+              :meta="`${metadata}-3`"
+              @change="onPIImageChange"
+              @remove="removeImageAt(2)"/>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="ee-card__item">
+      <div class="ee-card__item-title">Аннотация:</div>
+      <div class="ee-card__item-content ee-card__annotation">
+        <textarea
+          ref="annotation" name="annotation" id="ee-annotation"
+          placeholder="Аннотация не указана" cols="30" rows="1"
+          @input="changeAnnotation" :value="item.annotation"
+          v-autosize="item.annotation">
+        </textarea>
+      </div>
+    </div>
+
+    <div class="ee-card__item">
+      <div class="ee-card__item-title">Ссылка на полный текст:</div>
+      <div class="ee-card__item-content ee-card__link">
+        <textarea
+          ref="link" name="link" id="ee-link"
+          placeholder="Ссылка не указана" cols="30" rows="1"
+          @input="changeLink" :value="item.link"
+          v-autosize="item.link">
+        </textarea>
       </div>
     </div>
 
@@ -208,6 +176,13 @@ export default {
           console.log(err);
         });
     },
+    changeLink(e) {
+      this.$store.commit('edit/set', {
+        item: this.item,
+        field: 'link',
+        to: e.target.value,
+      });
+    },
     changeAnnotation(e) {
       this.$store.commit('edit/set', {
         item: this.item,
@@ -276,7 +251,7 @@ export default {
     background-color: white
     overflow: hidden
     padding-top: 15px
-    padding-bottom: 15px
+    padding-bottom: 20px
     padding-left: 20px
     padding-right: 20px
     &__cover
@@ -316,6 +291,8 @@ export default {
           margin-right: 0
     &__item
       margin-bottom: 20px
+      &:last-child
+        margin-bottom: 0
     &__item-title
       font-size: 14px
       line-height: 20px
@@ -352,6 +329,7 @@ export default {
     &__images
       display: flex
       flex-direction: row
+      justify-content: space-between
     &__images-container
       overflow-x: scroll
       padding-bottom: 10px
@@ -459,6 +437,19 @@ export default {
         width: 100%
         &::placeholder
           color: rgba(black, 0.4)
+    &__link
+      textarea
+        +outline-card(5px)
+        font-family: 'PT Sans'
+        font-style: italic
+        font-size: 14px
+        resize: none
+        padding: 15px
+        width: 100%
+        color: $color-accent
+        text-decoration: underline
+        &::placeholder
+          color: rgba(black, 0.4)
 
   .ee-image-block
     border: 1px solid rgba(black, 0.2)
@@ -471,7 +462,13 @@ export default {
       flex-direction: row
     &__title
       text-align: center
-      padding-top: 10px
+      padding-bottom: 10px
       font-size: 14px
+      font-weight: bold
+
+  .ip
+    margin-right: 10px
+    &:last-child
+      margin-right: 0
 
 </style>

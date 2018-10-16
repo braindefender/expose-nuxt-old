@@ -3,16 +3,28 @@
     <!-- <Navigation></Navigation> -->
     <sidebar></sidebar>
     <div class="cms-new-page__content">
-      <div class="ee">
-        <div class="ee__side ee__side--left">
-          <edit-stack
-          :options="{
-            left: true,
-            compact: false,
-          }"></edit-stack>
+      <div class="cms-new-page__rows">
+        <div class="cms-new-page__panel">
+          <nuxt-link
+            class="button"
+            :to="{ name: `cms-Sort`, params: { cms: true } }"
+            >Назад</nuxt-link>
+          <nuxt-link
+            class="button"
+            :to="{ name: `cms-Demo`, params: { cms: true } }"
+            >Далее</nuxt-link>
         </div>
-        <div class="ee__side ee__side--right">
-          <EECard></EECard>
+        <div class="ee">
+          <div class="ee__side ee__side--left">
+            <edit-stack
+            :options="{
+              left: true,
+              compact: false,
+            }"></edit-stack>
+          </div>
+          <div class="ee__side ee__side--right">
+            <EECard></EECard>
+          </div>
         </div>
       </div>
     </div>
@@ -67,10 +79,10 @@ export default {
     display: flex
     flex-direction: row
     width: 100%
+    flex-grow: 1
     &__side
       width: 50%
       overflow-y: scroll
-      height: 100vh
       background-color: $color-bg
       padding-left: 3%
       padding-right: 3%

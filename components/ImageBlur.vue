@@ -30,11 +30,11 @@ export default {
   .image-blur
     display: flex
     flex: 0 0 auto
-    min-height: 120px
+    min-height: 20px
     max-height: 400px
     position: relative
     border-radius: 5px
-    border: 2px solid rgba(black, 0.15)
+    border: 1px solid rgba(black, 0.25)
     &__bg
       position: absolute
       top: 10px

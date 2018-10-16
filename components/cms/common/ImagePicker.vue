@@ -74,6 +74,10 @@ export default {
 
   .ip
     position: relative
+    display: flex
+    flex-display: column
+    align-items: center
+    justify-content: center
     &__image-no
       width: 125px
       height: 180px

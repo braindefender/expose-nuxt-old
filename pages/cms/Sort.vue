@@ -2,51 +2,64 @@
   <div class="cms-new-page">
     <sidebar></sidebar>
     <div class="cms-new-page__content">
-      <div
-        v-if="!isEmpty"
-        class="es">
-        <div class="es__side es__side--left">
-          <div class="es__side-top">
-            <input
-              class="hidden"
-              id="xml"
-              type="file"
-              ref="xml"
-              @input="setFile"/>
-            <label for="xml" class="button">Загрузить XML</label>
-          </div>
-          <test-stack
-            :options="{
-              left: true,
-              compact: false,
-              checkOnClick: true,
-              showLetters: true,
-            }">
-          </test-stack>
-        </div>
-        <div class="es__side es__side--right">
-          <test-stack
-            :options="{
-              right: true,
-              compact: false,
-              checkOnClick: true,
-            }">
-          </test-stack>
-        </div>
-      </div>
-
-      <div
-        v-else
-        class="es-empty">
-        <div class="es-empty__text">
-          Пока здесь ничего нет. Пожалуйста, загрузите
+      <div class="cms-new-page__rows">
+        <div class="cms-new-page__panel">
+          <nuxt-link
+            class="button"
+            :to="{ name: `cms-Info`, params: { cms: true } }"
+            >Назад</nuxt-link>
           <input
             class="hidden"
             id="xml"
             type="file"
             ref="xml"
             @input="setFile"/>
-          <label for="xml" class="button">XML файл</label>
+          <label for="xml" class="button">Загрузить XML</label>
+          <nuxt-link
+            class="button"
+            :to="{ name: `cms-Edit`, params: { cms: true } }"
+            >Далее</nuxt-link>
+        </div>
+        <div
+          v-if="!isEmpty"
+          class="es">
+          <div class="es__side es__side--left">
+            <div class="es__side-top">
+
+            </div>
+            <test-stack
+              :options="{
+                left: true,
+                compact: false,
+                checkOnClick: true,
+                showLetters: true,
+              }">
+            </test-stack>
+          </div>
+          <div class="es__side es__side--right">
+            <test-stack
+              :options="{
+                right: true,
+                compact: false,
+                checkOnClick: true,
+              }">
+            </test-stack>
+          </div>
+        </div>
+
+        <div
+          v-else
+          class="es-empty">
+          <div class="es-empty__text">
+            Пока здесь ничего нет. Пожалуйста, загрузите
+            <input
+              class="hidden"
+              id="xml"
+              type="file"
+              ref="xml"
+              @input="setFile"/>
+            <label for="xml" class="button">XML файл</label>
+          </div>
         </div>
       </div>
     </div>
@@ -148,13 +161,15 @@ export default {
   .es
     position: relative
     z-index: 1
+    flex-grow: 1
     display: flex
     flex-direction: row
     width: 100%
     &__side
       width: 50%
       overflow-y: scroll
-      height: 100vh
+      flex-grow: 100
+      flex-shrink: 0
       background-color: $color-bg
       padding-left: 3%
       padding-right: 3%
