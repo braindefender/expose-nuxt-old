@@ -1,23 +1,28 @@
 <template>
-  <div class="csl">
-    <div class="csl__title">
-      {{ stack.title }}
+    <div
+      class="csl">
+      <a
+        :href="`#${stack.title}`"
+        class="csl__title scrollactive-item">{{ stack.title }}</a>
+      <div class="csl__list">
+        <!-- <scrollactive
+          active-class="active"
+          :duration="800"
+          bezier-easing-value=".5,0,.35,1"> -->
+        <content-selector-list
+          v-for="(item, index) in stack.list"
+          v-if="item.kind === 'stack'"
+          :stack="item"
+          :key="index"/>
+        <!-- </scrollactive> -->
+      </div>
     </div>
-    <div class="csl__list">
-      <content-selector-list
-        v-for="(item, index) in stack.list"
-        v-if="item.kind === 'stack'"
-        :stack="item"
-        :key="index">
-      </content-selector-list>
-    </div>
-  </div>
 </template>
 
 <script>
 export default {
   name: 'ContentSelectorList',
-  props: ['stack'],
+  props: ['stack', 'index'],
   data() {
     return {};
   },
@@ -30,11 +35,30 @@ export default {
 
   .csl
     position: relative
+    display: block
+    margin-bottom: 6px
+    &:last-child
+      margin-bottom: 0
     &__title
       font-size: 14px
       line-height: 20px
-      opacity: 0.6
-      margin-bottom: 6px
+      color: #999
+      text-decoration: none
+      &:hover
+        text-decoration: underline
+      &:visited
+        opacity: 1
+        color: rgba(#4680ff, 1)
+      &.active
+        &::before
+          content: ''
+          position: absolute
+          top: 0
+          left: -12px
+          bottom: 0
+          background-color: rgba($color-accent, 1)
+          width: 3px
+          border-radius: 3px
     &__list
       padding-left: 12px
       position: relative

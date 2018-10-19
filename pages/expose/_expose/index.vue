@@ -29,10 +29,9 @@
         <div class="expose-page__content">
 
           <expose-stack
-           v-for="(item, index) in stack.list"
-           :key="index"
-           :stack="item">
-          </expose-stack>
+            v-for="(item, index) in stack.list"
+            :key="index"
+            :stack="item"/>
 
         </div>
         <div class="expose-page__content-selector">
@@ -40,7 +39,12 @@
             <affix
               class="expose-page__menu"
               relative-element-selector=".expose-page__content-selector"
-              :offset="{ top: 10, bottom: 0, scrollAffix: false, scrollContainerSelector: '.cms-new-page' }">
+              :offset="{
+                top: 10,
+                bottom: 0,
+                scrollAffix: false,
+                scrollContainerSelector: '.cms-new-page'
+              }">
               <ContentSelector :stack="stack"></ContentSelector>
 
               <div class="expose-page__info">
@@ -68,14 +72,13 @@
 </template>
 
 <script>
-import BookCard from '@/components/expose/BookCard';
 import ContentSelector from '@/components/expose/ContentSelector';
 import Cover from '@/components/expose/Cover';
 import ExposeStack from '@/components/expose/ExposeStack';
 
 export default {
   name: 'Expose',
-  components: { Cover, ContentSelector, BookCard, ExposeStack },
+  components: { Cover, ContentSelector, ExposeStack },
   props: ['options'],
   mounted() {
     if (!this.options) {
@@ -216,18 +219,22 @@ export default {
     &__grid
       padding-top: 20px
       display: grid
-      grid-template-columns: 810px auto
+      grid-template-columns: 2fr 1fr
       grid-template-rows: 40px auto
       grid-gap: 20px 15px
+      min-width: 320px
+      max-width: 1200px
+      margin: 0 auto
     &__panel
+      font-size: 14px
       border-radius: 5px
       overflow: hidden
       display: flex
       flex-direction: row
       justify-content: flex-start
       align-items: center
-      background-color: #f5f5f5
-      font-size: 14px
+      background-color: rgba(black, 0.05)
+      color: black
     &__menu
       padding-left: 15px
     &__search

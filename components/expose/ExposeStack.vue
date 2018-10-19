@@ -1,7 +1,7 @@
 <template>
   <div class="expose-stack">
 
-    <div class="expose-stack__top">
+    <div class="expose-stack__top" :id="stack.title">
       <div class="expose-stack__title">{{ stack.title }}</div>
       <div class="expose-stack__info">{{ info }}</div>
     </div>

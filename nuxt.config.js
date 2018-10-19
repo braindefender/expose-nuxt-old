@@ -9,9 +9,7 @@ module.exports = {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: 'Nuxt.js project' },
     ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-    ],
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
   /*
   ** Customize the progress bar color
@@ -49,6 +47,7 @@ module.exports = {
     { src: '~plugins/vue-autosize', ssr: false },
     { src: '~plugins/vue-picture-input', ssr: false },
     { src: '~plugins/vue-affix', ssr: false },
+    { src: '~plugins/vue-scrollactive', ssr: false },
     { src: '~plugins/vue-multiselect', ssr: false },
     { src: '~plugins/vue-awesome-swiper', ssr: false },
   ],

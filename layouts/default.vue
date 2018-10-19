@@ -355,6 +355,7 @@
     &__panel
       height: 60px
       display: flex
+      flex-shrink: 0
       justify-content: space-between
       align-items: center
       font-weight: bold

@@ -3,12 +3,16 @@
 
     <h3>Содержание</h3>
     <div class="content-selector__list">
-      <content-selector-list
-        v-for="(item, index) in stack.list"
-        v-if="item.kind === 'stack'"
-        :stack="item"
-        :key="index">
-      </content-selector-list>
+      <scrollactive
+          active-class="active"
+          :duration="800">
+        <content-selector-list
+          v-for="(item, index) in stack.list"
+          v-if="item.kind === 'stack'"
+          :stack="item"
+          :index="index"
+          :key="index"/>
+      </scrollactive>
     </div>
 
   </div>
@@ -38,12 +42,12 @@ export default {
       max-height: calc(100vh - 70px)
       overflow-y: auto
       position: relative
-      left: 13px
-      &::after
+      padding-left: 12px
+      &::before
         content: ''
         position: absolute
         top: 0
-        left: -13px
+        left: 0px
         bottom: 0
         background-color: rgba(black, 0.15)
         width: 3px
