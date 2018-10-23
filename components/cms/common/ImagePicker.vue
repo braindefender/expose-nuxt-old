@@ -6,7 +6,7 @@
     <div class="ip__controls">
       <div
         class="ip__button ip__button--add"
-        :class="prefill ? 'ip__button--off' : ''">
+        :class="hasPrefill ? 'ip__button--off' : ''">
         <picture-input
           ref="pi"
           width="70"
@@ -22,7 +22,7 @@
         </picture-input>
       </div>
       <div
-        v-if="prefill"
+        v-if="hasPrefill"
         class="ip__button ip__button--del"
         @click="onRemove"></div>
     </div>
@@ -40,7 +40,10 @@ export default {
   watch: {
     prefill(newValue, oldValue) {
       if (newValue) {
-        this.setImage(newValue)
+        this.setImage(newValue);
+        this.hasPrefill = true
+      } else {
+        this.removeImage();
       }
     }
   },
@@ -50,11 +53,13 @@ export default {
       imageObject: {},
       imagePreview: {},
       aspectRatio: 1,
+      hasPrefill: false,
     };
   },
   mounted() {
     this.ctx = this.$refs.refImage.getContext('2d');
     if (this.prefill) {
+      this.hasPrefill = true;
       this.setImage(this.prefill);
     }
   },
@@ -73,6 +78,12 @@ export default {
       };
       img.src = file;
     },
+    removeImage() {
+      this.hasPrefill = false;
+      this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+      this.$refs.refImage.height = 180;
+      // this.setImage(noImage);
+    },
     onChange(image) {
       if (image) {
         this.$emit('change', image);
@@ -81,9 +92,7 @@ export default {
       }
     },
     onRemove() {
-      this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-      this.$refs.refImage.height = 180;
-      this.setImage(noImage);
+      this.removeImage();
       this.$emit('remove');
     },
   },

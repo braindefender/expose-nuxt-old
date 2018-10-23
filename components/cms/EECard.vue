@@ -11,7 +11,7 @@
           ref="xml"
           @input="loadXML"/>
         <label for="xml" class="button">Загрузить XML</label>
-        <div class="button" type="button">Сохранить</div>
+        <div class="button" type="button" @click="save">Сохранить</div>
       </div>
     </div>
 
@@ -148,6 +148,9 @@ export default {
     }),
   },
   methods: {
+    save() {
+      this.$store.dispatch('syncState');
+    },
     loadXML() {
       this.file = this.$refs.xml.files[0];
       this.$refs.xml.type = 'text';
