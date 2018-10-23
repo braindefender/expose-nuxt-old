@@ -52,12 +52,7 @@
           class="es-empty">
           <div class="es-empty__text">
             Пока здесь ничего нет. Пожалуйста, загрузите
-            <input
-              class="hidden"
-              id="xml"
-              type="file"
-              ref="xml"
-              @input="setFile"/>
+            <input class="hidden" type="file" name="xml" id="xml" ref="xml" @input="setFile($event)">
             <label for="xml" class="button">XML файл</label>
           </div>
         </div>
@@ -91,6 +86,7 @@ export default {
   data() {
     return {
       canSyncState: true,
+      file: '',
     };
   },
   computed: {
@@ -126,8 +122,8 @@ export default {
           console.log(err);
         });
     },
-    setFile() {
-      this.file = this.$refs.xml.files[0];
+    setFile(event) {
+      this.file = event.target.files[0];
       this.$refs.xml.type = 'text';
       this.$refs.xml.type = 'file';
       this.uploadXML();
