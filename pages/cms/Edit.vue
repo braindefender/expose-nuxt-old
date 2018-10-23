@@ -23,7 +23,7 @@
             }"></edit-stack>
           </div>
           <div class="ee__side ee__side--right">
-            <EECard></EECard>
+            <EECard/>
           </div>
         </div>
       </div>

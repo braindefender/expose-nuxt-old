@@ -1,14 +1,7 @@
 <template>
   <div class="ip">
     <div class="ip__image">
-      <image-blur
-        v-if="prefill"
-        :image="image"
-        :meta="meta"
-        :options="{ width: 125 }"/>
-      <div
-        v-else
-        class="ip__image-no"></div>
+      <canvas ref="refImage" width="125" height="180"></canvas>
     </div>
     <div class="ip__controls">
       <div
@@ -42,17 +35,44 @@ import ImageBlur from '~/components/ImageBlur';
 
 export default {
   name: 'ImagePicker',
-  props: ['prefill', 'meta'],
+  props: ['prefill'],
   components: { ImageBlur },
-  data() {
-    return {};
+  watch: {
+    prefill(newValue, oldValue) {
+      if (newValue) {
+        this.setImage(newValue)
+      }
+    }
   },
-  computed: {
-    image() {
-      return this.prefill ? this.prefill : noImage;
-    },
+  data() {
+    return {
+      ctx: '',
+      imageObject: {},
+      imagePreview: {},
+      aspectRatio: 1,
+    };
+  },
+  mounted() {
+    this.ctx = this.$refs.refImage.getContext('2d');
+    if (this.prefill) {
+      this.setImage(this.prefill);
+    }
   },
   methods: {
+    setImage(file) {
+      const img = new Image();
+      const self = this;
+      img.onload = function() {
+        if (self.$refs.refImage) {
+          self.aspectRatio = img.height / img.width;
+          self.$refs.refImage.height = self.$refs.refImage.width * self.aspectRatio;
+          self.ctx.drawImage(img, 0, 0, 125, self.$refs.refImage.height);
+          self.imagePreview = self.$refs.refImage.toDataURL();
+          self.$emit('crop', self.imagePreview);
+        }
+      };
+      img.src = file;
+    },
     onChange(image) {
       if (image) {
         this.$emit('change', image);
@@ -61,6 +81,9 @@ export default {
       }
     },
     onRemove() {
+      this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+      this.$refs.refImage.height = 180;
+      this.setImage(noImage);
       this.$emit('remove');
     },
   },
@@ -78,6 +101,11 @@ export default {
     flex-display: column
     align-items: center
     justify-content: center
+    &__image
+      font-size: 0
+      border: 1px solid rgba(black, 0.25)
+      border-radius: 5px
+      overflow: hidden
     &__image-no
       width: 125px
       height: 180px

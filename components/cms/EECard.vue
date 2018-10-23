@@ -45,26 +45,24 @@
             <image-picker
               :prefill="cover"
               :meta="metadata"
-              @change="onPICoverChange"
-              @remove="onCoverRemove"/>
+              @change="onCoverChange"
+              @remove="onCoverRemove"
+              @crop="onCoverCrop"/>
           </div>
         </div>
 
-        <div class="ee-image-block">
+        <div class="ee-image-block ee-image-block--additional">
           <div class="ee-image-block__title">Дополнительные изображения</div>
           <div class="ee-image-block__images">
             <image-picker
-              :meta="`${metadata}-1`"
-              @change="onPIImageChange"
-              @remove="removeImageAt(0)"/>
+              v-for="(img, index) in item.images"
+              :key="index"
+              :prefill="img"
+              @change="onImageChange"
+              @remove="removeImageAt(index)"/>
             <image-picker
-              :meta="`${metadata}-2`"
-              @change="onPIImageChange"
-              @remove="removeImageAt(1)"/>
-            <image-picker
-              :meta="`${metadata}-3`"
-              @change="onPIImageChange"
-              @remove="removeImageAt(2)"/>
+              @change="onImageAdd"
+              @remove="() => {}"/>
           </div>
         </div>
 
@@ -197,7 +195,7 @@ export default {
         to: e.target.value,
       });
     },
-    onPICoverChange(image) {
+    onCoverChange(image) {
       if (image) {
         console.log('Picture loaded.');
         this.$store.commit('edit/set', {
@@ -209,9 +207,39 @@ export default {
         console.log('FileReader API not supported: use the <form>, Luke!');
       }
     },
-    onPIImageChange(image) {
+    onCoverRemove() {
+      this.$store.commit('edit/set', {
+        item: this.item,
+        field: 'cover',
+        to: undefined,
+      });
+    },
+    onCoverCrop(image) {
+      this.$store.commit('edit/set', {
+        item: this.item,
+        field: 'cover',
+        to: image,
+      })
+    },
+    onImageAdd(image) {
       if (image) {
         console.log('Picture loaded.');
+        // Check if images array exist
+        if (!this.item.images) {
+          this.$store.commit('edit/set', {
+            item: this.item,
+            field: 'images',
+            to: [],
+          })
+        }
+        this.$store.commit('edit/addImage', image);
+      } else {
+        console.log('FileReader API not supported: use the <form>, Luke!');
+      }
+    },
+    onImageChange(image) {
+      if (image) {
+        console.log('Picture updated.');
         if (!this.item.images) {
           this.$store.commit('edit/set', {
             item: this.item,
@@ -226,13 +254,6 @@ export default {
     },
     removeImageAt(index) {
       this.$store.commit('edit/removeImageAt', index);
-    },
-    onCoverRemove() {
-      this.$store.commit('edit/set', {
-        item: this.item,
-        field: 'cover',
-        to: undefined,
-      });
     },
   },
 };
@@ -457,6 +478,9 @@ export default {
     padding: 10px
     display: flex
     flex-direction: column
+    &--additional
+      max-width: 425px
+      overflow-x: auto
     &__images
       display: flex
       flex-direction: row

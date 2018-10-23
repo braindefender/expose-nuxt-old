@@ -1,11 +1,11 @@
 <template>
   <div class="test-page">
-    <!-- <book-page></book-page> -->
     <div class="expose-page">
+      <EECard/>
 
-      <cover :options="coverOptions"/>
+      <!-- <cover :options="coverOptions"/> -->
 
-      <div class="expose-page__grid">
+      <!-- <div class="expose-page__grid">
 
         <div class="expose-page__panel expose-page__sort">
 
@@ -89,17 +89,21 @@
           </no-ssr>
         </div>
 
-      </div>
+      </div> -->
 
     </div>
   </div>
 </template>
 
 <script>
+import testImage from '~/assets/images/giammarco-boscaro-380907-unsplash.jpg';
+
 import BookPage from '~/components/expose/BookPage';
 import ContentSelector from '@/components/expose/ContentSelector';
 import Cover from '@/components/expose/Cover';
 import ExposeStack from '@/components/expose/ExposeStack';
+import ImagePicker from '@/components/cms/common/ImagePicker';
+import EECard from '@/components/cms/EECard';
 
 export default {
   name: 'Test',
@@ -108,10 +112,13 @@ export default {
     Cover,
     ContentSelector,
     ExposeStack,
+    ImagePicker,
+    EECard,
   },
   props: ['options'],
   data() {
     return {
+      testImage: testImage,
       mode: 0,
       source: 0,
       maker: 'this.maker',
@@ -192,6 +199,9 @@ export default {
       inverse: false,
     };
   },
+  mounted() {
+    this.$store.commit('edit/selectOnEditScreen', this.real.stacks.list[0].list[0]);
+  },
   computed: {
     expose() {
       if (this.options && this.options.cms) {
@@ -244,6 +254,15 @@ export default {
   methods: {
     showData() {
       // console.log(this.$data);
+    },
+    cropImage(image) {
+      this.cropImage = image;
+    },
+    changeImage(image) {
+      this.testImage = image;
+    },
+    removeImage() {
+      this.testImage = undefined;
     },
     date(input) {
       const date = new Date(input);
