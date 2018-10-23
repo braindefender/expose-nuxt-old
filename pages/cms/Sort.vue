@@ -10,11 +10,11 @@
             >Назад</nuxt-link>
           <input
             class="hidden"
-            id="xml"
+            id="xml1"
             type="file"
-            ref="xml"
+            ref="xml1"
             @input="setFile"/>
-          <label for="xml" class="button">Загрузить XML</label>
+          <label for="xml1" class="button">Загрузить XML</label>
           <nuxt-link
             class="button"
             :to="{ name: `cms-Edit`, params: { cms: true } }"
@@ -52,13 +52,8 @@
           class="es-empty">
           <div class="es-empty__text">
             Пока здесь ничего нет. Пожалуйста, загрузите
-            <input
-              class="hidden"
-              id="xml"
-              type="file"
-              ref="xml"
-              @input="setFile"/>
-            <label for="xml" class="button">XML файл</label>
+            <input class="hidden" type="file" id="xml2" ref="xml2" @input="setFile($event)">
+            <label for="xml2" class="button">XML файл</label>
           </div>
         </div>
       </div>
@@ -91,6 +86,7 @@ export default {
   data() {
     return {
       canSyncState: true,
+      file: '',
     };
   },
   computed: {
@@ -126,10 +122,16 @@ export default {
           console.log(err);
         });
     },
-    setFile() {
-      this.file = this.$refs.xml.files[0];
-      this.$refs.xml.type = 'text';
-      this.$refs.xml.type = 'file';
+    setFile(event) {
+      this.file = event.target.files[0];
+      if (this.$refs.xml1) {
+        this.$refs.xml1.type = 'text';
+        this.$refs.xml1.type = 'file';
+      }
+      if (this.$refs.xml2) {
+        this.$refs.xml2.type = 'text';
+        this.$refs.xml2.type = 'file';
+      }
       this.uploadXML();
     },
   },
