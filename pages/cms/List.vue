@@ -42,7 +42,7 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch('fetchExposeList', 'work');
+    this.$store.dispatch('fetchExposeList', this.$store.state.currentStatus);
   },
 };
 </script>
