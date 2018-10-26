@@ -72,18 +72,12 @@ export default {
     position: relative
     background-color: #333
     border-radius: 5px
-    position: relative
     cursor: pointer
-    border-radius: 5px
     &:hover
       .cat-card__image-blur
         opacity: 0.6
     &__inner
-      position: absolute
-      top: 0
-      left: 0
-      right: 0
-      bottom: 0
+      +posa(0)
     &__image
       width: 100%
       overflow: hidden

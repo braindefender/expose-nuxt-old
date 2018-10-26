@@ -1,5 +1,5 @@
 <template>
-  <div class="cat-layout">
+  <div class="cat-layout" v-if="show">
     <div class="cat-layout__panel">
       <div class="cat-layout__title">Демонстрируемые</div>
     </div>
@@ -37,12 +37,18 @@ export default {
     // });
     this.$axios.$get('/current').then(res => {
       console.log(res);
-      this.list = res.current;
-      this.mySwiper.updateSlides();
+      if (res.current.length === 0) {
+        this.show = false;
+      } else {
+        this.show = true;
+        this.list = res.current;
+        this.mySwiper.updateSlides();
+      }
     });
   },
   data() {
     return {
+      show: false,
       active: 0,
       list: [],
       swiperOption: {

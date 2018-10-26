@@ -85,7 +85,8 @@ export default {
       this.$axios
         .get(`/expose/${this.path}`)
         .then(res => {
-          this.real = res;
+          console.log(res.data);
+          this.real = res.data;
         })
         .catch(err => {
           console.log(`Error: get expose named: ${this.path}`, err);
@@ -101,7 +102,7 @@ export default {
       list: [],
       real: {
         info: { source: 0, dates: {} },
-        stacks: {},
+        stacks: { stack: {} },
       },
       inverse: false,
     };
@@ -148,7 +149,7 @@ export default {
       if (this.options && this.options.cms) {
         return this.$store.state.stacks.stack;
       } else {
-        return this.real.stacks;
+        return this.real.stacks.stack;
       }
     },
     path() {

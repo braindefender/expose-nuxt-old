@@ -13,11 +13,14 @@
       </div>
       <div class="cat-layout__content">
         <div class="cat-layout__grid">
-          <catalogue-card
+          <!-- <catalogue-card
             v-for="(item, index) in list"
             :key="index"
-            :item="item">
-          </catalogue-card>
+            :item="item"/> -->
+          <expose-card
+            v-for="(item, index) in list"
+            :key="index"
+            :item="item"/>
         </div>
       </div>
     </div>
@@ -26,22 +29,14 @@
 
 <script>
 import CatalogueCard from '@/components/expose/CatalogueCard';
+import ExposeCard from '@/components/expose/ExposeCard';
 
 export default {
   name: 'CataloguePreview',
-  components: { CatalogueCard },
+  components: { CatalogueCard, ExposeCard },
   props: ['list'],
   data() {
     return {};
   },
 };
 </script>
-
-
-<style lang="sass">
-
-  @import '~/styles/mixins.sass'
-
-  
-
-</style>

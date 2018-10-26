@@ -288,7 +288,7 @@
     padding-bottom: 20px
     &__grid
       display: grid
-      grid-template-columns: repeat(auto-fill, 395px)
+      grid-template-columns: 1fr 1fr
       grid-auto-row: auto
       grid-gap: 30px 20px
       grid-auto-flow: row
