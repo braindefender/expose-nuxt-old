@@ -87,6 +87,7 @@ export default {
         .then(res => {
           console.log(res.data);
           this.real = res.data;
+          this.$store.commit('set', { field: 'real', value: this.real });
         })
         .catch(err => {
           console.log(`Error: get expose named: ${this.path}`, err);

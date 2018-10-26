@@ -57,6 +57,7 @@ export const state = () => ({
     'ноября',
     'декабря',
   ],
+  real: {},
 });
 
 export const mutations = {

@@ -11,7 +11,9 @@
           : 'book-card__author book-card__author--gray'">
         {{ author }}
       </div>
-      <div class="book-card__title">{{ this.item.title }}</div>
+      <div
+        class="book-card__title"
+        @click="redirect">{{ this.item.title }}</div>
       <div class="book-card__info">{{ info }}</div>
       <div class="book-card__annotation">{{ this.item.annotation || 'Информация отсутствует' }}</div>
     </div>
@@ -75,6 +77,12 @@ export default {
     cover() {
       return this.item.cover ? this.item.cover : noCover;
     },
+    exposeTitle() {
+      return this.$store.state.real.info.title;
+    },
+    exposeCreate() {
+      return this.$store.state.real.info.dates.create;
+    },
   },
   methods: {
     getInfo() {
@@ -85,6 +93,14 @@ export default {
       ]
         .filter(el => el !== '')
         .join(', ');
+    },
+    redirect() {
+      console.log(this.exposeTitle);
+      const name = this.exposeTitle.split(' ').join('_');
+      const title = this.item.title.split(' ').join('_');
+      this.$router.push({
+        path: `/expose/${name}-${this.exposeCreate}/${title}`,
+      });
     },
   },
 };

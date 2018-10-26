@@ -44,7 +44,7 @@ export default {
     redirect() {
       const name = this.item.title.split(' ').join('_');
       this.$router.push({
-        path: `/expose/${name}-${this.item.dates.public}`,
+        path: `/expose/${name}-${this.item.dates.create}`,
       });
     },
   },
