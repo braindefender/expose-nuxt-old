@@ -119,6 +119,7 @@ export default {
           to: this.$store.state.info.dates.to,
         },
         workerID: this.expose.workerID,
+        blocked: this.expose.blocked,
         _id: this.expose._id,
       };
     },
@@ -140,7 +141,7 @@ export default {
         ...this.common,
         ...{
           mode: 1,
-          title: this.expose.title,
+          title: this.expose.title.trim(),
           phone: this.expose.phone,
           email: this.expose.email,
           image: this.expose.image,
@@ -288,6 +289,23 @@ export default {
       min-height: 32px
       &::placeholder
         color: rgba(black, 0.4)
+    &__text-field
+      min-height: 32px
+      width: 100%
+      border: none
+      outline: none
+      box-sizing: border-box
+      font-family: 'PT Sans'
+      font-size: 14px
+      border-radius: 5px
+      padding-left: 15px
+      padding-right: 15px
+      padding-top: 7px
+      padding-bottom: 7px
+      border: 1px solid rgba(black, 0.2)
+      white-space: pre
+      &:focus
+        border: 1px solid rgba($color-accent, 1)
     &__textarea
       min-height: 32px
       width: 100%
@@ -310,7 +328,7 @@ export default {
       &--title
         font-size: 14px
         height: 32px
-        line-height: 15px
+        line-height: 16px
       &--description
         font-size: 14px
         line-height: 20px

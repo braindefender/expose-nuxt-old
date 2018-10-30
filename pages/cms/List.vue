@@ -49,6 +49,7 @@ export default {
 
 <style lang="sass">
   @import '~/styles/vars.sass'
+  @import '~/styles/mixins.sass'
 
   .cms-table
     display: flex
@@ -61,6 +62,7 @@ export default {
       align-items: center
       margin-bottom: 20px
       flex: 0 0 auto
+      position: relative
     &__headers
       height: 60px
       box-shadow: 0 1px 0 rgba(black, 0.1)
@@ -99,5 +101,19 @@ export default {
         grid-template-rows: 1fr 1fr
         grid-template-columns: 1fr 1fr
         grid-gap: 10px
+
+  .cms-icon-big
+    width: 48px
+    height: 48px
+    background: center no-repeat
+    background-size: contain
+    border: 2px solid rgba(black, 0.5)
+    &--info
+      background-image: url(~/assets/icons/info.svg)
+    &--sort
+      background-image: url(~/assets/icons/sort.svg)
+    &--edit
+    &--demo
+    &--remove
 
 </style>

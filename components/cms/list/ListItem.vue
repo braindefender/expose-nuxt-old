@@ -12,12 +12,19 @@
     <div class="cms-table__list-item cms-table__list-item--authors">
       <button class="button" @click="remove">Удалить</button>
     </div>
-    <div class="cms-table__list-item cms-table__list-item--actions">
+    <div
+      v-if="!item.blocked"
+      class="cms-table__list-item cms-table__list-item--actions">
       <div class="button"
         v-for="(it, index) in pages"
         :key="index"
         @click="redirect({item, it})">{{ it.title }}
       </div>
+    </div>
+    <div
+      v-else
+      class="cms-table__list-item">
+      Редактирование недоступно. <br> Выставка находится в работе.
     </div>
   </div>
 </template>

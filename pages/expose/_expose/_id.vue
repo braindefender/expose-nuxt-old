@@ -16,7 +16,7 @@ export default {
     this.$axios
       .get(`/expose/${this.path.expose}/${this.path.book}`)
       .then(res => {
-        this.book = res;
+        this.book = res.data;
       })
       .catch(err => {
         console.log(`Error: get book named: ${this.path.book}`, err);

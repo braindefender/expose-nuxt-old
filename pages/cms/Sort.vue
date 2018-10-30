@@ -102,25 +102,26 @@ export default {
       this.$store.dispatch('syncState');
     },
     uploadXML() {
-      this.syncState();
-      const _id = this.$store.state.info._id;
-      console.log(_id);
-      let formData = new FormData();
-      formData.append('file', this.file);
-      formData.append('exposeid', _id);
-      this.$axios
-        .$post('/cms/xml', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        })
-        .then(res => {
-          this.$store.commit('setState', res);
-          console.log('Uploaded XML');
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      this.$store.dispatch('syncState').then(() => {
+        const _id = this.$store.state.info._id;
+        console.log(_id);
+        let formData = new FormData();
+        formData.append('file', this.file);
+        formData.append('exposeid', _id);
+        this.$axios
+          .$post('/cms/xml', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          })
+          .then(res => {
+            this.$store.commit('setState', res);
+            console.log('Uploaded XML');
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      });
     },
     setFile(event) {
       this.file = event.target.files[0];

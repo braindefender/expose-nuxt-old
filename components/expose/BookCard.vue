@@ -29,7 +29,9 @@
       <div class="book-card__info">{{ info }}</div>
     </div>
     <div class="book-card__line">
-      <div class="book-card__title book-card__title--small">
+      <div
+        class="book-card__title book-card__title--small"
+         @click="redirect">
         {{ this.item.title }}
       </div>
     </div>
@@ -96,7 +98,11 @@ export default {
     },
     redirect() {
       console.log(this.exposeTitle);
-      const name = this.exposeTitle.split(' ').join('_');
+      const name = this.exposeTitle
+        .split('\n')
+        .join('~')
+        .split(' ')
+        .join('_');
       const title = this.item.title.split(' ').join('_');
       this.$router.push({
         path: `/expose/${name}-${this.exposeCreate}/${title}`,

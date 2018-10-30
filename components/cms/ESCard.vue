@@ -30,7 +30,7 @@
         </div>
         <div class="es-card__bot">
           <div class="es-card__title">{{ item.title }}</div>
-          <div class="es-card__badge-box" v-if="showBadges">
+          <div class="es-card__badge-box" v-if="showBadges && !item.full">
             <div v-if="errorAnnotation" class="es-card__badge es-card__badge--warning">
               Нет аннотации
             </div>
@@ -89,7 +89,6 @@ export default {
     selected() {
       return this.item === this.$store.state.edit.selected;
     },
-
     errorAnnotation() {
       return this.item.annotation === undefined || this.item.annotation === '';
     },
@@ -108,20 +107,30 @@ export default {
       this.options.checkOnClick ? this.check() : this.select();
     },
     updateProgress() {
-      let progress = 0;
-      if (this.item.annotation) {
-        progress += 1;
+      if (!this.item.full) {
+        let progress = 0;
+        if (this.item.annotation) {
+          progress += 1;
+        }
+        if (this.item.cover) {
+          progress += 1;
+        }
+        this.progress = (1 + progress) / 3;
+        this.progressbar.animate(this.progress);
+        this.$store.commit('stacks/set', {
+          item: this.item,
+          field: 'progress',
+          to: this.progress,
+        });
+      } else {
+        this.progress = 1;
+        this.progressbar.animate(this.progress);
+        this.$store.commit('stacks/set', {
+          item: this.item,
+          field: 'progress',
+          to: 1,
+        });
       }
-      if (this.item.cover) {
-        progress += 1;
-      }
-      this.progress = (1 + progress) / 3;
-      this.progressbar.animate(this.progress);
-      this.$store.commit('stacks/set', {
-        item: this.item,
-        field: 'progress',
-        to: this.progress,
-      });
     },
   },
 };

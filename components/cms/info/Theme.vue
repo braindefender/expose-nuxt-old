@@ -69,10 +69,9 @@
         <textarea
           placeholder="Измените название выставки"
           class="ec__textarea ec__textarea--title"
-          name="title" cols="30" rows="1"
+          name="title" cols="30" rows="2"
           :value="title" v-autosize="title"
-          @input="set('title', $event.target.value)">
-        </textarea>
+          @input="set('title', $event.target.value)"/>
       </div>
 
       <div class="ec__row">
@@ -158,6 +157,9 @@ export default {
     },
     setSourceTo(id) {
       this.$emit('set', 'source', id);
+    },
+    changeTitle(e) {
+      console.log(e);
     },
     changeEmailTo(e) {
       this.$emit('set', 'email', e.target.value);

@@ -55,11 +55,11 @@
                 </div>
                 <div v-if="this.expose.phone"
                   class="expose-page__info-text">
-                  Телефон: <a :href="`tel:${this.phone}`">{{ this.expose.phone }}</a>
+                  Телефон: <a :href="`tel:${this.phone}`">{{ prettyPhone }}</a>
                 </div>
                 <div v-if="this.expose.email"
                   class="expose-page__info-text">
-                  Email: <a :href="`mailto:${this.expose.email}`">{{ this.expose.email }}</a>
+                  Email: <a :href="`mailto:${expose.email}`">{{ expose.email }}</a>
                 </div>
               </div>
             </affix>
@@ -158,6 +158,13 @@ export default {
     },
     phone() {
       return `+${this.expose.phone.replace(/\D/g, '')}`;
+    },
+    prettyPhone() {
+      const clean = this.expose.phone.replace(/\D/g, '');
+      const match = clean.match(/^(\d{1})(\d{3})(\d{3})(\d{4})$/);
+      if (match) {
+        return `+${match[1]} (${match[2]}) ${match[3]}-${match[4]}`;
+      }
     },
     coverOptions() {
       const sourceList = this.$store.state.sourceList;

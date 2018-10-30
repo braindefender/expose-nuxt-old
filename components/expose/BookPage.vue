@@ -3,12 +3,12 @@
   <div class="book-page">
     <div class="book-page__return" v-if="book.expose">
       <div class="book-page__return-image">
-        <img :src="book.cover" alt="">
+        <img :src="book.image" alt="">
       </div>
       <a
         :href="`/expose/${expose.link}`"
         class="book-page__return-link">
-        {{ book.expose.name }}
+        {{ expose.title }}
       </a>
     </div>
     <div class="book-page__wrapper">
@@ -18,11 +18,11 @@
           class="book-image">
           <div class="book-image__blur">
             <div class="book-image__blur-container">
-              <img :src="cover" :alt="meta">
+              <img :src="book.cover" :alt="meta">
             </div>
           </div>
           <div class="book-image__image">
-            <img :src="cover" :alt="meta">
+            <img :src="book.cover" :alt="meta">
           </div>
         </div>
         <div
@@ -57,12 +57,12 @@
     <div
       v-if="book.images !== 0"
       class="book-page__images">
-      <div
+      <image-blur
         v-for="(image, index) in book.images"
         :key="index"
-        class="book-page__image">
-        <img :src="image" :alt="`${meta}-${index}`">
-      </div>
+        :image="image"
+        :meta="`${meta}-${index}`"
+        :options="{ width: 125 }"/>
     </div>
     <div class="book-contents" v-if="book.contents">
       <div class="book-contents__title">Содержание</div>
@@ -76,9 +76,12 @@
 import image from '@/assets/covers/public01032012112432_b.jpg';
 import image1 from '@/assets/images/janko-ferlic-174927-unsplash.jpg';
 
+import ImageBlur from '@/components/ImageBlur';
+
 export default {
   name: 'BookPage',
   props: ['book'],
+  components: { ImageBlur },
   data() {
     return {
       image,
@@ -102,12 +105,16 @@ export default {
       }
     },
   },
+  mounted() {
+    this.fetchExpose();
+  },
   methods: {
     fetchExpose() {
       this.$axios
-        .$get('expose/return', { params: { _id: book.exposeId } })
+        .$get('expose/return', { params: { _id: this.book.exposeId } })
         .then(res => {
-          this.expose = res;
+          console.log(res);
+          this.book.expose = res;
         })
         .catch(err => {
           console.log('Error: cannot get return object', err);
@@ -218,13 +225,9 @@ export default {
       display: flex
       flex-direction: row
       justify-content: space-between
-      min-height: 200px
+      min-height: 50px
       margin-bottom: 30px
-    &__image
-      width: 140px
-      height: 200px
-      border-radius: 5px
-      background-color: #333
+      padding-top: 30px
 
   .book-contents
     text-align: center

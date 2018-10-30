@@ -79,13 +79,6 @@ export const mutations = {
   setExposeList(state, payload) {
     Vue.set(state, 'exposeList', payload);
   },
-  pushFinalState(state) {
-    this.$axios
-      .post('/cms/final', { stacks: state.stacks, info: state.info })
-      .catch(err =>
-        console.log(`[Error] Cannot post final state to server: ${err}`),
-      );
-  },
   // unified setter
   set(state, { field, value }) {
     state[field] = value;
@@ -151,12 +144,18 @@ export const actions = {
     });
   },
   syncState({ state }) {
-    this.$axios
-      .$post('/cms/state', {
-        stacks: state.stacks,
-        info: state.info,
-      })
-      .catch(err => console.log(`[Error] Cannot post state to server: ${err}`));
+    return new Promise((resolve, reject) => {
+      this.$axios
+        .$post('/cms/state', {
+          stacks: state.stacks,
+          info: state.info,
+        })
+        .then(() => resolve())
+        .catch(err => {
+          console.log(`[Error] Cannot post state to server: ${err}`);
+          reject();
+        });
+    });
   },
   syncInfoState({ commit, dispatch }, payload) {
     commit('setInfoState', payload);
@@ -167,9 +166,20 @@ export const actions = {
       commit('setCategoryList', res.data);
     });
   },
-  pushFinalState({ commit }) {
-    commit('syncState');
-    commit('pushFinalState', { root: true });
+  pushFinalState({ commit, state }) {
+    // commit('syncState');
+    // commit('pushFinalState', { root: true });
+    return new Promise((resolve, reject) => {
+      this.$axios
+        .post('/cms/final', { stacks: state.stacks, info: state.info })
+        .then(res => {
+          resolve();
+        })
+        .catch(err => {
+          console.log(`[Error] Cannot post final state to server: ${err}`);
+          reject();
+        });
+    });
   },
   removeExpose({ commit, dispatch, state }, { _id, status }) {
     // console.log(payload);

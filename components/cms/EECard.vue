@@ -149,6 +149,11 @@ export default {
   },
   methods: {
     save() {
+      this.$store.commit('stacks/set', {
+        item: this.item,
+        field: 'full',
+        to: true,
+      });
       this.$store.dispatch('syncState');
     },
     loadXML() {
@@ -222,7 +227,7 @@ export default {
         item: this.item,
         field: 'cover',
         to: image,
-      })
+      });
     },
     onImageAdd(image) {
       if (image) {
@@ -233,7 +238,7 @@ export default {
             item: this.item,
             field: 'images',
             to: [],
-          })
+          });
         }
         this.$store.commit('edit/addImage', image);
       } else {

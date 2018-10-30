@@ -61,8 +61,9 @@ export default {
       return $nuxt.$route.path.split('/').pop();
     },
     final() {
-      this.$store.dispatch('pushFinalState');
-      this.$router.push('list');
+      this.$store.dispatch('pushFinalState').then(() => {
+        this.$router.push('list');
+      });
     },
     save() {
       this.$store.dispatch('syncState').then(res => {

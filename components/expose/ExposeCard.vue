@@ -42,7 +42,11 @@ export default {
   },
   methods: {
     redirect() {
-      const name = this.item.title.split(' ').join('_');
+      const name = this.item.title
+        .split('\n')
+        .join('~')
+        .split(' ')
+        .join('_');
       this.$router.push({
         path: `/expose/${name}-${this.item.dates.create}`,
       });

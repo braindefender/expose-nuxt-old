@@ -52,3 +52,23 @@ export default {
   },
 };
 </script>
+
+<style lang="sass">
+  @import '@/styles/mixins.sass'
+  @import '@/styles/expose-card.sass'
+
+  .e-card
+    &__info--catalogue
+      .e-card__title
+        max-width: 75%
+        font-size: 1em
+        line-height: 1.1em
+        font-weight: bold
+        white-space: pre
+      .e-card__date
+        position: absolute
+        right: 20px
+        bottom: 20px
+        font-size: 0.8em
+        line-height: 0.9em
+</style>
