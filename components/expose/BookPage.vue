@@ -35,6 +35,11 @@
         <div class="book-page__button">
           <a href="#" class="button">Перейти в каталог</a>
         </div>
+        <div
+          v-if="book.link"
+          class="book-page__button">
+          <a :href="book.link" class="button">Ссылка на полный текст</a>
+        </div>
       </div>
       <div class="book-page__content">
         <div class="book-page__authors">{{ authors }}</div>
@@ -137,6 +142,10 @@ export default {
     padding-top: 30px
     padding-bottom: 30px
     margin: 0 auto
+    &__button
+      margin-bottom: 20px
+      &:last-child
+        margin-bottom: 0
     &__return
       max-width: 770px
       margin-bottom: 30px

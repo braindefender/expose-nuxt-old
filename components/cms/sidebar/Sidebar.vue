@@ -83,6 +83,7 @@ export default {
     padding-bottom: 20px
     background-color: rgba(white, 0.05)
     display: flex
+    flex: 0 0 auto
     flex-direction: row
     border-radius: 10px
     transition: all ease 0.15s
