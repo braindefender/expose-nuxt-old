@@ -40,7 +40,7 @@ module.exports = {
     ],
   },
   axios: {
-    baseURL: 'http://10.3.6.27:3333/api',
+    baseURL: 'http://10.3.6.27:3334/api',
   },
   modules: ['@nuxtjs/axios'],
   plugins: [
