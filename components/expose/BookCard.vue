@@ -6,22 +6,22 @@
       :options="{ width: 125 }"/>
     <div class="book-card__content">
       <div
-        :class="this.item.author
+        :class="item.author
           ? 'book-card__author'
           : 'book-card__author book-card__author--gray'">
         {{ author }}
       </div>
       <div
         class="book-card__title"
-        @click="redirect">{{ this.item.title }}</div>
+        @click="redirect">{{ item.title }}</div>
       <div class="book-card__info">{{ info }}</div>
-      <div class="book-card__annotation">{{ this.item.annotation || 'Информация отсутствует' }}</div>
+      <div class="book-card__annotation">{{ annotation || 'Информация отсутствует' }}</div>
     </div>
   </div>
   <div class="book-card book-card--small" v-else>
     <div class="book-card__line">
       <div
-        :class="this.item.author
+        :class="item.author
           ? 'book-card__author'
           : 'book-card__author book-card__author--gray'">
         {{ author }}
@@ -32,7 +32,7 @@
       <div
         class="book-card__title book-card__title--small"
          @click="redirect">
-        {{ this.item.title }}
+        {{ item.title }}
       </div>
     </div>
   </div>
@@ -85,6 +85,17 @@ export default {
     exposeCreate() {
       return this.$store.state.real.info.dates.create;
     },
+    annotation() {
+      if (this.item.annotation) {
+        if (this.item.annotation.length > 260) {
+          return `${this.item.annotation.slice(1, 248)}... Читать далее`;
+        } else {
+          return this.item.annotation;
+        }
+      } else {
+        return undefined;
+      }
+    },
   },
   methods: {
     getInfo() {
@@ -105,7 +116,7 @@ export default {
         .join('_');
       const title = this.item.title.split(' ').join('_');
       this.$router.push({
-        path: `/expose/${name}-${this.exposeCreate}/${title}`,
+        path: `/expose/${name}-${this.exposeCreate}/book/${title}`,
       });
     },
   },
@@ -182,9 +193,12 @@ export default {
       font-size: 14px
       margin-bottom: 5px
     &__annotation
+      display: flex
+      overflow: hidden
       max-width: 480px
       font-size: 14px
       line-height: 18px
       color: rgba(black, 0.6)
+      white-space: pre-wrap
 
 </style>

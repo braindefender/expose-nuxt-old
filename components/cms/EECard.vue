@@ -228,6 +228,7 @@ export default {
         field: 'cover',
         to: image,
       });
+      // this.$axios.$post('/json', { image: image });
     },
     onImageAdd(image) {
       if (image) {

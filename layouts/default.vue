@@ -131,28 +131,53 @@
 
   .button-small
     +button($color-accent)
-    border: none
+    position: relative
+    display: flex
     width: 22px
     height: 22px
-    display: flex
-    border-radius: 5px
     overflow: hidden
+    border: none
+    border-radius: 5px
+    color: white
+    flex: 0 0 auto
+    &::after
+      position: absolute
+      top: 0
+      left: 0
+      bottom: 0
+      width: 22px
+      content: ''
+      background: center center no-repeat
+    &--wide
+      width: auto
+      background-position: 0px 0px
+      padding-left: 22px
+      padding-right: 8px
+      font-size: 12px
     &--ok
-      background: url('/assets/icon-small-ok.svg') center center no-repeat
+      &::after
+        background-image: url('/assets/icon-small-ok.svg')
     &--up
-      background: url('/assets/icon-small-up.svg') center center no-repeat
+      &::after
+        background-image: url('/assets/icon-small-up.svg')
     &--add
-      background: url('/assets/icon-small-add.svg') center center no-repeat
+      &::after
+        background-image: url('/assets/icon-small-add.svg')
     &--copy
-      background: url('/assets/icon-small-copy.svg') center center no-repeat
+      &::after
+        background-image: url('/assets/icon-small-copy.svg')
     &--down
-      background: url('/assets/icon-small-down.svg') center center no-repeat
+      &::after
+        background-image: url('/assets/icon-small-down.svg')
     &--move
-      background: url('/assets/icon-small-move.svg') center center no-repeat
+      &::after
+        background-image: url('/assets/icon-small-move.svg')
     &--remove
-      background: url('/assets/icon-small-remove.svg') center center no-repeat
+      &::after
+        background-image: url('/assets/icon-small-remove.svg')
     &--rename
-      background: url('/assets/icon-small-rename.svg') center center no-repeat
+      &::after
+        background-image: url('/assets/icon-small-rename.svg')
 
   .checkbox
     user-select: none

@@ -42,8 +42,9 @@
             class="es-stack__buttons">
             <button
               v-if="!isMain && !this.renameMode"
-              class="button-small button-small--rename"
+              class="button-small button-small--wide button-small--rename"
               type="button" @click="changeRenameMode">
+              Переименовать
             </button>
             <button
               v-if="!isMain && this.renameMode"
@@ -67,12 +68,12 @@
             class="es-stack__buttons">
             <button
               v-if="!innerStack.checked && !options.left"
-              class="button-small button-small--add"
-              type="button" @click="!innerStack.checked ? addStack() : ''"></button>
+              class="button-small button-small--wide button-small--add"
+              type="button" @click="!innerStack.checked ? addStack() : ''">Добавить категорию</button>
             <button
               v-if="!innerStack.checked && !isMain"
-              class="button-small button-small--move"
-              type="button" @click="!innerStack.checked ? moveItems() : ''"></button>
+              class="button-small button-small--wide button-small--move"
+              type="button" @click="!innerStack.checked ? moveItems() : ''">Поместить в категорию</button>
             <button
               v-if="!innerStack.checked && !isMain"
               class="button-small button-small--copy"

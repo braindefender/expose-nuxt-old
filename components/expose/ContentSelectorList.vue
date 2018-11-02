@@ -2,7 +2,7 @@
     <div
       class="csl">
       <a
-        :href="`#${stack.title}`"
+        :href="`#${stack.title.replace(/\s+/g, '-')}`"
         class="csl__title scrollactive-item">{{ stack.title }}</a>
       <div class="csl__list">
         <!-- <scrollactive

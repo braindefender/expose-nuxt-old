@@ -31,10 +31,11 @@ export default {
     display: flex
     flex: 0 0 auto
     min-height: 20px
-    max-height: 400px
+    max-height: 185px
     position: relative
     border-radius: 5px
     border: 1px solid rgba(black, 0.25)
+    position: relative
     &__bg
       position: absolute
       top: 10px

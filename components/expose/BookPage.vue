@@ -1,14 +1,14 @@
 <template>
 
   <div class="book-page">
-    <div class="book-page__return" v-if="book.expose">
+    <div class="book-page__return" v-if="showReturn">
       <div class="book-page__return-image">
-        <img :src="book.image" alt="">
+        <img :src="book.expose.cover" alt="">
       </div>
       <a
-        :href="`/expose/${expose.link}`"
+        :href="`/expose/${book.expose.link}`"
         class="book-page__return-link">
-        {{ expose.title }}
+        {{ book.expose.title }}
       </a>
     </div>
     <div class="book-page__wrapper">
@@ -91,6 +91,7 @@ export default {
     return {
       image,
       image1,
+      showReturn: false,
     };
   },
   computed: {
@@ -113,14 +114,20 @@ export default {
   mounted() {
     this.fetchExpose();
   },
+  beforeDestroy() {
+    this.showReturn = false;
+  },
   methods: {
     fetchExpose() {
       console.log(this.book);
       this.$axios
-        .$get('/info/return', { params: { _id: this.book.exposeId, blah: 'pidor' } })
+        .$get('/info/return', {
+          params: { _id: this.book.id, another: 'parameter' },
+        })
         .then(res => {
           console.log(res);
-          this.book.expose = res;
+          this.book.expose = res.expose;
+          this.showReturn = true;
         })
         .catch(err => {
           console.log('Error: cannot get return object', err);

@@ -14,7 +14,7 @@ export default {
   },
   mounted() {
     this.$axios
-      .get(`/expose/${this.path.expose}/${this.path.book}`)
+      .get(`/expose/${this.path.expose}/book/${this.path.book}`)
       .then(res => {
         this.book = res.data;
       })
@@ -29,6 +29,7 @@ export default {
       bookLink: '',
       // book: undefined,
       book: {
+        id: '5bcee56b20a4c73e60f161dd',
         title:
           'Фазовый состав многокомпонентных гамма-сплавов на основе алюминидов титана: учеб. пособие',
         year: 2017,
