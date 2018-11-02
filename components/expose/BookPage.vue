@@ -115,8 +115,9 @@ export default {
   },
   methods: {
     fetchExpose() {
+      console.log(this.book);
       this.$axios
-        .$get('expose/return', { params: { _id: this.book.exposeId } })
+        .$get('/info/return', { params: { _id: this.book.exposeId, blah: 'pidor' } })
         .then(res => {
           console.log(res);
           this.book.expose = res;
