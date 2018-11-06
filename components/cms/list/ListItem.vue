@@ -16,28 +16,28 @@
         <div
           role="button"
           class="cms-icon-big cms-icon-big--info"
-          @click="redirect({ item, to: 'Info' })"/>
+          @click="redirect({ item, to: 'Info' })">Информация</div>
         <div
           role="button"
           class="cms-icon-big cms-icon-big--sort"
-          @click="redirect({ item, to: 'Sort' })"/>
+          @click="redirect({ item, to: 'Sort' })">Сортировка</div>
         <div
           role="button"
           class="cms-icon-big cms-icon-big--edit"
-          @click="redirect({ item, to: 'Edit' })"/>
+          @click="redirect({ item, to: 'Edit' })">Редактирование</div>
         <div
           role="button"
           class="cms-icon-big cms-icon-big--demo"
-          @click="redirect({ item, to: 'Demo' })"/>
+          @click="redirect({ item, to: 'Demo' })">Предпоказ</div>
         <div class="cms-icon-big-divider"/>
         <div
           role="button"
           class="cms-icon-big cms-icon-big--remove"
-          @click="remove"/>
+          @click="remove">Удаление</div>
     </div>
     <div
       v-else
-      class="cms-table__list-item">
+      class="cms-table__list-item cms-table__list-item--blocked">
       Редактирование недоступно. <br> Выставка находится в работе.
     </div>
   </div>

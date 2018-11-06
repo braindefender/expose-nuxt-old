@@ -96,32 +96,57 @@ export default {
         width: 360px
         flex: 0 0 auto
     &__list-item
+      position: relative
       &--action-panel
         min-width: 400px
+        max-width: 550px
         display: flex
         justify-content: flex-end
         padding-right: 20px
+        padding-left: 20px
         .cms-icon-big
           margin-right: 20px
           &:last-child
             margin-right: 0
-      &--actions
+      &--blocked
+        min-width: 400px
+        max-width: 550px
+        padding-left: 20px
         padding-right: 20px
-        width: 360px
-        flex: 0 0 auto
-        display: grid
-        grid-template-rows: 1fr 1fr
-        grid-template-columns: 1fr 1fr
-        grid-gap: 10px
+        display: flex
+        justify-content: center
+        align-items: center
+        text-align: center
+        padding-right: 20px
+        min-height: 80px
+        border-radius: 5px
+        &::after
+          border-radius: inherit
+          position: absolute
+          top: 0
+          left: 30px
+          right: 30px
+          bottom: 0
+          content: ''
+          background-color: rgba(black, 0.1)
 
   .cms-icon-big
-    width: 48px
-    height: 48px
+    width: 80px
+    height: 80px
     border-radius: 50%
     cursor: pointer
     position: relative
+    display: flex
+    justify-content: center
+    align-items: flex-end
+    font-size: 12px
+    font-weight: bold
     &::after
-      +posa(0)
+      position: absolute
+      top: 4px
+      left: 10px
+      right: 10px
+      bottom: 16px
       content: ''
       opacity: 0.5
       border-radius: inherit
@@ -129,12 +154,17 @@ export default {
       background-size: 24px 24px
       transition: all ease-in-out 0.15s
     &::before
-      +posa(0)
+      position: absolute
+      top: 6px
+      left: 12px
+      right: 12px
+      bottom: 18px
       content: ''
       border-radius: inherit
       border: 2px solid rgba(black, 0.15)
       transition: all ease-in-out 0.15s
     &:hover
+      color: $color-accent
       &::after
         opacity: 0.8
       &::before
@@ -152,7 +182,9 @@ export default {
       &::after
         background-image: url(~/assets/icons/demo.svg)
     &--remove
+      color: rgba(black, 0.5)
       &:hover
+        color: $color-error
         &::before
           border: 5px solid rgba($color-error, 1)
       &::after
@@ -161,7 +193,7 @@ export default {
 
   .cms-icon-big-divider
     width: 2px
-    height: 48px
+    height: 80px
     margin-right: 20px
     position: relative
     &::after
