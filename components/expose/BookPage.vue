@@ -3,7 +3,7 @@
   <div class="book-page">
     <div class="book-page__return">
       <div class="book-page__return-image">
-        <img :src="book.expose.cover" alt="">
+        <img :src="returnImage" alt="">
       </div>
       <a
         :href="`/expose/${book.expose.link}`"
@@ -127,6 +127,20 @@ export default {
           '?Z21ID=&I21DBN=CAT&P21DBN=CAT&S21STN=1&S21REF=3&S21FMT=fullwebr&C21COM=S&S21CNR=20&S21P01=0&S21P02=1&S21P03=I=&S21STR=' +
           this.book.irbis.replace(/\*/g, '%2A').replace(/\//g, '%2F')
         );
+      } else {
+        return undefined;
+      }
+    },
+    returnImage() {
+      if (this.book.expose) {
+        if (this.book.expose.source) {
+          return (
+            this.book.expose.cover ||
+            this.$store.state.sourceList[this.book.expose.source].image
+          );
+        } else {
+          return undefined;
+        }
       } else {
         return undefined;
       }

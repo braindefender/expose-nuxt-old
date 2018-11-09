@@ -18,7 +18,7 @@ export default {
       .then(res => {
         this.$axios
           .$get('/info/return', {
-            params: { _id: res.data.id, another: 'parameter' },
+            params: { _id: res.data.id },
           })
           .then(resp => {
             console.log('in book', res.data);
