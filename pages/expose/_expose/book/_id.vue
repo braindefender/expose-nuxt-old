@@ -16,7 +16,19 @@ export default {
     this.$axios
       .get(`/expose/${this.path.expose}/book/${this.path.book}`)
       .then(res => {
-        this.book = res.data;
+        this.$axios
+          .$get('/info/return', {
+            params: { _id: res.data.id, another: 'parameter' },
+          })
+          .then(resp => {
+            console.log('in book', res.data);
+            console.log('in return', resp);
+            this.book = res.data;
+            this.book.expose = resp.expose;
+          })
+          .catch(err => {
+            console.log('Error: cannot get return object', err);
+          });
       })
       .catch(err => {
         console.log(`Error: get book named: ${this.path.book}`, err);
@@ -29,7 +41,8 @@ export default {
       bookLink: '',
       // book: undefined,
       book: {
-        id: '5bcee56b20a4c73e60f161dd',
+        expose: {},
+        cover: '',
         title:
           'Фазовый состав многокомпонентных гамма-сплавов на основе алюминидов титана: учеб. пособие',
         year: 2017,
@@ -51,7 +64,7 @@ export default {
     path() {
       const path = $nuxt.$route.path.split('/');
       return {
-        expose: path[path.length - 2],
+        expose: path[path.length - 3],
         book: path[path.length - 1],
       };
     },

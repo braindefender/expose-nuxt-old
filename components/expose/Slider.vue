@@ -137,10 +137,11 @@ export default {
         background: url('/assets/slider-arrow-right.svg') center center no-repeat
 
   .slider-item
-    color: white
-    text-align: center
-    height: 226px
     position: relative
+    height: 226px
+    cursor: pointer
+    text-align: center
+    color: white
     &__content
       display: flex
       flex-direction: column

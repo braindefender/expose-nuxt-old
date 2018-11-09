@@ -1,7 +1,7 @@
 <template>
 
   <div class="book-page">
-    <div class="book-page__return" v-if="showReturn">
+    <div class="book-page__return">
       <div class="book-page__return-image">
         <img :src="book.expose.cover" alt="">
       </div>
@@ -28,7 +28,7 @@
         <div
           v-else
           class="book-ph">
-          <div class="book-ph__author">{{ book.author }}</div>
+          <div class="book-ph__author">{{ authors.split(',')[0] }}</div>
           <div class="book-ph__title">{{ book.title }}</div>
           <div class="book-ph__info">{{ sourceAndYear }}</div>
         </div>
@@ -91,12 +91,16 @@ export default {
     return {
       image,
       image1,
-      showReturn: false,
     };
   },
   computed: {
+    sourceCity() {
+      const bsm = this.$store.state.bookSourceMap;
+      const lowerSource = this.book.source.toLowerCase();
+      return bsm[lowerSource] || this.book.source;
+    },
     sourceAndYear() {
-      return `${this.book.source}, ${this.book.year}`;
+      return `${this.sourceCity}, ${this.book.year}`;
     },
     meta() {
       return `${this.book.author} — ${this.book.title}, ${this.book.source}, ${
@@ -109,29 +113,6 @@ export default {
       } else {
         return this.book.author;
       }
-    },
-  },
-  mounted() {
-    this.fetchExpose();
-  },
-  beforeDestroy() {
-    this.showReturn = false;
-  },
-  methods: {
-    fetchExpose() {
-      console.log(this.book);
-      this.$axios
-        .$get('/info/return', {
-          params: { _id: this.book.id, another: 'parameter' },
-        })
-        .then(res => {
-          console.log(res);
-          this.book.expose = res.expose;
-          this.showReturn = true;
-        })
-        .catch(err => {
-          console.log('Error: cannot get return object', err);
-        });
     },
   },
 };

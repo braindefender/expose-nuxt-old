@@ -2,7 +2,8 @@
   <div class="container">
     <div class="expose-page">
 
-      <Cover :options="coverOptions"></Cover>
+      <cover
+        :options="coverOptions"/>
 
       <div class="expose-page__grid">
         <div class="expose-page__panel expose-page__sort">
@@ -49,15 +50,15 @@
 
               <div class="expose-page__info">
                 <div class="expose-page__info-title">Информация</div>
-                <div v-if="this.expose.maker"
+                <div v-if="expose.maker"
                   class="expose-page__info-text">
-                  Составитель: {{ this.expose.maker }}
+                  Составитель: {{ expose.maker }}
                 </div>
-                <div v-if="this.expose.phone"
+                <div v-if="expose.phone"
                   class="expose-page__info-text">
                   Телефон: <a :href="`tel:${this.phone}`">{{ prettyPhone }}</a>
                 </div>
-                <div v-if="this.expose.email"
+                <div v-if="expose.email"
                   class="expose-page__info-text">
                   Email: <a :href="`mailto:${expose.email}`">{{ expose.email }}</a>
                 </div>
@@ -97,12 +98,20 @@ export default {
   },
   data() {
     return {
-      mode: 0,
-      source: 0,
-      maker: 'this.maker',
-      list: [],
       real: {
-        info: { source: 0, dates: {} },
+        info: {
+          source: 1,
+          dates: {
+            to: '',
+            create: '',
+            public: '',
+            update: '',
+          },
+          image:
+            'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=',
+          mode: 1,
+          maker: '',
+        },
         stacks: { stack: {} },
       },
       inverse: false,
@@ -168,22 +177,28 @@ export default {
     },
     coverOptions() {
       const sourceList = this.$store.state.sourceList;
-      let image;
-      if (this.expose && this.expose.image) {
-        image = this.expose.image;
-      } else {
-        image = sourceList[this.expose.source].image;
+      let image = this.expose.image;
+      switch (this.expose.mode) {
+        case 0:
+          image = sourceList[this.expose.source].image;
+          break;
+        case 1:
+          image = image ? image : sourceList[this.expose.source].image;
+          break;
       }
       let date = {};
       if (this.expose.dates.from) {
         date.from = this.date(this.expose.dates.from);
         date.to = this.date(this.expose.dates.to);
-      } else {
+      } else if (this.expose.dates.public) {
         date.from = this.date(this.expose.dates.public);
+        date.to = undefined;
+      } else {
+        date.from = this.date('2018-11-09');
         date.to = undefined;
       }
       return {
-        nav: true,
+        // nav: true,
         date,
         image,
         title: this.expose.title,

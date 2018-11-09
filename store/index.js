@@ -58,6 +58,9 @@ export const state = () => ({
     'декабря',
   ],
   real: {},
+  bookSourceMap: {
+    'м.': 'Москва',
+  },
 });
 
 export const mutations = {

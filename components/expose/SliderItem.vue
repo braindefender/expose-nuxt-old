@@ -1,5 +1,5 @@
 <template>
-  <div class="slider-item">
+  <div class="slider-item" @click="redirect">
     <div
       v-if="image"
       class="slider-item__inner slider-item__image">
@@ -53,9 +53,17 @@ export default {
       }, ${date.getFullYear()}`;
     },
   },
+  methods: {
+    redirect() {
+      const name = this.item.title
+        .split('\n')
+        .join('~')
+        .split(' ')
+        .join('_');
+      this.$router.push({
+        path: `/expose/${name}-${this.item.dates.create}`,
+      });
+    },
+  },
 };
 </script>
-
-<style lang="sass">
-
-</style>
