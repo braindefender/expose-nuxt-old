@@ -25,11 +25,10 @@
           </div>
           <div class="cat-layout__content">
             <div class="cat-layout__grid">
-              <catalogue-card
+              <expose-card
                 v-for="(item, index) in list"
                 :key="index"
-                :item="item">
-              </catalogue-card>
+                :item="item"/>
             </div>
           </div>
           <div class="cat-layout__panel">
@@ -46,11 +45,11 @@
 <script>
 import cover from '~/assets/images/alfons-morales-410757-unsplash.jpg';
 
-import CatalogueCard from '@/components/expose/CatalogueCard';
+import ExposeCard from '@/components/expose/ExposeCard';
 
 export default {
   name: 'Category',
-  components: { CatalogueCard },
+  components: { ExposeCard },
   data() {
     return {
       cover,

@@ -41,7 +41,7 @@
 <script>
 import noCover from '~/assets/default/Article.svg';
 
-import ImageBlur from '~/components/ImageBlur';
+import ImageBlur from '~/components/common/ImageBlur';
 
 export default {
   name: 'BookCard',

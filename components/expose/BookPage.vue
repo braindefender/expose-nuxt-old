@@ -33,7 +33,7 @@
           <div class="book-ph__info">{{ sourceAndYear }}</div>
         </div>
         <div class="book-page__button">
-          <a href="#" class="button">Перейти в каталог</a>
+          <a :href="irbisLink" class="button">Перейти в каталог</a>
         </div>
         <div
           v-if="book.link"
@@ -81,7 +81,7 @@
 import image from '@/assets/covers/public01032012112432_b.jpg';
 import image1 from '@/assets/images/janko-ferlic-174927-unsplash.jpg';
 
-import ImageBlur from '@/components/ImageBlur';
+import ImageBlur from '@/components/common/ImageBlur';
 
 export default {
   name: 'BookPage',
@@ -95,12 +95,18 @@ export default {
   },
   computed: {
     sourceCity() {
-      const bsm = this.$store.state.bookSourceMap;
-      const lowerSource = this.book.source.toLowerCase();
-      return bsm[lowerSource] || this.book.source;
+      if (this.book.source) {
+        const lowerSource = this.book.source.toLowerCase();
+        const bsm = this.$store.state.bookSourceMap;
+        return bsm[lowerSource] || this.book.source;
+      } else {
+        return undefined;
+      }
     },
     sourceAndYear() {
-      return `${this.sourceCity}, ${this.book.year}`;
+      return [this.sourceCity, this.book.year]
+        .filter(el => el !== undefined)
+        .join(', ');
     },
     meta() {
       return `${this.book.author} — ${this.book.title}, ${this.book.source}, ${
@@ -112,6 +118,17 @@ export default {
         return this.book.authors.join(', ');
       } else {
         return this.book.author;
+      }
+    },
+    irbisLink() {
+      if (this.book.irbis) {
+        return (
+          'http://webirbis.spsl.nsc.ru/irbis64r_01/cgi/cgiirbis_64.exe' +
+          '?Z21ID=&I21DBN=CAT&P21DBN=CAT&S21STN=1&S21REF=3&S21FMT=fullwebr&C21COM=S&S21CNR=20&S21P01=0&S21P02=1&S21P03=I=&S21STR=' +
+          this.book.irbis.replace(/\*/g, '%2A').replace(/\//g, '%2F')
+        );
+      } else {
+        return undefined;
       }
     },
   },

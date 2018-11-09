@@ -13,10 +13,6 @@
       </div>
       <div class="cat-layout__content">
         <div class="cat-layout__grid">
-          <!-- <catalogue-card
-            v-for="(item, index) in list"
-            :key="index"
-            :item="item"/> -->
           <expose-card
             v-for="(item, index) in list"
             :key="index"
@@ -28,12 +24,11 @@
 </template>
 
 <script>
-import CatalogueCard from '@/components/expose/CatalogueCard';
 import ExposeCard from '@/components/expose/ExposeCard';
 
 export default {
   name: 'CataloguePreview',
-  components: { CatalogueCard, ExposeCard },
+  components: { ExposeCard },
   props: ['list'],
   data() {
     return {};

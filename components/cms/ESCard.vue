@@ -98,7 +98,7 @@ export default {
   },
   methods: {
     select() {
-      this.$store.commit('edit/selectOnEditScreen', this.item);
+      this.$store.dispatch('edit/selectOnEditScreen', this.item);
     },
     check() {
       this.$emit('check');

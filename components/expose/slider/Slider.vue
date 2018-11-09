@@ -25,7 +25,7 @@ import image2 from '@/assets/images/chad-kirchoff-202730-unsplash.jpg';
 import image3 from '@/assets/images/ren-ran-232078-unsplash.jpg';
 import image4 from '@/assets/images/stock-1863880_1920.jpg';
 
-import SliderItem from '~/components/expose/SliderItem';
+import SliderItem from '~/components/expose/slider/SliderItem';
 
 export default {
   name: 'Slider',

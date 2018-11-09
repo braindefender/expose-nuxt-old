@@ -27,4 +27,17 @@ export const mutations = {
   },
 };
 
-export const actions = {};
+export const actions = {
+  selectOnEditScreen({ state, dispatch, commit }, item) {
+    this.$axios
+      .$get('getbook', {
+        params: { irbis: item.irbis },
+      })
+      .then(res => {
+        commit('selectOnEditScreen', { ...item, ...res.data });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
+};

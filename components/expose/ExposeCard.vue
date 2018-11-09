@@ -22,6 +22,7 @@ export default {
   name: 'ExposeCard',
   props: {
     item: { type: Object, default: () => {} },
+    options: { type: Object, default: () => undefined },
   },
   computed: {
     prettyDate() {
@@ -42,14 +43,20 @@ export default {
   },
   methods: {
     redirect() {
-      const name = this.item.title
-        .split('\n')
-        .join('~')
-        .split(' ')
-        .join('_');
-      this.$router.push({
-        path: `/expose/${name}-${this.item.dates.create}`,
-      });
+      if (this.options && this.options.cms) {
+        this.$store.dispatch('fetchState', this.item._id).then(res => {
+          this.$router.push({ name: 'cms-Info', params: { cms: true } });
+        });
+      } else {
+        const name = this.item.title
+          .split('\n')
+          .join('~')
+          .split(' ')
+          .join('_');
+        this.$router.push({
+          path: `/expose/${name}-${this.item.dates.create}`,
+        });
+      }
     },
   },
 };

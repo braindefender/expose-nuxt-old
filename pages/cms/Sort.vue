@@ -27,23 +27,21 @@
             <div class="es__side-top">
 
             </div>
-            <test-stack
+            <stack-sort
               :options="{
                 left: true,
                 compact: false,
                 checkOnClick: true,
                 showLetters: true,
-              }">
-            </test-stack>
+              }"/>
           </div>
           <div class="es__side es__side--right">
-            <test-stack
+            <stack-sort
               :options="{
                 right: true,
                 compact: false,
                 checkOnClick: true,
-              }">
-            </test-stack>
+              }"/>
           </div>
         </div>
 
@@ -66,7 +64,7 @@
 import Sidebar from '~/components/cms/sidebar/Sidebar';
 
 import ESCard from '@/components/cms/ESCard';
-import TestStack from '@/components/cms/TestStack';
+import StackSort from '@/components/cms/StackSort';
 
 export default {
   name: 'Sort',
@@ -82,7 +80,7 @@ export default {
       this.syncState();
     }
   },
-  components: { Sidebar, ESCard, TestStack },
+  components: { Sidebar, ESCard, StackSort },
   data() {
     return {
       canSyncState: true,

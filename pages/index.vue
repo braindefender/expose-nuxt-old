@@ -32,7 +32,7 @@ import cover from '~/assets/images/alfons-morales-410757-unsplash.jpg';
 
 import CataloguePreview from '~/components/expose/CataloguePreview';
 import CategoryPreview from '~/components/expose/CategoryPreview';
-import Slider from '~/components/expose/Slider';
+import Slider from '~/components/expose/slider/Slider';
 
 export default {
   components: { CataloguePreview, CategoryPreview, Slider },

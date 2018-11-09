@@ -95,7 +95,7 @@
               v-for="(item, index) in innerStack.list" :key="index"
               v-if="item.clean !== true"
               class="es-stack__list-item">
-              <test-stack
+              <stack-sort
                 v-if="item.kind === 'stack'"
                 :stack="item"
                 :options="{
@@ -106,8 +106,7 @@
                 @checkItem="checkItem(index)"
                 @moveUp="handleMoveUp(index)"
                 @moveDown="handleMoveDown(index)"
-                @updateCheckState="updateCheckState">
-              </test-stack>
+                @updateCheckState="updateCheckState"/>
               <ESCard
                 v-if="item.kind === 'book'"
                 :item="item"
@@ -131,12 +130,11 @@
 import progressbar from 'progressbar.js';
 import { mapState } from 'vuex';
 
-import TestStack from '~/components/cms/TestStack';
 import ESCard from '~/components/cms/ESCard';
 
 export default {
-  name: 'TestStack',
-  components: { TestStack, ESCard },
+  name: 'StackSort',
+  components: { ESCard },
   props: ['stack', 'options'],
   data() {
     return {

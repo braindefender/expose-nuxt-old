@@ -31,7 +31,7 @@
 
 <script>
 import noImage from '~/assets/default/white.svg';
-import ImageBlur from '~/components/ImageBlur';
+import ImageBlur from '~/components/common/ImageBlur';
 
 export default {
   name: 'ImagePicker',
@@ -41,11 +41,11 @@ export default {
     prefill(newValue, oldValue) {
       if (newValue) {
         this.setImage(newValue);
-        this.hasPrefill = true
+        this.hasPrefill = true;
       } else {
         this.removeImage();
       }
-    }
+    },
   },
   data() {
     return {
@@ -70,7 +70,8 @@ export default {
       img.onload = function() {
         if (self.$refs.refImage) {
           self.aspectRatio = img.height / img.width;
-          self.$refs.refImage.height = self.$refs.refImage.width * self.aspectRatio;
+          self.$refs.refImage.height =
+            self.$refs.refImage.width * self.aspectRatio;
           self.ctx.drawImage(img, 0, 0, 125, self.$refs.refImage.height);
           self.imagePreview = self.$refs.refImage.toDataURL();
           self.$emit('crop', self.imagePreview);

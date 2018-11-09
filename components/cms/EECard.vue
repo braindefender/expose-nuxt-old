@@ -120,7 +120,7 @@ import testCover from '~/assets/covers/public01032012112432_b.jpg';
 
 import { mapState } from 'vuex';
 
-import ImageBlur from '~/components/ImageBlur';
+import ImageBlur from '~/components/common/ImageBlur';
 import ImagePicker from '~/components/cms/common/ImagePicker';
 
 export default {
