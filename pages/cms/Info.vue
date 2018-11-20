@@ -173,6 +173,7 @@ export default {
       }
       return {
         nav: true,
+        cms: true,
         date,
         title,
         image,

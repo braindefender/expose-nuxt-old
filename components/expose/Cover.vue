@@ -6,6 +6,13 @@
     <div class="cover__inner cover__content">
       <div class="cover__title">{{ options.title }}</div>
     </div>
+    <div
+      v-if="!options.cms"
+      class="cover__inner cover__controls cover__controls--top">
+      <div class="cover-control">
+        <a href="/" class="cover-control__return-link">Назад</a>
+      </div>
+    </div>
     <div class="cover__inner cover__controls">
       <div
         v-if="options.nav"
@@ -139,6 +146,10 @@ export default {
       align-items: flex-start
       flex-direction: row
       justify-content: space-between
+      &--top
+        top: 0
+        bottom: auto
+        align-items: center
 
   .cover-control
     position: relative
@@ -163,12 +174,12 @@ export default {
       flex-grow: 1
       text-align: center
     &__link
-      text-decoration: none
       color: white
       border: none
       outline: none
-      &:hover
-        text-decoration: none
+      +tdn
+      &:visited
+        color: white
     &__title
       display: block
       font-size: 16px
@@ -177,4 +188,17 @@ export default {
       display: block
       font-size: 13px
       opacity: 0.6
+    &__return-link
+      +tdn
+      transition: all ease 0.15s
+      padding: 4px 16px
+      color: white
+      background: rgba(black, 0.5)
+      border-radius: 5em
+      border: 2px solid rgba(white, 0.5)
+      font-size: 14px
+      opacity: 0.6
+      &:hover
+        opacity: 0.8
+
 </style>

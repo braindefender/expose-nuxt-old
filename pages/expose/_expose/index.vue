@@ -199,6 +199,7 @@ export default {
       }
       return {
         // nav: true,
+        cms: this.options ? this.options.cms : false,
         date,
         image,
         title: this.expose.title,

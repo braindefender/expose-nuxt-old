@@ -133,11 +133,10 @@ export default {
     },
     returnImage() {
       if (this.book.expose) {
-        if (this.book.expose.source) {
-          return (
-            this.book.expose.cover ||
-            this.$store.state.sourceList[this.book.expose.source].image
-          );
+        if (this.book.expose.source !== undefined) {
+          return this.book.expose.cover !== ''
+            ? this.book.expose.cover
+            : this.$store.state.sourceList[this.book.expose.source].image;
         } else {
           return undefined;
         }
@@ -234,12 +233,15 @@ export default {
       white-space: pre-wrap
     &__info
       margin-bottom: 30px
+      background: rgba(black, 0.05)
+      border-radius: 5px
+      padding: 15px
     &__info-line
       display: flex
       flex-direction: row
       justify-content: space-between
       margin-bottom: 10px
-      &::last-child
+      &:last-child
         margin-bottom: 0
     &__info-cell
       font-size: 14px
@@ -288,7 +290,7 @@ export default {
     padding: 40px 20px
     font-size: 12px
     color: black
-    box-shadow: 0 5px 25px rgba(black, 0.1)
+    box-shadow: 0 5px 25px rgba(black, 0.10)
     &__title
       font-weight: bold
       text-align: center
