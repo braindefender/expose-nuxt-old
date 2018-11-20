@@ -79,9 +79,6 @@ export default {
     cover() {
       return this.item.cover ? this.item.cover : noCover;
     },
-    exposeTitle() {
-      return this.$store.state.real.info.title;
-    },
     exposeCreate() {
       return this.$store.state.real.info.dates.create;
     },
@@ -97,13 +94,17 @@ export default {
       }
     },
     link() {
-      const name = this.exposeTitle
-        .split('\n')
-        .join('~')
-        .split(' ')
-        .join('_');
-      const title = this.item.title.split(' ').join('_');
-      return `/expose/${name}-${this.exposeCreate}/book/${title}`;
+      if (!this.$route.params.cms) {
+        const name = this.$store.state.real.info.title
+          .split('\n')
+          .join('~')
+          .split(' ')
+          .join('_');
+        const title = this.item.title.split(' ').join('_');
+        return `/expose/${name}-${this.exposeCreate}/book/${title}`;
+      } else {
+        return '#';
+      }
     },
   },
   methods: {
@@ -123,6 +124,7 @@ export default {
 <style lang="sass" scoped>
 
   @import '@/styles/vars.sass'
+  @import '@/styles/mixins.sass'
 
   .book-card
     padding: 15px
@@ -181,6 +183,15 @@ export default {
       max-width: 560px
       margin-bottom: 5px
       cursor: pointer
+      color: black
+      position: relative
+      display: block
+      +tdn
+      transition: all ease-in-out 0.1s
+      &:hover
+        color: $color-accent
+      &:visited
+        color: black
       &--small
         font-size: 15px
         margin: 0
