@@ -1,7 +1,7 @@
 <template>
   <div class="test-page">
     <div class="expose-page">
-      <EECard/>
+      <edit-item/>
 
       <!-- <cover :options="coverOptions"/> -->
 
@@ -103,7 +103,7 @@ import ContentSelector from '@/components/expose/ContentSelector';
 import Cover from '@/components/expose/Cover';
 import ExposeStack from '@/components/expose/ExposeStack';
 import ImagePicker from '@/components/cms/common/ImagePicker';
-import EECard from '@/components/cms/EECard';
+import EditItem from '@/components/cms/EditItem';
 
 export default {
   name: 'Test',
@@ -113,7 +113,7 @@ export default {
     ContentSelector,
     ExposeStack,
     ImagePicker,
-    EECard,
+    EditItem,
   },
   props: ['options'],
   data() {
@@ -200,7 +200,10 @@ export default {
     };
   },
   mounted() {
-    this.$store.commit('edit/selectOnEditScreen', this.real.stacks.list[0].list[0]);
+    this.$store.commit(
+      'edit/selectOnEditScreen',
+      this.real.stacks.list[0].list[0],
+    );
   },
   computed: {
     expose() {

@@ -48,7 +48,7 @@ import cover from '~/assets/images/alfons-morales-410757-unsplash.jpg';
 import ExposeCard from '@/components/expose/ExposeCard';
 
 export default {
-  name: 'Category',
+  name: 'Catalogue',
   components: { ExposeCard },
   data() {
     return {

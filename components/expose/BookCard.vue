@@ -11,9 +11,9 @@
           : 'book-card__author book-card__author--gray'">
         {{ author }}
       </div>
-      <div
-        class="book-card__title"
-        @click="redirect">{{ item.title }}</div>
+      <a
+        :href="link"
+        class="book-card__title">{{ item.title }}</a>
       <div class="book-card__info">{{ info }}</div>
       <div class="book-card__annotation">{{ annotation || 'Информация отсутствует' }}</div>
     </div>
@@ -29,11 +29,11 @@
       <div class="book-card__info">{{ info }}</div>
     </div>
     <div class="book-card__line">
-      <div
-        class="book-card__title book-card__title--small"
-         @click="redirect">
+      <a
+        :href="link"
+        class="book-card__title book-card__title--small">
         {{ item.title }}
-      </div>
+      </a>
     </div>
   </div>
 </template>
@@ -96,6 +96,15 @@ export default {
         return undefined;
       }
     },
+    link() {
+      const name = this.exposeTitle
+        .split('\n')
+        .join('~')
+        .split(' ')
+        .join('_');
+      const title = this.item.title.split(' ').join('_');
+      return `/expose/${name}-${this.exposeCreate}/book/${title}`;
+    },
   },
   methods: {
     getInfo() {
@@ -106,18 +115,6 @@ export default {
       ]
         .filter(el => el !== '')
         .join(', ');
-    },
-    redirect() {
-      console.log(this.exposeTitle);
-      const name = this.exposeTitle
-        .split('\n')
-        .join('~')
-        .split(' ')
-        .join('_');
-      const title = this.item.title.split(' ').join('_');
-      this.$router.push({
-        path: `/expose/${name}-${this.exposeCreate}/book/${title}`,
-      });
     },
   },
 };

@@ -4,7 +4,7 @@
     <sidebar></sidebar>
     <div class="cms-new-page__content">
       <div class="cms-new-page__columns">
-        <div class="cms-new-page__rows" style="flex-grow: 0">
+        <div class="cms-new-page__rows" style="flex-grow: 0; overflow-y: auto">
           <div class="cms-new-page__panel">
             <nuxt-link
               class="button"

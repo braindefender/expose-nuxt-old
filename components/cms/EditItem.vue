@@ -124,7 +124,7 @@ import ImageBlur from '~/components/common/ImageBlur';
 import ImagePicker from '~/components/cms/common/ImagePicker';
 
 export default {
-  name: 'EECard',
+  name: 'EditItem',
   components: { ImageBlur, ImagePicker },
   data() {
     return {

@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import CategoryCard from '@/components/expose/CategoryCard';
+import CategoryCard from '@/components/expose/category/CategoryCard';
 
 export default {
   name: 'CategoryPreview',

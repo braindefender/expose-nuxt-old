@@ -30,8 +30,8 @@
 <script>
 import cover from '~/assets/images/alfons-morales-410757-unsplash.jpg';
 
-import CataloguePreview from '~/components/expose/CataloguePreview';
-import CategoryPreview from '~/components/expose/CategoryPreview';
+import CataloguePreview from '~/components/expose/catalogue/CataloguePreview';
+import CategoryPreview from '~/components/expose/category/CategoryPreview';
 import Slider from '~/components/expose/slider/Slider';
 
 export default {

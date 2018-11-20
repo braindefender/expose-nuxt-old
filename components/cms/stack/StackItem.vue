@@ -48,7 +48,7 @@
 import progressbar from 'progressbar.js';
 
 export default {
-  name: 'ESCard',
+  name: 'StackItem',
   props: ['item', 'options'],
   mounted() {
     if (this.selectMode) {

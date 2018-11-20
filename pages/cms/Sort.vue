@@ -27,7 +27,7 @@
             <div class="es__side-top">
 
             </div>
-            <stack-sort
+            <stack-edit
               :options="{
                 left: true,
                 compact: false,
@@ -36,7 +36,7 @@
               }"/>
           </div>
           <div class="es__side es__side--right">
-            <stack-sort
+            <stack-edit
               :options="{
                 right: true,
                 compact: false,
@@ -63,8 +63,7 @@
 <script>
 import Sidebar from '~/components/cms/sidebar/Sidebar';
 
-import ESCard from '@/components/cms/ESCard';
-import StackSort from '@/components/cms/StackSort';
+import StackEdit from '@/components/cms/stack/StackEdit';
 
 export default {
   name: 'Sort',
@@ -80,7 +79,7 @@ export default {
       this.syncState();
     }
   },
-  components: { Sidebar, ESCard, StackSort },
+  components: { Sidebar, StackEdit },
   data() {
     return {
       canSyncState: true,

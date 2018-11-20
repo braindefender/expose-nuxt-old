@@ -1,3 +1,7 @@
+/*
+  Used in Sort screen. Simple stack view without edit possibilities
+*/
+
 <template>
   <div
   ref="stack"
@@ -32,16 +36,15 @@
               v-for="(item, index) in innerStack.list" :key="index"
               v-if="item.clean !== true"
               class="ee-stack__list-item">
-              <edit-stack
+              <stack-view
                 v-if="item.kind === 'stack'"
                 :stack="item"
                 :options="{
                   left: false,
                   right: false,
                   checkOnClick: false,
-                }">
-              </edit-stack>
-              <ESCard
+                }"/>
+              <stack-item
                 v-if="item.kind === 'book'"
                 :item="item"
                 :options="{
@@ -51,7 +54,7 @@
                   checkOnClick: false,
                 }"
                 @select="select(index)">
-              </ESCard>
+              </stack-item>
             </div>
           </div>
         </transition>
@@ -64,11 +67,11 @@
 import progressbar from 'progressbar.js';
 import { mapState } from 'vuex';
 
-import ESCard from '~/components/cms/ESCard';
+import StackItem from '~/components/cms/stack/StackItem';
 
 export default {
-  name: 'EditStack',
-  components: { ESCard },
+  name: 'StackView',
+  components: { StackItem },
   props: ['stack', 'options'],
   data() {
     return {

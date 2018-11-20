@@ -30,7 +30,7 @@
 <script>
 import cover from '~/assets/images/alfons-morales-410757-unsplash.jpg';
 
-import CategoryCard from '@/components/expose/CategoryCard';
+import CategoryCard from '@/components/expose/category/CategoryCard';
 
 export default {
   name: 'Category',

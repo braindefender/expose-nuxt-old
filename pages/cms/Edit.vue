@@ -16,14 +16,14 @@
         </div>
         <div class="ee">
           <div class="ee__side ee__side--left">
-            <edit-stack
+            <stack-view
             :options="{
               left: true,
               compact: false,
-            }"></edit-stack>
+            }"></stack-view>
           </div>
           <div class="ee__side ee__side--right">
-            <EECard/>
+            <edit-item/>
           </div>
         </div>
       </div>
@@ -34,12 +34,12 @@
 <script>
 import Sidebar from '~/components/cms/sidebar/Sidebar';
 
-import EECard from '@/components/cms/EECard';
-import EditStack from '@/components/cms/EditStack';
+import StackView from '@/components/cms/stack/StackView';
+import EditItem from '@/components/cms/EditItem';
 
 export default {
   name: 'Edit',
-  components: { Sidebar, EECard, EditStack },
+  components: { Sidebar, EditItem, StackView },
   mounted() {
     // redirect if came from link instead of cms
     if (this.$route.params.cms !== true) {
