@@ -132,6 +132,9 @@ export default {
       file: '',
     };
   },
+  beforeDestroy() {
+    this.save();
+  },
   computed: {
     authors() {
       return this.item.authors
@@ -149,11 +152,12 @@ export default {
   },
   methods: {
     save() {
-      this.$store.commit('stacks/set', {
-        item: this.item,
-        field: 'full',
-        to: true,
-      });
+      // this.$store.commit('stacks/set', {
+      //   item: this.item,
+      //   field: 'full',
+      //   to: true,
+      // });
+      this.$axios.$post('/book', this.item);
       this.$store.dispatch('syncState');
     },
     loadXML() {
@@ -359,7 +363,6 @@ export default {
     &__images
       display: flex
       flex-direction: row
-      justify-content: space-between
     &__images-container
       overflow-x: scroll
       padding-bottom: 10px
@@ -487,8 +490,12 @@ export default {
     padding: 10px
     display: flex
     flex-direction: column
+    margin-right: 10px
+    &:last-child
+      margin-right: 0
     &--additional
-      max-width: 425px
+      align-items: flex-start
+      flex-grow: 1
       overflow-x: auto
     &__images
       display: flex

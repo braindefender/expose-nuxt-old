@@ -48,10 +48,11 @@ export default {
     }
   },
   beforeDestroy() {
+    this.$store.commit('edit/updateSelected', { selected: false });
     if (this.canSyncState) {
+      console.log('hui');
       this.syncState();
     }
-    this.$store.commit('edit/updateSelected', { selected: false });
   },
   data() {
     return {
