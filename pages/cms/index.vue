@@ -6,17 +6,30 @@
         <div class="cms-auth__field">
           <input
             type="text"
-            name="user"
-            placeholder="Логин">
+            name="username"
+            placeholder="Логин"
+            v-model="username">
         </div>
         <div class="cms-auth__field">
           <input
             type="password"
-            name="pass"
-            placeholder="Пароль">
+            name="password"
+            placeholder="Пароль"
+            v-model="password">
         </div>
         <div class="cms-auth__buttons">
-          <div class="button">Войти</div>
+          <div
+            type="button"
+            class="button"
+            @click="authorize">
+            Войти
+          </div>
+          <div
+            type="button"
+            class="button"
+            @click="test">
+            Тестинг
+          </div>
         </div>
       </div>
     </div>
@@ -26,17 +39,41 @@
 <script>
 export default {
   mounted() {
-    if (this.user === 'user') {
-      if (this.pass === 'pass') {
-        this.$router.push('/cms/list');
-      }
-    }
+    // if (this.user === 'user') {
+    //   if (this.pass === 'pass') {
+    //     this.$router.push('/cms/list');
+    //   }
+    // }
   },
   data() {
     return {
-      user: 'user',
-      pass: 'pass',
+      username: '',
+      password: '',
     };
+  },
+  methods: {
+    test() {
+      this.$axios.$get('/user').then(res => {
+        console.log(res);
+      });
+    },
+    authorize() {
+      this.$axios
+        .$post('/cms/login', {
+          username: this.username,
+          password: this.password,
+        })
+        .then(response => {
+          console.log(response);
+          // console.log(this.$cookies.keys());
+          this.$router.push('/cms/list');
+        })
+        .catch(err => {
+          if (err.response.status === 401) {
+            // this.notifyError()
+          }
+        });
+    },
   },
 };
 </script>
@@ -80,4 +117,7 @@ export default {
       .button
         height: 36px
         font-size: 16px
+        margin-bottom: 10px
+        &:last-child
+          margin-bottom: 0
 </style>

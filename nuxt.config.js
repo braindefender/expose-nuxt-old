@@ -1,7 +1,7 @@
 module.exports = {
   /*
-  ** Headers of the page
-  */
+   ** Headers of the page
+   */
   head: {
     title: 'expose',
     meta: [
@@ -12,16 +12,16 @@ module.exports = {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
   /*
-  ** Customize the progress bar color
-  */
+   ** Customize the progress bar color
+   */
   loading: { color: '#4680ff' },
   /*
-  ** Build configuration
-  */
+   ** Build configuration
+   */
   build: {
     /*
-    ** Run ESLint on save
-    */
+     ** Run ESLint on save
+     */
     extend(config, { isDev, isClient }) {
       if (isDev && isClient) {
         config.module.rules.push({
@@ -50,5 +50,6 @@ module.exports = {
     { src: '~plugins/vue-scrollactive', ssr: false },
     { src: '~plugins/vue-multiselect', ssr: false },
     { src: '~plugins/vue-awesome-swiper', ssr: false },
+    { src: '~plugins/vue-cookies' },
   ],
 };
