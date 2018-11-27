@@ -34,7 +34,7 @@
     </div>
 
     <div class="sidebar-button"
-      @click="create">
+      @click="logout">
       <div class="sidebar-button__icon sidebar-button__icon--exit"></div>
       <div class="sidebar-button__text">Выйти из аккаунта</div>
     </div>
@@ -42,6 +42,8 @@
 </template>
 
 <script>
+const Cookie = process.client ? require('js-cookie') : undefined;
+
 export default {
   name: 'SidebarAccount',
   data() {
@@ -72,6 +74,10 @@ export default {
     },
     getPageName() {
       return $nuxt.$route.path.split('/').pop();
+    },
+    logout() {
+      Cookie.remove('auth');
+      this.$store.commit('setAuth', null);
     },
   },
 };

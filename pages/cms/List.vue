@@ -33,6 +33,7 @@ export default {
     ListItem,
     Sidebar,
   },
+  middleware: 'authenticated',
   data() {
     return {};
   },

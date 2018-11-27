@@ -1791,6 +1791,10 @@ cookie@0.3.1, cookie@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.3.1.tgz#e7e0a1f9ef43b4c8ba925c5c5a96e806d16873bb"
 
+cookieparser@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/cookieparser/-/cookieparser-0.1.0.tgz#ea12cb1085c174f3167faeaf7985f79abe671d0e"
+
 copy-concurrently@^1.0.0:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/copy-concurrently/-/copy-concurrently-1.0.5.tgz#92297398cae34937fcafd6ec8139c18051f0b5e0"
@@ -3706,6 +3710,10 @@ isstream@~0.1.2:
 js-base64@^2.1.8, js-base64@^2.1.9:
   version "2.4.8"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.4.8.tgz#57a9b130888f956834aa40c5b165ba59c758f033"
+
+js-cookie@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-2.2.0.tgz#1b2c279a6eece380a12168b92485265b35b1effb"
 
 js-tokens@^3.0.0, js-tokens@^3.0.2:
   version "3.0.2"
@@ -6951,10 +6959,6 @@ vue-awesome-swiper@^3.1.3:
   dependencies:
     object-assign "^4.1.1"
     swiper "^4.0.7"
-
-vue-cookies@^1.5.7:
-  version "1.5.7"
-  resolved "https://registry.yarnpkg.com/vue-cookies/-/vue-cookies-1.5.7.tgz#44b3940b0cbb853ba3f7848f1905cb127ec45eb4"
 
 vue-eslint-parser@^2.0.3:
   version "2.0.3"

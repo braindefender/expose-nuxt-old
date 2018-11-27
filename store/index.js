@@ -3,7 +3,11 @@ import Vue from 'vue';
 import weekly0 from '@/assets/images/jamie-taylor-110195-unsplash.jpg';
 import weekly1 from '@/assets/images/janko-ferlic-174927-unsplash.jpg';
 
+const cookieparser = process.server ? require('cookieparser') : undefined;
+
 export const state = () => ({
+  auth: null,
+  user: '',
   workerID: 'dummyuser',
   currentPage: 0,
   currentStatus: 'work',
@@ -60,6 +64,9 @@ export const state = () => ({
   real: {},
   bookSourceMap: {
     'м.': 'Москва',
+    'л.': 'Ленинград',
+    'спб.': 'Санкт-Петербург',
+    спб: 'Санкт-Петербург',
   },
 });
 
@@ -82,6 +89,12 @@ export const mutations = {
   setExposeList(state, payload) {
     Vue.set(state, 'exposeList', payload);
   },
+  setAuth(state, auth) {
+    state.auth = auth;
+  },
+  setUser(state, user) {
+    state.user = user;
+  },
   // unified setter
   set(state, { field, value }) {
     state[field] = value;
@@ -89,6 +102,18 @@ export const mutations = {
 };
 
 export const actions = {
+  nuxtServerInit({ commit }, { req }) {
+    let auth = null;
+    if (req.headers.cookie) {
+      const parsed = cookieparser.parse(req.headers.cookie);
+      try {
+        auth = JSON.parse(parsed.auth);
+      } catch (err) {
+        // No valid cookie found
+      }
+    }
+    commit('setAuth', auth);
+  },
   createNewExpose({ commit, state }) {
     return new Promise((resolve, reject) => {
       this.$axios

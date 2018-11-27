@@ -37,6 +37,8 @@
 </template>
 
 <script>
+const Cookie = process.client ? require('js-cookie') : undefined;
+
 export default {
   mounted() {
     // if (this.user === 'user') {
@@ -45,6 +47,7 @@ export default {
     //   }
     // }
   },
+  middleware: 'notAuthenticated',
   data() {
     return {
       username: '',
@@ -63,9 +66,11 @@ export default {
           username: this.username,
           password: this.password,
         })
-        .then(response => {
-          console.log(response);
-          // console.log(this.$cookies.keys());
+        .then(({ user, token }) => {
+          console.log(user, token);
+          Cookie.set('auth', token);
+          this.$store.commit('setAuth', token);
+          this.$store.commit('setUser', user);
           this.$router.push('/cms/list');
         })
         .catch(err => {
