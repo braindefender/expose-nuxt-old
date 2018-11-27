@@ -50,7 +50,7 @@ export default {
   beforeDestroy() {
     this.$store.commit('edit/updateSelected', { selected: false });
     if (this.canSyncState) {
-      console.log('hui');
+      // console.log('hui');
       this.syncState();
     }
   },

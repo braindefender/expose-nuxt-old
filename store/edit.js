@@ -16,6 +16,7 @@ export const mutations = {
     state.selected = { ...item, ...patch };
   },
   updateSelected(state, item) {
+    state.original = item;
     state.selected = item;
   },
   set(state, { item, field, to }) {
@@ -48,7 +49,7 @@ export const mutations = {
 export const actions = {
   selectOnEditScreen({ state, dispatch, commit }, item) {
     this.$axios
-      .$get('book', {
+      .$get('cms/book', {
         params: { irbis: item.irbis },
       })
       .then(res => {

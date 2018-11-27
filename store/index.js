@@ -95,9 +95,7 @@ export const actions = {
   createNewExpose({ commit, state }) {
     return new Promise((resolve, reject) => {
       this.$axios
-        .$get('/cms/new', {
-          params: { workerID: state.workerID },
-        })
+        .$get('/cms/new')
         .then(res => {
           commit('setState', res, { root: true });
           console.log('Got response from server:', res);

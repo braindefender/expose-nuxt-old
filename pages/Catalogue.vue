@@ -79,9 +79,11 @@ export default {
       }
     },
     fetchPage() {
-      this.$axios.$get(`/catalogue?page=${this.currentPage}`).then(res => {
-        this.$set(this, 'list', res.catalogueList);
-      });
+      this.$axios
+        .$get(`/catalogue/catalogue?page=${this.currentPage}`)
+        .then(res => {
+          this.$set(this, 'list', res.catalogueList);
+        });
     },
   },
 };

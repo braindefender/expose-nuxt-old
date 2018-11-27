@@ -45,7 +45,7 @@ export default {
     };
   },
   mounted() {
-    this.$axios.$get('/main').then(res => {
+    this.$axios.$get('/catalogue/main').then(res => {
       this.catalogueList = res.catalogueList;
       this.categoryList = res.categoryList;
     });

@@ -157,7 +157,7 @@ export default {
       //   field: 'full',
       //   to: true,
       // });
-      this.$axios.$post('/book', this.item);
+      this.$axios.$post('/cms/book', this.item);
       this.$store.dispatch('syncState');
     },
     loadXML() {
