@@ -39,10 +39,32 @@ module.exports = {
       'axios',
     ],
   },
+  auth: {
+    redirect: {
+      login: '/cms',
+      logout: '/cms',
+      callback: '/cms',
+      home: '/cms/list',
+    },
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: '/auth/login', method: 'post', propertyName: 'token' },
+          logout: { url: '/auth/logout', method: 'post' },
+          user: { url: '/auth/user', method: 'get', propertyName: false },
+        },
+        tokenRequired: true,
+        tokenType: 'bearer',
+      },
+    },
+  },
   axios: {
     baseURL: 'http://10.3.6.27:3333/api',
   },
-  modules: ['@nuxtjs/axios'],
+  router: {
+    middleware: ['auth'],
+  },
+  modules: ['@nuxtjs/axios', '@nuxtjs/auth'],
   plugins: [
     { src: '~plugins/vue-autosize', ssr: false },
     { src: '~plugins/vue-picture-input', ssr: false },

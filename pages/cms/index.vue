@@ -24,12 +24,6 @@
             @click="authorize">
             Войти
           </div>
-          <div
-            type="button"
-            class="button"
-            @click="test">
-            Тестинг
-          </div>
         </div>
       </div>
     </div>
@@ -47,7 +41,6 @@ export default {
     //   }
     // }
   },
-  middleware: 'notAuthenticated',
   data() {
     return {
       username: '',
@@ -61,23 +54,12 @@ export default {
       });
     },
     authorize() {
-      this.$axios
-        .$post('/cms/login', {
+      this.$auth.loginWith('local', {
+        data: {
           username: this.username,
           password: this.password,
-        })
-        .then(({ user, token }) => {
-          console.log(user, token);
-          Cookie.set('auth', token);
-          this.$store.commit('setAuth', token);
-          this.$store.commit('setUser', user);
-          this.$router.push('/cms/list');
-        })
-        .catch(err => {
-          if (err.response.status === 401) {
-            // this.notifyError()
-          }
-        });
+        },
+      });
     },
   },
 };

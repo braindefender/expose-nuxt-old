@@ -34,7 +34,7 @@
     </div>
 
     <div class="sidebar-button"
-      @click="logout">
+      @click="$auth.logout()">
       <div class="sidebar-button__icon sidebar-button__icon--exit"></div>
       <div class="sidebar-button__text">Выйти из аккаунта</div>
     </div>
