@@ -4,6 +4,7 @@ export const state = () => ({
   selected: {
     selected: false,
     images: [],
+    fullImages: [],
   },
   original: {},
 });
@@ -31,6 +32,9 @@ export const mutations = {
   addImage(state, payload) {
     state.selected.images.push(payload);
   },
+  addFullImage(state, payload) {
+    state.selected.fullImages.push(payload);
+  },
   removeImageAt(state, payload) {
     state.selected.images.splice(payload, 1);
   },
@@ -54,10 +58,15 @@ export const actions = {
       })
       .then(res => {
         // commit('mutateObject', { source: item, patch: res[0] });
-        commit('selectOnEditScreen', { item, patch: res[0] });
+        let fullItem = { item, patch: res[0] };
+        fullItem.cover += `?_=${Date.now()}`;
+        commit('selectOnEditScreen', fullItem);
       })
       .catch(err => {
         console.log(err);
       });
+  },
+  pushBook({ state, dispatch, commit }, item) {
+    this.$axios.$post('/cms/book', item);
   },
 };

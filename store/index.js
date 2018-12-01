@@ -7,6 +7,7 @@ export const state = () => ({
   workerID: 'dummyuser',
   currentPage: 0,
   currentStatus: 'work',
+  usersList: [],
   categoryList: [],
   exposeList: [],
   statusList: [
@@ -82,6 +83,9 @@ export const mutations = {
   setCategoryList(state, payload) {
     state.categoryList = payload;
   },
+  setUsersList(state, payload) {
+    state.usersList = payload;
+  },
   setExposeList(state, payload) {
     Vue.set(state, 'exposeList', payload);
   },
@@ -110,9 +114,7 @@ export const actions = {
   fetchExposeList({ commit, state }, payload) {
     return new Promise((resolve, reject) => {
       this.$axios
-        .$get(`/cms/list/${payload}`, {
-          params: { workerID: state.workerID },
-        })
+        .$get(`/cms/list/${payload}`)
         .then(res => {
           commit('setExposeList', res);
           console.log(`Got ${payload} expose list from server:`, res);
@@ -170,12 +172,20 @@ export const actions = {
       commit('setCategoryList', res.data);
     });
   },
+  fetchUsersList({ commit }) {
+    this.$axios.get('/cms/users').then(res => {
+      commit('setUsersList', res.data);
+    });
+  },
   pushFinalState({ commit, state }) {
     // commit('syncState');
     // commit('pushFinalState', { root: true });
     return new Promise((resolve, reject) => {
       this.$axios
-        .post('/cms/final', { stacks: state.stacks, info: state.info })
+        .post('/cms/final', {
+          stacks: state.stacks,
+          info: state.info,
+        })
         .then(res => {
           resolve();
         })

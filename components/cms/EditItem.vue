@@ -1,15 +1,9 @@
 <template>
   <div class="ee-card" v-if="item && item.selected">
-
     <div class="ee-card__top">
       <div class="ee-card__label">Редактирование записи</div>
       <div class="ee-card__controls">
-        <input
-          class="hidden"
-          id="xml"
-          type="file"
-          ref="xml"
-          @input="loadXML"/>
+        <input class="hidden" id="xml" type="file" ref="xml" @input="loadXML">
         <label for="xml" class="button">Загрузить XML</label>
         <div class="button" type="button" @click="save">Сохранить</div>
       </div>
@@ -20,16 +14,10 @@
       <div class="ee-card__title">{{ item.title }}</div>
     </div>
 
-    <div
-      v-if="item.info"
-      class="ee-card__item"
-      >
+    <div v-if="item.info" class="ee-card__item">
       <div class="ee-card__item-title">Информация об издании:</div>
       <div class="ee-card__item-content ee-card__info">
-        <div
-          v-for="(info, index) in item.info"
-          :key="index"
-          class="ee-card__info-line">
+        <div v-for="(info, index) in item.info" :key="index" class="ee-card__info-line">
           <div class="ee-card__info-cell bold">{{ info.name }}</div>
           <div class="ee-card__info-cell">{{ info.value }}</div>
         </div>
@@ -38,7 +26,6 @@
 
     <div class="ee-card__item">
       <div class="ee-card__item-content ee-card__images">
-
         <div class="ee-image-block">
           <div class="ee-image-block__title">Обложка</div>
           <div class="ee-image-block__images">
@@ -47,7 +34,7 @@
               :meta="metadata"
               @change="onCoverChange"
               @remove="onCoverRemove"
-              @crop="onCoverCrop"/>
+            />
           </div>
         </div>
 
@@ -59,13 +46,11 @@
               :key="index"
               :prefill="img"
               @change="onImageChange"
-              @remove="removeImageAt(index)"/>
-            <image-picker
-              @change="onImageAdd"
-              @remove="() => {}"/>
+              @remove="removeImageAt(index)"
+            />
+            <image-picker @change="onImageAdd" @remove="() => {}"/>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -73,11 +58,16 @@
       <div class="ee-card__item-title">Аннотация:</div>
       <div class="ee-card__item-content ee-card__annotation">
         <textarea
-          ref="annotation" name="annotation" id="ee-annotation"
-          placeholder="Аннотация не указана" cols="30" rows="1"
-          @input="changeAnnotation" :value="item.annotation"
-          v-autosize="item.annotation">
-        </textarea>
+          ref="annotation"
+          name="annotation"
+          id="ee-annotation"
+          placeholder="Аннотация не указана"
+          cols="30"
+          rows="1"
+          @input="changeAnnotation"
+          :value="item.annotation"
+          v-autosize="item.annotation"
+        ></textarea>
       </div>
     </div>
 
@@ -85,11 +75,16 @@
       <div class="ee-card__item-title">Ссылка на полный текст:</div>
       <div class="ee-card__item-content ee-card__link">
         <textarea
-          ref="link" name="link" id="ee-link"
-          placeholder="Ссылка не указана" cols="30" rows="1"
-          @input="changeLink" :value="item.link"
-          v-autosize="item.link">
-        </textarea>
+          ref="link"
+          name="link"
+          id="ee-link"
+          placeholder="Ссылка не указана"
+          cols="30"
+          rows="1"
+          @input="changeLink"
+          :value="item.link"
+          v-autosize="item.link"
+        ></textarea>
       </div>
     </div>
 
@@ -102,15 +97,15 @@
           v-autosize="item.contents"
           class="ee-card__contents"
           placeholder="Содержание не указано"
-          name="contents" cols="60" rows="1"></textarea>
+          name="contents"
+          cols="60"
+          rows="1"
+        ></textarea>
       </div>
     </div>
-
   </div>
   <div class="ee-card" v-else>
-    <div class="ee-card__not-found">
-      Здесь ничего нет. Пожалуйста, выберите документ слева
-    </div>
+    <div class="ee-card__not-found">Здесь ничего нет. Пожалуйста, выберите документ слева</div>
   </div>
 </template>
 
@@ -152,12 +147,8 @@ export default {
   },
   methods: {
     save() {
-      // this.$store.commit('stacks/set', {
-      //   item: this.item,
-      //   field: 'full',
-      //   to: true,
-      // });
-      this.$axios.$post('/cms/book', this.item);
+      // this.$axios.$post('/cms/book', this.item);
+      this.$store.dispatch('edit/pushBook', this.item);
       this.$store.dispatch('syncState');
     },
     loadXML() {
@@ -207,13 +198,17 @@ export default {
         to: e.target.value,
       });
     },
-    onCoverChange(image) {
-      if (image) {
-        console.log('Picture loaded.');
+    onCoverChange({ full, cropped }) {
+      if (full) {
+        this.$store.commit('edit/set', {
+          item: this.item,
+          field: 'fullCover',
+          to: full,
+        });
         this.$store.commit('edit/set', {
           item: this.item,
           field: 'cover',
-          to: image,
+          to: cropped,
         });
       } else {
         console.log('FileReader API not supported: use the <form>, Luke!');
@@ -226,16 +221,8 @@ export default {
         to: undefined,
       });
     },
-    onCoverCrop(image) {
-      this.$store.commit('edit/set', {
-        item: this.item,
-        field: 'cover',
-        to: image,
-      });
-      // this.$axios.$post('/json', { image: image });
-    },
-    onImageAdd(image) {
-      if (image) {
+    onImageAdd({ full, cropped }) {
+      if (full) {
         console.log('Picture loaded.');
         // Check if images array exist
         if (!this.item.images) {
@@ -245,13 +232,21 @@ export default {
             to: [],
           });
         }
-        this.$store.commit('edit/addImage', image);
+        if (!this.item.fullImages) {
+          this.$store.commit('edit/set', {
+            item: this.item,
+            field: 'fullImages',
+            to: [],
+          });
+        }
+        this.$store.commit('edit/addFullImage', full);
+        this.$store.commit('edit/addImage', cropped);
       } else {
         console.log('FileReader API not supported: use the <form>, Luke!');
       }
     },
-    onImageChange(image) {
-      if (image) {
+    onImageChange({ full, cropped }) {
+      if (full) {
         console.log('Picture updated.');
         if (!this.item.images) {
           this.$store.commit('edit/set', {
@@ -260,7 +255,15 @@ export default {
             to: [],
           });
         }
-        this.$store.commit('edit/addImage', image);
+        if (!this.item.fullImages) {
+          this.$store.commit('edit/set', {
+            item: this.item,
+            field: 'fullImages',
+            to: [],
+          });
+        }
+        this.$store.commit('edit/addFullImage', full);
+        this.$store.commit('edit/addImage', cropped);
       } else {
         console.log('FileReader API not supported: use the <form>, Luke!');
       }

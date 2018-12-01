@@ -4,9 +4,9 @@
     <div class="cms-new-page__content">
       <div class="cms-table">
         <div class="cms-table__row cms-table__headers">
-          <div class="cms-table__header cms-table__header--main cms-table__header--title">
-            Модерируемые выставки
-          </div>
+          <div
+            class="cms-table__header cms-table__header--main cms-table__header--title"
+          >Модерируемые выставки</div>
           <div class="cms-table__header cms-table__header--date">Дата создания</div>
           <div class="cms-table__header cms-table__header--date">Дата обновления</div>
           <div class="cms-table__header cms-table__header">Редакторы</div>
@@ -16,8 +16,8 @@
           v-if="items.length !== 0"
           v-for="(item, index) in items"
           :key="index"
-          :item="item">
-        </list-item>
+          :item="item"
+        ></list-item>
       </div>
     </div>
   </div>
@@ -44,6 +44,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch('fetchExposeList', this.$store.state.currentStatus);
+    this.$store.dispatch('fetchUsersList');
   },
 };
 </script>

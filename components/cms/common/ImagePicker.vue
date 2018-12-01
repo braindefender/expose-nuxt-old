@@ -1,30 +1,25 @@
 <template>
   <div class="ip">
     <div class="ip__image">
-      <canvas ref="refImage" width="125" height="180"></canvas>
+      <img v-if="prefill" :src="prefill" :style="`max-width: ${pWidth}px`">
     </div>
     <div class="ip__controls">
-      <div
-        class="ip__button ip__button--add"
-        :class="hasPrefill ? 'ip__button--off' : ''">
+      <div class="ip__button ip__button--add" :class="hasPrefill ? 'ip__button--off' : ''">
         <picture-input
           ref="pi"
           width="70"
           height="70"
-          accept="image/jpeg,image/jpg,image/png"
+          accept="image/jpeg, image/jpg, image/png"
           size="2"
           button-class="button"
           :prefill="undefined"
-          :zIndex=200
+          :zIndex="200"
           :plain="true"
           :hideChangeButton="true"
-          @change="onChange">
-        </picture-input>
+          @change="onPIChange"
+        />
       </div>
-      <div
-        v-if="hasPrefill"
-        class="ip__button ip__button--del"
-        @click="onRemove"></div>
+      <div v-if="hasPrefill" class="ip__button ip__button--del" @click="onRemove"></div>
     </div>
   </div>
 </template>
@@ -35,66 +30,82 @@ import ImageBlur from '~/components/common/ImageBlur';
 
 export default {
   name: 'ImagePicker',
-  props: ['prefill'],
+  props: {
+    prefill: {
+      type: String,
+      default: '',
+      required: false,
+    },
+    pWidth: {
+      type: Number,
+      default: 125,
+      required: false,
+    },
+    pHeight: {
+      type: Number,
+      default: 180,
+      required: false,
+    },
+  },
   components: { ImageBlur },
   watch: {
     prefill(newValue, oldValue) {
-      if (newValue) {
-        this.setImage(newValue);
-        this.hasPrefill = true;
-      } else {
-        this.removeImage();
-      }
+      this.hasPrefill = newValue ? true : false;
     },
   },
   data() {
     return {
-      ctx: '',
-      imageObject: {},
-      imagePreview: {},
-      aspectRatio: 1,
       hasPrefill: false,
+      imgWidth: 125,
+      imgHeight: 180,
     };
   },
   mounted() {
-    this.ctx = this.$refs.refImage.getContext('2d');
+    // this.ctx = this.$refs.refImage.getContext('2d');
     if (this.prefill) {
       this.hasPrefill = true;
       this.setImage(this.prefill);
     }
   },
   methods: {
-    setImage(file) {
+    setImage(data) {
       const img = new Image();
       const self = this;
       img.onload = function() {
-        if (self.$refs.refImage) {
-          self.aspectRatio = img.height / img.width;
-          self.$refs.refImage.height =
-            self.$refs.refImage.width * self.aspectRatio;
-          self.ctx.drawImage(img, 0, 0, 125, self.$refs.refImage.height);
-          self.imagePreview = self.$refs.refImage.toDataURL();
-          self.$emit('crop', self.imagePreview);
-        }
+        this.imgHeight = (self.pWidth * this.height) / this.width;
       };
-      img.src = file;
+      img.src = data;
     },
-    removeImage() {
-      this.hasPrefill = false;
-      this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-      this.$refs.refImage.height = 180;
-      // this.setImage(noImage);
-    },
-    onChange(image) {
+    onPIChange(image) {
       if (image) {
-        this.$emit('change', image);
+        this.resizedataURL(image).then(cropped => {
+          this.$emit('change', { full: image, cropped });
+        });
       } else {
         console.log('FileReader API not supported: use the <form>, Luke!');
       }
     },
     onRemove() {
-      this.removeImage();
+      this.hasPrefill = false;
       this.$emit('remove');
+    },
+    resizedataURL(data) {
+      return new Promise((resolve, reject) => {
+        let img = document.createElement('img');
+        let self = this;
+        img.onload = function() {
+          // this == img (changed context)
+          let height = (self.pWidth * this.height) / this.width;
+          let canvas = document.createElement('canvas');
+          canvas.width = self.pWidth;
+          canvas.height = height;
+          let ctx = canvas.getContext('2d');
+          ctx.drawImage(this, 0, 0, self.pWidth, height);
+          let cropped = canvas.toDataURL('image/jpeg', 0.85);
+          resolve(cropped);
+        };
+        img.src = data;
+      });
     },
   },
 };
@@ -116,6 +127,12 @@ export default {
       border: 1px solid rgba(black, 0.25)
       border-radius: 5px
       overflow: hidden
+      min-height: 180px
+      min-width: 125px
+      img
+        min-height: 180px
+        min-width: 125px
+        object-fit: cover
     &__image-no
       width: 125px
       height: 180px

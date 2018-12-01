@@ -1,21 +1,15 @@
 <template>
-  <div class="book-card" v-if="item.annotation || item.cover">
-    <image-blur
-      :image="cover"
-      :meta="item.meta"
-      :options="{ width: 125 }"/>
+  <div class="book-card" v-if="additional.annotation || additional.cover">
+    <image-blur :image="`${imageSrc}?_=${Date.now()}`" :meta="item.meta" :options="{ width: 125 }"/>
     <div class="book-card__content">
       <div
         :class="item.author
           ? 'book-card__author'
-          : 'book-card__author book-card__author--gray'">
-        {{ author }}
-      </div>
-      <a
-        :href="link"
-        class="book-card__title">{{ item.title }}</a>
+          : 'book-card__author book-card__author--gray'"
+      >{{ author }}</div>
+      <a :href="link" class="book-card__title">{{ item.title }}</a>
       <div class="book-card__info">{{ info }}</div>
-      <div class="book-card__annotation">{{ annotation || 'Информация отсутствует' }}</div>
+      <div class="book-card__annotation">{{ additional.annotation || 'Информация отсутствует' }}</div>
     </div>
   </div>
   <div class="book-card book-card--small" v-else>
@@ -23,17 +17,12 @@
       <div
         :class="item.author
           ? 'book-card__author'
-          : 'book-card__author book-card__author--gray'">
-        {{ author }}
-      </div>
+          : 'book-card__author book-card__author--gray'"
+      >{{ author }}</div>
       <div class="book-card__info">{{ info }}</div>
     </div>
     <div class="book-card__line">
-      <a
-        :href="link"
-        class="book-card__title book-card__title--small">
-        {{ item.title }}
-      </a>
+      <a :href="link" class="book-card__title book-card__title--small">{{ item.title }}</a>
     </div>
   </div>
 </template>
@@ -68,7 +57,21 @@ export default {
       pages: this.item.pages ? `${this.item.pages} с.` : '',
       author: this.item.author || 'Автор не указан',
       info: this.getInfo(),
+      additional: {},
+      imageSrc: '',
     };
+  },
+  mounted() {
+    if (this.$route.params.cms !== undefined) {
+      this.$axios
+        .$get('cms/book', {
+          params: { irbis: this.item.irbis },
+        })
+        .then(res => {
+          this.additional = { ...this.item, ...res[0] };
+          this.getImage();
+        });
+    }
   },
   computed: {
     meta() {
@@ -108,6 +111,14 @@ export default {
     },
   },
   methods: {
+    getImage() {
+      let img = new Image();
+      let self = this;
+      img.onload = function() {
+        self.imageSrc = self.additional.cover;
+      };
+      img.src = this.additional.cover;
+    },
     getInfo() {
       return [
         this.item.source || '',
