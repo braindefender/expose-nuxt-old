@@ -6,14 +6,8 @@
       <div class="cms-new-page__columns">
         <div class="cms-new-page__rows" style="flex-grow: 0; overflow-y: auto">
           <div class="cms-new-page__panel">
-            <nuxt-link
-              class="button"
-              :to="{ name: `cms-List`, params: { cms: true } }"
-              >Назад</nuxt-link>
-            <nuxt-link
-              class="button"
-              :to="{ name: `cms-Sort`, params: { cms: true } }"
-              >Далее</nuxt-link>
+            <nuxt-link class="button" :to="{ name: `cms-List`, params: { cms: true } }">Назад</nuxt-link>
+            <nuxt-link class="button" :to="{ name: `cms-Sort`, params: { cms: true } }">Далее</nuxt-link>
           </div>
 
           <Weekly
@@ -22,8 +16,8 @@
             :source="expose.source"
             :dates="expose.dates"
             @set="set"
-            @setDate="setDate">
-          </Weekly>
+            @setDate="setDate"
+          ></Weekly>
 
           <Theme
             v-if="expose.mode === 1"
@@ -35,21 +29,17 @@
             :dates="expose.dates"
             :annotation="expose.annotation"
             @set="set"
-            @setDate="setDate">
-          </Theme>
+            @setDate="setDate"
+          ></Theme>
         </div>
         <div class="ec__preview">
           <Cover :options="options"></Cover>
 
-          <Annotation
-            v-if="expose.mode !== 0"
-            :text="annotation">
-          </Annotation>
+          <Annotation v-if="expose.mode !== 0" :text="annotation"></Annotation>
 
           <div class="ec__preview-image"></div>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -118,6 +108,7 @@ export default {
           from: this.$store.state.info.dates.from,
           to: this.$store.state.info.dates.to,
         },
+        ownerID: this.expose.ownerID,
         workerID: this.expose.workerID,
         blocked: this.expose.blocked,
         _id: this.expose._id,

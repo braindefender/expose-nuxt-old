@@ -87,13 +87,13 @@ export default {
         .join(', ');
     },
     selected() {
-      return this.item === this.$store.state.edit.selected;
+      return this.item === this.$store.state.edit.original;
     },
     errorAnnotation() {
-      return this.item.annotation === undefined || this.item.annotation === '';
+      return this.item.hasAnnotation === undefined || !this.item.hasAnnotation;
     },
     errorCover() {
-      return !this.item.cover;
+      return this.item.hasCover === undefined || !this.item.hasCover;
     },
   },
   methods: {
@@ -109,10 +109,10 @@ export default {
     updateProgress() {
       if (!this.item.full) {
         let progress = 0;
-        if (this.item.annotation) {
+        if (this.item.hasAnnotation) {
           progress += 1;
         }
-        if (this.item.cover) {
+        if (this.item.hasCover) {
           progress += 1;
         }
         this.progress = (1 + progress) / 3;

@@ -63,7 +63,7 @@ export default {
       }
     },
     fetchPage() {
-      this.$axios.$get(`/catalogue?page=${currentPage}`).then(res => {
+      this.$axios.$get(`/catalogue/catalogue?page=${this.currentPage}`).then(res => {
         Vue.$set(this, 'list', res.catalogueList);
       });
     },

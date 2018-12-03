@@ -32,10 +32,7 @@ export default {
   components: { SliderItem },
   methods: {},
   mounted() {
-    // this.$axios.$get('/main').then(res => {
-    //   this.list = res.catalogueList;
-    // });
-    this.$axios.$get('/current').then(res => {
+    this.$axios.$get('/catalogue/current').then(res => {
       console.log(res);
       if (res.current.length === 0) {
         this.show = false;

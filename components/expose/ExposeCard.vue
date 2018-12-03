@@ -43,6 +43,7 @@ export default {
     redirect() {
       if (this.options && this.options.cms) {
         this.$store.dispatch('fetchState', this.item._id).then(res => {
+          // если не дали загрузить, то обновить экран
           this.$router.push({ name: 'cms-Info', params: { cms: true } });
         });
       } else {

@@ -1,7 +1,7 @@
 module.exports = {
   /*
-  ** Headers of the page
-  */
+   ** Headers of the page
+   */
   head: {
     title: 'expose',
     meta: [
@@ -12,16 +12,16 @@ module.exports = {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
   /*
-  ** Customize the progress bar color
-  */
+   ** Customize the progress bar color
+   */
   loading: { color: '#4680ff' },
   /*
-  ** Build configuration
-  */
+   ** Build configuration
+   */
   build: {
     /*
-    ** Run ESLint on save
-    */
+     ** Run ESLint on save
+     */
     extend(config, { isDev, isClient }) {
       if (isDev && isClient) {
         config.module.rules.push({
@@ -39,10 +39,32 @@ module.exports = {
       'axios',
     ],
   },
+  auth: {
+    redirect: {
+      login: '/cms',
+      logout: '/cms',
+      callback: '/cms',
+      home: '/cms/list',
+    },
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: '/auth/login', method: 'post', propertyName: 'token' },
+          logout: { url: '/auth/logout', method: 'post' },
+          user: { url: '/auth/user', method: 'get', propertyName: false },
+        },
+        tokenRequired: true,
+        tokenType: 'bearer',
+      },
+    },
+  },
   axios: {
     baseURL: 'http://10.3.6.27:3333/api',
   },
-  modules: ['@nuxtjs/axios'],
+  router: {
+    middleware: ['auth'],
+  },
+  modules: ['@nuxtjs/axios', '@nuxtjs/auth'],
   plugins: [
     { src: '~plugins/vue-autosize', ssr: false },
     { src: '~plugins/vue-picture-input', ssr: false },

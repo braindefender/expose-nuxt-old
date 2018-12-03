@@ -4,36 +4,22 @@
     <div class="cms-new-page__content">
       <div class="cms-new-page__rows">
         <div class="cms-new-page__panel">
-          <nuxt-link
-            class="button"
-            :to="{ name: `cms-Info`, params: { cms: true } }"
-            >Назад</nuxt-link>
-          <input
-            class="hidden"
-            id="xml1"
-            type="file"
-            ref="xml1"
-            @input="setFile"/>
+          <nuxt-link class="button" :to="{ name: `cms-Info`, params: { cms: true } }">Назад</nuxt-link>
+          <input class="hidden" accept="text/xml" id="xml1" type="file" ref="xml1" @input="setFile">
           <label for="xml1" class="button">Загрузить XML</label>
-          <nuxt-link
-            class="button"
-            :to="{ name: `cms-Edit`, params: { cms: true } }"
-            >Далее</nuxt-link>
+          <nuxt-link class="button" :to="{ name: `cms-Edit`, params: { cms: true } }">Далее</nuxt-link>
         </div>
-        <div
-          v-if="!isEmpty"
-          class="es">
+        <div v-if="!isEmpty" class="es">
           <div class="es__side es__side--left">
-            <div class="es__side-top">
-
-            </div>
+            <div class="es__side-top"></div>
             <stack-edit
               :options="{
                 left: true,
                 compact: false,
                 checkOnClick: true,
                 showLetters: true,
-              }"/>
+              }"
+            />
           </div>
           <div class="es__side es__side--right">
             <stack-edit
@@ -41,22 +27,27 @@
                 right: true,
                 compact: false,
                 checkOnClick: true,
-              }"/>
+              }"
+            />
           </div>
         </div>
 
-        <div
-          v-else
-          class="es-empty">
+        <div v-else class="es-empty">
           <div class="es-empty__text">
             Пока здесь ничего нет. Пожалуйста, загрузите
-            <input class="hidden" type="file" id="xml2" ref="xml2" @input="setFile($event)">
+            <input
+              class="hidden"
+              type="file"
+              id="xml2"
+              ref="xml2"
+              accept="text/xml"
+              @input="setFile($event)"
+            >
             <label for="xml2" class="button">XML файл</label>
           </div>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -101,7 +92,6 @@ export default {
     uploadXML() {
       this.$store.dispatch('syncState').then(() => {
         const _id = this.$store.state.info._id;
-        console.log(_id);
         let formData = new FormData();
         formData.append('file', this.file);
         formData.append('exposeid', _id);
@@ -111,9 +101,13 @@ export default {
               'Content-Type': 'multipart/form-data',
             },
           })
-          .then(res => {
-            this.$store.commit('setState', res);
+          .then(() => {
             console.log('Uploaded XML');
+            this.$axios
+              .$get('/cms/xmlready', { params: { exposeid: _id } })
+              .then(res => {
+                this.$store.commit('setState', res);
+              });
           })
           .catch(err => {
             console.log(err);

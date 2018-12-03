@@ -6,17 +6,24 @@
         <div class="cms-auth__field">
           <input
             type="text"
-            name="user"
-            placeholder="Логин">
+            name="username"
+            placeholder="Логин"
+            v-model="username">
         </div>
         <div class="cms-auth__field">
           <input
             type="password"
-            name="pass"
-            placeholder="Пароль">
+            name="password"
+            placeholder="Пароль"
+            v-model="password">
         </div>
         <div class="cms-auth__buttons">
-          <div class="button">Войти</div>
+          <div
+            type="button"
+            class="button"
+            @click="authorize">
+            Войти
+          </div>
         </div>
       </div>
     </div>
@@ -24,19 +31,36 @@
 </template>
 
 <script>
+const Cookie = process.client ? require('js-cookie') : undefined;
+
 export default {
   mounted() {
-    if (this.user === 'user') {
-      if (this.pass === 'pass') {
-        this.$router.push('/cms/list');
-      }
-    }
+    // if (this.user === 'user') {
+    //   if (this.pass === 'pass') {
+    //     this.$router.push('/cms/list');
+    //   }
+    // }
   },
   data() {
     return {
-      user: 'user',
-      pass: 'pass',
+      username: '',
+      password: '',
     };
+  },
+  methods: {
+    test() {
+      this.$axios.$get('/user').then(res => {
+        console.log(res);
+      });
+    },
+    authorize() {
+      this.$auth.loginWith('local', {
+        data: {
+          username: this.username,
+          password: this.password,
+        },
+      });
+    },
   },
 };
 </script>
@@ -80,4 +104,7 @@ export default {
       .button
         height: 36px
         font-size: 16px
+        margin-bottom: 10px
+        &:last-child
+          margin-bottom: 0
 </style>

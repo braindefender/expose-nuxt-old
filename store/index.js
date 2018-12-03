@@ -7,6 +7,7 @@ export const state = () => ({
   workerID: 'dummyuser',
   currentPage: 0,
   currentStatus: 'work',
+  usersList: [],
   categoryList: [],
   exposeList: [],
   statusList: [
@@ -60,6 +61,9 @@ export const state = () => ({
   real: {},
   bookSourceMap: {
     'м.': 'Москва',
+    'л.': 'Ленинград',
+    'спб.': 'Санкт-Петербург',
+    спб: 'Санкт-Петербург',
   },
 });
 
@@ -79,6 +83,9 @@ export const mutations = {
   setCategoryList(state, payload) {
     state.categoryList = payload;
   },
+  setUsersList(state, payload) {
+    state.usersList = payload;
+  },
   setExposeList(state, payload) {
     Vue.set(state, 'exposeList', payload);
   },
@@ -92,9 +99,7 @@ export const actions = {
   createNewExpose({ commit, state }) {
     return new Promise((resolve, reject) => {
       this.$axios
-        .$get('/cms/new', {
-          params: { workerID: state.workerID },
-        })
+        .$get('/cms/new')
         .then(res => {
           commit('setState', res, { root: true });
           console.log('Got response from server:', res);
@@ -109,9 +114,7 @@ export const actions = {
   fetchExposeList({ commit, state }, payload) {
     return new Promise((resolve, reject) => {
       this.$axios
-        .$get(`/cms/list/${payload}`, {
-          params: { workerID: state.workerID },
-        })
+        .$get(`/cms/list/${payload}`)
         .then(res => {
           commit('setExposeList', res);
           console.log(`Got ${payload} expose list from server:`, res);
@@ -169,12 +172,20 @@ export const actions = {
       commit('setCategoryList', res.data);
     });
   },
+  fetchUsersList({ commit }) {
+    this.$axios.get('/cms/users').then(res => {
+      commit('setUsersList', res.data);
+    });
+  },
   pushFinalState({ commit, state }) {
     // commit('syncState');
     // commit('pushFinalState', { root: true });
     return new Promise((resolve, reject) => {
       this.$axios
-        .post('/cms/final', { stacks: state.stacks, info: state.info })
+        .post('/cms/final', {
+          stacks: state.stacks,
+          info: state.info,
+        })
         .then(res => {
           resolve();
         })
