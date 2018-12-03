@@ -1,7 +1,10 @@
 <template>
   <div>
     <script src="//cdnjs.cloudflare.com/ajax/libs/velocity/2.0.3/velocity.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.1/css/swiper.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.1/css/swiper.min.css"
+    >
     <nuxt/>
   </div>
 </template>
@@ -309,13 +312,16 @@
 
   // Category / Catalogue layouts
   .cat-layout
-    max-width: 810px
+    max-width: 1700px
     padding-bottom: 20px
+    margin: 0 auto
+    &__content
+      display: flex
+      justify-content: center
     &__grid
       display: grid
-      grid-template-columns: 1fr 1fr
-      grid-auto-row: auto
-      grid-gap: 30px 20px
+      grid-template-columns: 1fr 1fr 1fr
+      grid-gap: 40px 40px
       grid-auto-flow: row
     &__slider
       width: 100%
@@ -328,7 +334,7 @@
       flex-direction: row
       justify-content: space-between
       align-items: center
-      height: 64px
+      height: 72px
     &__title
       font-size: 20px
       font-weight: bold
@@ -390,5 +396,7 @@
       z-index: 100
       box-shadow: 0 1px 0 rgba(black, 0.1)
       background-color: #F6F7FB
+
+  @import '~/styles/media.sass'
 
 </style>

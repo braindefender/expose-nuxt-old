@@ -182,7 +182,7 @@ export default {
       align-items: center
       img
         width: 100%
-        animation: slide 20s alternate infinite ease-in-out
+        // animation: slide 20s alternate infinite ease-in-out
     &__return-link
       +tdn
       position: relative

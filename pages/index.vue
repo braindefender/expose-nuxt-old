@@ -54,8 +54,9 @@ export default {
       // aspect ratio 375 x 120
       height: 0
       width: 100%
-      padding-top: 32%
-      background-color: #333
+      padding-top: 25%
+      background: #333 center center no-repeat
+      background-size: cover
       color: white
       &__content
         +posa(0)
@@ -68,7 +69,8 @@ export default {
           font-weight: bold
           font-size: 2.5em
     .content-section
-      padding-left: 5%
-      padding-right: 5%
+      display: flex
+      justify-content: center
+      flex-direction: column
 
 </style>
