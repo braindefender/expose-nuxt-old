@@ -4,26 +4,13 @@
       <div class="cms-auth">
         <div class="cms-auth__title">Авторизация</div>
         <div class="cms-auth__field">
-          <input
-            type="text"
-            name="username"
-            placeholder="Логин"
-            v-model="username">
+          <input type="text" name="username" placeholder="Логин" v-model="username">
         </div>
         <div class="cms-auth__field">
-          <input
-            type="password"
-            name="password"
-            placeholder="Пароль"
-            v-model="password">
+          <input type="password" name="password" placeholder="Пароль" v-model="password">
         </div>
         <div class="cms-auth__buttons">
-          <div
-            type="button"
-            class="button"
-            @click="authorize">
-            Войти
-          </div>
+          <div type="button" class="button" @click="authorize">Войти</div>
         </div>
       </div>
     </div>

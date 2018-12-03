@@ -73,4 +73,11 @@ export default {
       justify-content: center
       flex-direction: column
 
+  @media only screen and (max-width : 320px)
+    .main
+      .cover-section
+        &__content
+          background-color: rgba(black, 0.5)
+          h1
+            font-size: 20px
 </style>

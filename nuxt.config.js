@@ -62,7 +62,7 @@ module.exports = {
     baseURL: 'http://10.3.6.27:3333/api',
   },
   router: {
-    middleware: ['auth'],
+    // middleware: ['auth'],
   },
   modules: ['@nuxtjs/axios', '@nuxtjs/auth'],
   plugins: [
