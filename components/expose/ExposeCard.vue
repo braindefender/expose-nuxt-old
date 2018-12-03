@@ -8,9 +8,7 @@
     <div class="e-card__layer e-card__image">
       <img :src="image" :alt="meta">
     </div>
-    <div
-      class="e-card__layer e-card__info e-card__info--catalogue"
-      @click="redirect">
+    <div class="e-card__layer e-card__info e-card__info--catalogue" @click="redirect">
       <div class="e-card__title">{{ item.title }}</div>
       <div class="e-card__date">{{ prettyDate }}</div>
     </div>
@@ -33,7 +31,7 @@ export default {
       }, ${date.getFullYear()}`;
     },
     meta() {
-      return `${this.item.title} - ${this.item.dateFrom}`;
+      return `${this.item.title} - ${this.item.dates.from}`;
     },
     image() {
       return this.item.image
