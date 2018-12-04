@@ -1,7 +1,7 @@
 <template>
   <div class="cms-table__row" :class="item.blocked ? 'cms-table__row--blocked' : ''">
     <div class="cms-table__list-item cms-table__list-item--main">
-      <expose-card :item="item" :options="{ cms: true }"/>
+      <CMSCard :item="item" :options="{ cms: true }"/>
     </div>
     <div class="cms-table__list-item cms-table__list-item--date">{{ item.dates.create }}</div>
     <div class="cms-table__list-item cms-table__list-item--date">{{ item.dates.update }}</div>
@@ -54,12 +54,12 @@
 </template>
 
 <script>
-import ExposeCard from '~/components/expose/ExposeCard';
+import CMSCard from '~/components/cms/CMSCard';
 
 export default {
   name: 'ListItem',
   components: {
-    ExposeCard,
+    CMSCard,
   },
   props: ['item'],
   data() {
