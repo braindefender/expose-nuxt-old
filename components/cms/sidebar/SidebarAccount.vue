@@ -14,10 +14,7 @@
       </div>
     </div>
 
-    <div class="sidebar-button" @click="create">
-      <div class="sidebar-button__icon sidebar-button__icon--add"></div>
-      <div class="sidebar-button__text">Создать выставку</div>
-    </div>
+    <sidebar-button text="Создать выставку" icon="add" @click="create"/>
 
     <div class="sidebar-button-box">
       <div
@@ -43,8 +40,11 @@
 <script>
 const Cookie = process.client ? require('js-cookie') : undefined;
 
+import SidebarButton from '~/components/cms/sidebar/SidebarButton';
+
 export default {
   name: 'SidebarAccount',
+  components: { SidebarButton },
   data() {
     return {
       statusList: this.$store.state.static.statusList,

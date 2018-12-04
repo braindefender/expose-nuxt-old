@@ -1,14 +1,14 @@
 <template>
-  <div class="sidebar">
+  <div class="sidebar" @mouseenter="onMouseEnter" @mouseleave="onMouseLeave">
     <div class="sidebar__panel">{{ title }}</div>
-
-    <sidebar-account v-if="$nuxt.$route.path.split('/').pop() === 'list'"></sidebar-account>
-
-    <sidebar-navigation v-else></sidebar-navigation>
+    <sidebar-account v-if="$nuxt.$route.path.split('/').pop() === 'list'"/>
+    <sidebar-navigation v-else/>
   </div>
 </template>
 
 <script>
+import { TweenMax, Power4 } from 'gsap';
+
 import SidebarAccount from '~/components/cms/sidebar/SidebarAccount';
 import SidebarNavigation from '~/components/cms/sidebar/SidebarNavigation';
 
@@ -17,10 +17,32 @@ export default {
   components: { SidebarAccount, SidebarNavigation },
   data() {
     return {
+      minWidth: 86,
+      maxWidth: 250,
       pageList: this.$store.state.static.pageList,
     };
   },
+  mounted() {},
+  watch: {
+    open: function(open) {
+      // console.log(this.$el);
+      if (open) {
+        TweenMax.to(this.$el, 0.6, {
+          width: this.maxWidth,
+          ease: Power4.easeOut,
+        });
+      } else {
+        TweenMax.to(this.$el, 0.6, {
+          width: this.minWidth,
+          ease: Power4.easeOut,
+        });
+      }
+    },
+  },
   computed: {
+    open() {
+      return this.$store.state.sidebar.open;
+    },
     title() {
       const currentPage = this.$route.path.split('/').pop();
       if (currentPage === 'list') {
@@ -29,6 +51,14 @@ export default {
       if (this.pageList.map(page => page.name).includes(currentPage)) {
         return 'Создание выставки';
       }
+    },
+  },
+  methods: {
+    onMouseEnter() {
+      this.$store.commit('sidebar/open');
+    },
+    onMouseLeave() {
+      this.$store.commit('sidebar/close');
     },
   },
 };
@@ -42,14 +72,11 @@ export default {
     background-color: #262640
     color: white
     height: 100vh
-    max-width: 360px
-    min-width: 360px
-    overflow: auto
+    width: 360px
+    flex: 0 0 auto
+    overflow: hidden
     &__content
-      padding-top: 30px
-      padding-left: 30px
-      padding-right: 30px
-      padding-bottom: 30px
+      padding: 30px
       display: flex
       flex-direction: column
       justify-content: space-between
@@ -75,10 +102,7 @@ export default {
         margin-bottom: 0
 
   .sidebar-button
-    padding-top: 20px
-    padding-left: 20px
-    padding-right: 20px
-    padding-bottom: 20px
+    padding: 20px
     background-color: rgba(white, 0.05)
     display: flex
     flex: 0 0 auto
@@ -88,6 +112,8 @@ export default {
     cursor: pointer
     color: rgba(white, 0.5)
     position: relative
+    align-items: center
+    transition: all ease-in-out 0.15s
     +tdn
     &:hover
       background-color: rgba(white, 0.1)
@@ -96,9 +122,19 @@ export default {
       color: white
       &:hover
         background-color: rgba(white, 0.3)
+    &--mini
+      padding: 10px
+      align-items: center
+      .sidebar-button__text
+        transform: translate(-15px)
+        opacity: 0
+        margin-left: 0
+        font-size: 0
     &__text
       font-weight: bold
       font-size: 18px
+      margin-left: 20px
+      user-select: none
     &__overlay
       +posa(0)
       display: flex
@@ -113,7 +149,6 @@ export default {
     &__icon
       width: 24px
       height: 24px
-      margin-right: 20px
       opacity: 0.6
       background: center center no-repeat
       &--add
@@ -183,4 +218,34 @@ export default {
       color: rgba(white, 0.5)
       background-color: rgba(white, 0.05)
       border-radius: 5px
+
+  @media only screen and (max-width : 1600px)
+    .sidebar
+      width: 320px
+
+  @media only screen and (max-width : 1400px)
+    .sidebar
+      width: 250px
+      &__content
+        padding: 10px
+        height: calc(100% - 48px)
+      &__panel
+        padding-left: 20px
+        padding-right: 20px
+        height: 48px
+        font-size: 16px
+
+    .sidebar-button-box
+      .sidebar-button
+        margin-bottom: 10px
+
+    .sidebar-button
+      padding: 15px
+      &__text
+        font-size: 16px
+        line-height: 18px
+        margin-left: 15px
+      &__overlay
+        font-size: 16px
+
 </style>
