@@ -1,21 +1,13 @@
 <template>
   <div class="slider-item" @click="redirect">
-    <div
-      v-if="image"
-      class="slider-item__inner slider-item__image">
+    <div v-if="image" class="slider-item__inner slider-item__image">
       <img :src="image" :alt="meta">
     </div>
     <div class="slider-item__inner slider-item__content">
       <div class="slider-item__title">{{ item.title }}</div>
       <div class="slider-item__info">
-        <div
-          v-if="item.dates.from"
-          class="slider-item__date">
-          {{ prettyDate }}
-        </div>
-        <div class="slider-item__place">
-          {{ source }}
-        </div>
+        <div v-if="item.dates.from" class="slider-item__date">{{ prettyDate }}</div>
+        <div class="slider-item__place">{{ source }}</div>
       </div>
     </div>
   </div>
@@ -32,7 +24,7 @@ export default {
     image() {
       return this.item.image
         ? this.item.image
-        : this.$store.state.sourceList[this.item.source].image;
+        : this.$store.state.static.sourceList[this.item.source].image;
     },
     meta() {
       return `${this.item.title}, ${this.item.dateFrom}, ${this.item.source}`;
@@ -47,7 +39,7 @@ export default {
     },
     prettyDate() {
       const date = new Date(this.item.dates.from);
-      const months = this.$store.state.months;
+      const months = this.$store.state.static.months;
       return `${date.getDate()} ${
         months[date.getMonth()]
       }, ${date.getFullYear()}`;

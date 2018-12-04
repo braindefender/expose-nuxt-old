@@ -1,21 +1,17 @@
 <template>
-
   <div class="book-page">
     <div class="book-page__return">
       <div class="book-page__return-image">
-        <img :src="returnImage" alt="">
+        <img :src="returnImage" alt>
       </div>
       <a
         :href="`/expose/${book.expose.link}`"
-        class="book-page__return-link">
-        {{ book.expose.title }}
-      </a>
+        class="book-page__return-link"
+      >{{ book.expose.title }}</a>
     </div>
     <div class="book-page__wrapper">
       <div class="book-page__side">
-        <div
-          v-if="book.cover"
-          class="book-image">
+        <div v-if="book.cover" class="book-image">
           <div class="book-image__blur">
             <div class="book-image__blur-container">
               <img :src="book.cover" :alt="meta">
@@ -25,9 +21,7 @@
             <img :src="book.cover" :alt="meta">
           </div>
         </div>
-        <div
-          v-else
-          class="book-ph">
+        <div v-else class="book-ph">
           <div class="book-ph__author">{{ authors.split(',')[0] }}</div>
           <div class="book-ph__title">{{ book.title }}</div>
           <div class="book-ph__info">{{ sourceAndYear }}</div>
@@ -35,9 +29,7 @@
         <div class="book-page__button">
           <a :href="irbisLink" class="button">Перейти в каталог</a>
         </div>
-        <div
-          v-if="book.link"
-          class="book-page__button">
+        <div v-if="book.link" class="book-page__button">
           <a :href="book.link" class="button">Ссылка на полный текст</a>
         </div>
       </div>
@@ -46,35 +38,28 @@
         <div class="book-page__title">{{ book.title }}</div>
         <div class="book-page__source">{{ sourceAndYear }}</div>
         <div class="book-page__annotation">{{ book.annotation }}</div>
-        <div
-          v-if="book.info !== 0"
-          class="book-page__info">
-          <div
-            v-for="(item, index) in book.info"
-            :key="index"
-            class="book-page__info-line">
+        <div v-if="book.info !== 0" class="book-page__info">
+          <div v-for="(item, index) in book.info" :key="index" class="book-page__info-line">
             <div class="book-page__info-cell bold">{{ item.name }}</div>
             <div class="book-page__info-cell">{{ item.value }}</div>
           </div>
         </div>
       </div>
     </div>
-    <div
-      v-if="book.images !== 0"
-      class="book-page__images">
+    <div v-if="book.images !== 0" class="book-page__images">
       <image-blur
         v-for="(image, index) in book.images"
         :key="index"
         :image="image"
         :meta="`${meta}-${index}`"
-        :options="{ width: 125 }"/>
+        :options="{ width: 125 }"
+      />
     </div>
     <div class="book-contents" v-if="book.contents">
       <div class="book-contents__title">Содержание</div>
       <div class="book-contents__text">{{ book.contents }}</div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -97,7 +82,7 @@ export default {
     sourceCity() {
       if (this.book.source) {
         const lowerSource = this.book.source.toLowerCase();
-        const bsm = this.$store.state.bookSourceMap;
+        const bsm = this.$store.state.static.bookSourceMap;
         return bsm[lowerSource] || this.book.source;
       } else {
         return undefined;
@@ -136,7 +121,8 @@ export default {
         if (this.book.expose.source !== undefined) {
           return this.book.expose.cover !== ''
             ? this.book.expose.cover
-            : this.$store.state.sourceList[this.book.expose.source].image;
+            : this.$store.state.static.sourceList[this.book.expose.source]
+                .image;
         } else {
           return undefined;
         }

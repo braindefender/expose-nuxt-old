@@ -4,7 +4,6 @@
       <edit-item/>
 
       <!-- <cover :options="coverOptions"/> -->
-
       <!-- <div class="expose-page__grid">
 
         <div class="expose-page__panel expose-page__sort">
@@ -89,8 +88,7 @@
           </no-ssr>
         </div>
 
-      </div> -->
-
+      </div>-->
     </div>
   </div>
 </template>
@@ -227,7 +225,7 @@ export default {
       return `+${this.expose.phone.replace(/\D/g, '')}`;
     },
     coverOptions() {
-      const sourceList = this.$store.state.sourceList;
+      const sourceList = this.$store.state.static.sourceList;
       let image;
       if (this.expose && this.expose.image) {
         image = this.expose.image;

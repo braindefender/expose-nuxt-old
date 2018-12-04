@@ -64,7 +64,7 @@ export default {
   props: ['item'],
   data() {
     return {
-      pages: this.$store.state.pageList,
+      pages: this.$store.state.static.pageList,
       shareMode: false,
       sharedUsers: [],
     };

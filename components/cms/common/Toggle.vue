@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: 'Select',
+  name: 'Toggle',
   props: ['list', 'call', 'check'],
   data() {
     return {};

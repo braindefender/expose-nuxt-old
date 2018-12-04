@@ -14,8 +14,7 @@
       </div>
     </div>
 
-    <div class="sidebar-button"
-      @click="create">
+    <div class="sidebar-button" @click="create">
       <div class="sidebar-button__icon sidebar-button__icon--add"></div>
       <div class="sidebar-button__text">Создать выставку</div>
     </div>
@@ -27,14 +26,14 @@
         @click="getPages(page.name)"
         :class="pageName === page.name
           ? 'sidebar-button sidebar-button--active'
-          : 'sidebar-button'">
+          : 'sidebar-button'"
+      >
         <div :class="`sidebar-button__icon sidebar-button__icon--${page.name.toLowerCase()}`"></div>
         <div class="sidebar-button__text">{{ page.title }}</div>
       </div>
     </div>
 
-    <div class="sidebar-button"
-      @click="$auth.logout()">
+    <div class="sidebar-button" @click="$auth.logout()">
       <div class="sidebar-button__icon sidebar-button__icon--exit"></div>
       <div class="sidebar-button__text">Выйти из аккаунта</div>
     </div>
@@ -48,7 +47,7 @@ export default {
   name: 'SidebarAccount',
   data() {
     return {
-      statusList: this.$store.state.statusList,
+      statusList: this.$store.state.static.statusList,
     };
   },
   computed: {

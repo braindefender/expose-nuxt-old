@@ -1,6 +1,5 @@
 <template>
   <div class="sidebar__content">
-
     <nuxt-link class="sidebar-button" :to="{ path: 'list' }">
       <div class="sidebar-button__icon sidebar-button__icon--home"></div>
       <div class="sidebar-button__text">На главный экран</div>
@@ -13,7 +12,8 @@
         :to="{ name: `cms-${page.name}`, params: { cms: true } }"
         :class="pageName === page.name
           ? 'sidebar-button sidebar-button--active'
-          : 'sidebar-button'">
+          : 'sidebar-button'"
+      >
         <div :class="`sidebar-button__icon sidebar-button__icon--${page.name.toLowerCase()}`"></div>
         <div class="sidebar-button__text">{{ page.title }}</div>
       </nuxt-link>
@@ -31,7 +31,6 @@
         <div class="sidebar-button__text">Опубликовать</div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -40,7 +39,7 @@ export default {
   name: 'SidebarNavigation',
   data() {
     return {
-      pageList: this.$store.state.pageList,
+      pageList: this.$store.state.static.pageList,
       pageName: '',
     };
   },

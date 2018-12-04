@@ -1,39 +1,24 @@
 <template>
   <div class="container">
     <div class="expose-page">
-
-      <cover
-        :options="coverOptions"/>
+      <cover :options="coverOptions"/>
 
       <div class="expose-page__grid">
         <div class="expose-page__panel expose-page__sort">
           <span class="expose-page__sort-title">Сортировка:</span>
-          <button type="button"
-            class="expose-page__sort-button expose-page__sort-button--active">
-            по названию</button>
-          <button type="button"
-            class="expose-page__sort-button"
-            @click="sortByAuthor">
-            по автору</button>
-          <button type="button"
-            class="expose-page__sort-button"
-            @click="sortByYear">
-            по году</button>
+          <button
+            type="button"
+            class="expose-page__sort-button expose-page__sort-button--active"
+          >по названию</button>
+          <button type="button" class="expose-page__sort-button" @click="sortByAuthor">по автору</button>
+          <button type="button" class="expose-page__sort-button" @click="sortByYear">по году</button>
         </div>
         <div class="expose-page__panel expose-page__search">
           <span class="expose-page__search-icon"></span>
-          <input
-            class="expose-page__search-input"
-            type="text"
-            placeholder="Поиск по странице">
+          <input class="expose-page__search-input" type="text" placeholder="Поиск по странице">
         </div>
         <div class="expose-page__content">
-
-          <expose-stack
-            v-for="(item, index) in stack.list"
-            :key="index"
-            :stack="item"/>
-
+          <expose-stack v-for="(item, index) in stack.list" :key="index" :stack="item"/>
         </div>
         <div class="expose-page__content-selector">
           <no-ssr>
@@ -45,28 +30,26 @@
                 bottom: 0,
                 scrollAffix: false,
                 scrollContainerSelector: '.cms-new-page'
-              }">
+              }"
+            >
               <ContentSelector :stack="stack"></ContentSelector>
 
               <div class="expose-page__info">
                 <div class="expose-page__info-title">Информация</div>
-                <div v-if="expose.maker"
-                  class="expose-page__info-text">
-                  Составитель: {{ expose.maker }}
+                <div
+                  v-if="expose.maker"
+                  class="expose-page__info-text"
+                >Составитель: {{ expose.maker }}</div>
+                <div v-if="expose.phone" class="expose-page__info-text">Телефон:
+                  <a :href="`tel:${this.phone}`">{{ prettyPhone }}</a>
                 </div>
-                <div v-if="expose.phone"
-                  class="expose-page__info-text">
-                  Телефон: <a :href="`tel:${this.phone}`">{{ prettyPhone }}</a>
-                </div>
-                <div v-if="expose.email"
-                  class="expose-page__info-text">
-                  Email: <a :href="`mailto:${expose.email}`">{{ expose.email }}</a>
+                <div v-if="expose.email" class="expose-page__info-text">Email:
+                  <a :href="`mailto:${expose.email}`">{{ expose.email }}</a>
                 </div>
               </div>
             </affix>
           </no-ssr>
         </div>
-
       </div>
     </div>
   </div>
@@ -176,7 +159,7 @@ export default {
       }
     },
     coverOptions() {
-      const sourceList = this.$store.state.sourceList;
+      const sourceList = this.$store.state.static.sourceList;
       let image = this.expose.image;
       switch (this.expose.mode) {
         case 0:

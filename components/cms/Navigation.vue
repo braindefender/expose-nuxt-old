@@ -2,9 +2,7 @@
   <div class="cms-nav">
     <div class="container">
       <div class="cms-nav__box">
-        <div class="cms-nav__title">
-          Создание выставки
-        </div>
+        <div class="cms-nav__title">Создание выставки</div>
         <div class="cms-nav__menu">
           <nuxt-link
             v-for="(page, index) in pageList"
@@ -12,17 +10,11 @@
             :to="{ name: `cms-${page.name}`, params: { cms: true } }"
             :class="$nuxt.$route.path.split('/').pop() === page.name
               ? 'cms-nav__menu-item cms-nav__menu-item--active'
-              : 'cms-nav__menu-item'">
-            {{page.title}}
-          </nuxt-link>
+              : 'cms-nav__menu-item'"
+          >{{page.title}}</nuxt-link>
         </div>
         <div class="cms-nav__action">
-          <button
-            type="button"
-            class="button button--outline"
-            @click="final">
-              Готово
-          </button>
+          <button type="button" class="button button--outline" @click="final">Готово</button>
         </div>
       </div>
     </div>
@@ -35,7 +27,7 @@ export default {
   name: 'Navigation',
   data() {
     return {
-      pageList: this.$store.state.pageList,
+      pageList: this.$store.state.static.pageList,
     };
   },
   methods: {

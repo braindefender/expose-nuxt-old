@@ -6,37 +6,15 @@
       <div class="cms-new-page__columns">
         <div class="cms-new-page__rows" style="flex-grow: 0; overflow-y: auto">
           <div class="cms-new-page__panel">
-            <nuxt-link class="button" :to="{ name: `cms-List`, params: { cms: true } }">Назад</nuxt-link>
+            <nuxt-link class="button" :to="{ name: `cms-List` }">Назад</nuxt-link>
             <nuxt-link class="button" :to="{ name: `cms-Sort`, params: { cms: true } }">Далее</nuxt-link>
           </div>
-
-          <Weekly
-            v-if="expose.mode === 0"
-            :mode="expose.mode"
-            :source="expose.source"
-            :dates="expose.dates"
-            @set="set"
-            @setDate="setDate"
-          ></Weekly>
-
-          <Theme
-            v-if="expose.mode === 1"
-            :title="expose.title"
-            :mode="expose.mode"
-            :phone="expose.phone"
-            :email="expose.email"
-            :source="expose.source"
-            :dates="expose.dates"
-            :annotation="expose.annotation"
-            @set="set"
-            @setDate="setDate"
-          ></Theme>
+          <Weekly v-if="expose.mode === 0" @set="set" @setDate="setDate"/>
+          <Thematic v-if="expose.mode === 1" @set="set" @setDate="setDate"/>
         </div>
         <div class="ec__preview">
-          <Cover :options="options"></Cover>
-
+          <Cover :options="options"/>
           <Annotation v-if="expose.mode !== 0" :text="annotation"></Annotation>
-
           <div class="ec__preview-image"></div>
         </div>
       </div>
@@ -51,10 +29,9 @@ import Sidebar from '~/components/cms/sidebar/Sidebar';
 
 import Annotation from '@/components/expose/Annotation';
 import Cover from '@/components/expose/Cover';
-import Select from '@/components/cms/Select';
 
 import Weekly from '~/components/cms/info/Weekly';
-import Theme from '~/components/cms/info/Theme';
+import Thematic from '~/components/cms/info/Thematic';
 
 import weekly0 from '@/assets/images/jamie-taylor-110195-unsplash.jpg';
 import weekly1 from '@/assets/images/janko-ferlic-174927-unsplash.jpg';
@@ -62,12 +39,11 @@ import weekly1 from '@/assets/images/janko-ferlic-174927-unsplash.jpg';
 export default {
   name: 'Info',
   components: {
-    Sidebar,
-    Annotation,
     Cover,
-    Select,
     Weekly,
-    Theme,
+    Sidebar,
+    Thematic,
+    Annotation,
   },
   beforeDestroy() {
     if (this.canSyncState) {
@@ -85,12 +61,25 @@ export default {
   data() {
     return {
       canSyncState: true,
-      sourceList: this.$store.state.sourceList,
+      sourceList: this.$store.state.static.sourceList,
     };
   },
   computed: {
-    annotation() {
-      return this.$store.state.info.annotation;
+    annotation: {
+      get() {
+        return this.$store.state.info.annotation;
+      },
+      set(value) {
+        this.$store.commit('info/set', { field: 'annotation', value });
+      },
+    },
+    source: {
+      get() {
+        return this.$store.state.info.source;
+      },
+      set(value) {
+        this.$store.commit('info/set', { field: 'annotation', value });
+      },
     },
     expose() {
       return this.$store.state.info;
@@ -100,7 +89,7 @@ export default {
     },
     common() {
       return {
-        source: this.expose.source,
+        source: this.source,
         dates: {
           create: this.$store.state.info.dates.create,
           update: this.$store.state.info.dates.update,

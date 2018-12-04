@@ -25,7 +25,7 @@ export default {
   computed: {
     prettyDate() {
       const date = new Date(this.item.dates.public);
-      const months = this.$store.state.months;
+      const months = this.$store.state.static.months;
       return `${date.getDate()} ${
         months[date.getMonth()]
       }, ${date.getFullYear()}`;
@@ -36,7 +36,7 @@ export default {
     image() {
       return this.item.image
         ? this.item.image
-        : this.$store.state.sourceList[this.item.source].image;
+        : this.$store.state.static.sourceList[this.item.source].image;
     },
   },
   methods: {

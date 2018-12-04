@@ -32,4 +32,25 @@ export const actions = {
     commit('setInfoState', payload);
     dispatch('syncState', null, { root: true });
   },
+  weeklyUpdate({ rootState, state, commit }) {
+    // get sourceList
+    let sl = rootState.static.sourceList;
+    // set Title
+    commit('set', {
+      field: 'title',
+      value: sl[state.source].weekly,
+    });
+
+    // set Phone
+    commit('set', {
+      field: 'phone',
+      value: sl[state.source].phone,
+    });
+
+    // set Email
+    commit('set', {
+      field: 'email',
+      value: sl[state.source].email,
+    });
+  },
 };

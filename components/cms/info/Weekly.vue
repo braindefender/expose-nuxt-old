@@ -1,24 +1,16 @@
 <template>
   <div class="ec__box ec__weekly">
-
     <div class="ec__row">
       <div class="ec__title">Тип выставки</div>
       <div class="ec__toggle">
-        <Toggle
-          :list="this.$store.state.modeList"
-          :check="mode"
-          :call="setModeTo"></Toggle>
+        <Toggle :list="this.$store.state.static.modeList" :check="mode" :call="setModeTo"></Toggle>
       </div>
     </div>
 
     <div class="ec__row">
       <div class="ec__title">Место проведения</div>
       <div class="ec__toggle">
-        <Toggle
-          :list="this.$store.state.sourceList"
-          :check="source"
-          :call="setSourceTo">
-        </Toggle>
+        <Toggle :list="this.$store.state.static.sourceList" :check="source" :call="setSourceTo"></Toggle>
       </div>
     </div>
 
@@ -27,23 +19,11 @@
       <div class="ec__date-picker">
         <div class="ec__date-picker-half">
           <span>Начало</span>
-          <input
-            type="date"
-            min="1980-01-01"
-            max="9999-12-31"
-            :value="dates.from"
-            @change="setDate('from', $event.target.value)"
-            >
+          <input type="date" min="1980-01-01" max="9999-12-31" v-model="dates_from">
         </div>
         <div class="ec__date-picker-half">
           <span>Конец</span>
-          <input
-            type="date"
-            min="1980-01-01"
-            max="9999-12-31"
-            :value="dates.to"
-            @change="setDate('to', $event.target.value)"
-            >
+          <input type="date" min="1980-01-01" max="9999-12-31" v-model="dates_to">
         </div>
       </div>
     </div>
@@ -53,17 +33,10 @@
       <div class="ec__date-picker">
         <div class="ec__date-picker-half">
           <span>Начало</span>
-          <input
-            type="date"
-            min="1980-01-01"
-            max="9999-12-31"
-            :value="dates.public"
-            @change="setDate('public', $event.target.value)"
-            >
+          <input type="date" min="1980-01-01" max="9999-12-31" v-model="dates_public">
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -72,10 +45,51 @@ import Toggle from '~/components/cms/common/Toggle';
 
 export default {
   name: 'Weekly',
-  props: ['mode', 'source', 'dates'],
   components: { Toggle },
-  data() {
-    return {};
+  mounted() {
+    this.$store.dispatch('info/weeklyUpdate');
+  },
+  computed: {
+    mode: {
+      get() {
+        return this.$store.state.info.mode;
+      },
+      set(value) {
+        this.$store.commit('info/set', { field: 'mode', value });
+      },
+    },
+    source: {
+      get() {
+        return this.$store.state.info.source;
+      },
+      set(value) {
+        this.$store.commit('info/set', { field: 'source', value });
+      },
+    },
+    dates_from: {
+      get() {
+        return this.$store.state.info.dates.from;
+      },
+      set(value) {
+        this.$store.commit('info/setDate', { field: 'from', value });
+      },
+    },
+    dates_to: {
+      get() {
+        return this.$store.state.info.dates.to;
+      },
+      set(value) {
+        this.$store.commit('info/setDate', { field: 'to', value });
+      },
+    },
+    dates_public: {
+      get() {
+        return this.$store.state.info.dates.public;
+      },
+      set(value) {
+        this.$store.commit('info/setDate', { field: 'public', value });
+      },
+    },
   },
   methods: {
     setDate(field, value) {

@@ -69,7 +69,9 @@ export default {
         })
         .then(res => {
           this.additional = { ...this.item, ...res[0] };
-          this.getImage();
+          if (this.additional.hasCover) {
+            this.getImage();
+          }
         });
     }
   },

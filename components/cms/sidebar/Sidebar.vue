@@ -2,9 +2,7 @@
   <div class="sidebar">
     <div class="sidebar__panel">{{ title }}</div>
 
-    <sidebar-account
-      v-if="$nuxt.$route.path.split('/').pop() === 'list'">
-    </sidebar-account>
+    <sidebar-account v-if="$nuxt.$route.path.split('/').pop() === 'list'"></sidebar-account>
 
     <sidebar-navigation v-else></sidebar-navigation>
   </div>
@@ -19,7 +17,7 @@ export default {
   components: { SidebarAccount, SidebarNavigation },
   data() {
     return {
-      pageList: this.$store.state.pageList,
+      pageList: this.$store.state.static.pageList,
     };
   },
   computed: {

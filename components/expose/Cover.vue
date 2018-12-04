@@ -1,14 +1,12 @@
 <template>
   <div class="cover">
     <div class="cover__inner cover__image">
-      <img :src="options.image" alt="">
+      <img :src="options.image" alt>
     </div>
     <div class="cover__inner cover__content">
       <div class="cover__title">{{ options.title }}</div>
     </div>
-    <div
-      v-if="!options.cms"
-      class="cover__inner cover__controls cover__controls--top">
+    <div v-if="!options.cms" class="cover__inner cover__controls cover__controls--top">
       <div class="cover-control">
         <a href="/" class="cover-control__return-link">Назад</a>
       </div>
@@ -17,7 +15,8 @@
       <div
         v-if="options.nav"
         class="cover-control cover-control--left"
-        :class="options.prev ? '' : 'cover-control--disabled'">
+        :class="options.prev ? '' : 'cover-control--disabled'"
+      >
         <a href="#" class="cover-control__link">
           <span class="cover-control__title">Предыдущая неделя</span>
           <span class="cover-control__info">{{ prevDate }}</span>
@@ -30,7 +29,8 @@
       <div
         v-if="options.nav"
         class="cover-control cover-control--right"
-        :class="options.next ? '' : 'cover-control--disabled'">
+        :class="options.next ? '' : 'cover-control--disabled'"
+      >
         <a href="#" class="cover-control__link">
           <span class="cover-control__title">Следующая неделя</span>
           <span class="cover-control__info">{{ nextDate }}</span>
@@ -46,7 +46,7 @@ export default {
   props: ['options'],
   data() {
     return {
-      months: this.$store.state.months,
+      months: this.$store.state.static.months,
     };
   },
   computed: {
