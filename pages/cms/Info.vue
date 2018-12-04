@@ -7,7 +7,7 @@
         <div class="cms-new-page__rows" style="flex-grow: 0; overflow-y: auto">
           <div class="cms-new-page__panel">
             <nuxt-link class="button" :to="{ name: `cms-List` }">Назад</nuxt-link>
-            <nuxt-link class="button" :to="{ name: `cms-Sort`, params: { cms: true } }">Далее</nuxt-link>
+            <nuxt-link class="button" :to="{ name: `cms-Sort`, params: { fromcms: true } }">Далее</nuxt-link>
           </div>
           <Weekly v-if="expose.mode === 0" @set="set" @setDate="setDate"/>
           <Thematic v-if="expose.mode === 1" @set="set" @setDate="setDate"/>
@@ -51,7 +51,7 @@ export default {
     }
   },
   mounted() {
-    if (this.$route.params.cms !== true) {
+    if (this.$route.params.fromcms !== true) {
       this.$router.push({ path: '/cms/list' });
       this.canSyncState = false;
     } else {
@@ -153,7 +153,7 @@ export default {
       }
       return {
         nav: true,
-        cms: true,
+        fromcms: true,
         date,
         title,
         image,

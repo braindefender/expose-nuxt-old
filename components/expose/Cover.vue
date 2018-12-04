@@ -6,7 +6,7 @@
     <div class="cover__inner cover__content">
       <div class="cover__title">{{ options.title }}</div>
     </div>
-    <div v-if="!options.cms" class="cover__inner cover__controls cover__controls--top">
+    <div v-if="!options.fromcms" class="cover__inner cover__controls cover__controls--top">
       <div class="cover-control">
         <a href="/" class="cover-control__return-link">Назад</a>
       </div>

@@ -41,10 +41,10 @@ export default {
   },
   methods: {
     redirect() {
-      if (this.options && this.options.cms) {
+      if (this.options && this.options.fromcms) {
         this.$store.dispatch('fetchState', this.item._id).then(res => {
           // если не дали загрузить, то обновить экран
-          this.$router.push({ name: 'cms-Info', params: { cms: true } });
+          this.$router.push({ name: 'cms-Info', params: { fromcms: true } });
         });
       } else {
         const name = this.item.title

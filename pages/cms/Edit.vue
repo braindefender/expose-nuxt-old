@@ -5,22 +5,17 @@
     <div class="cms-new-page__content">
       <div class="cms-new-page__rows">
         <div class="cms-new-page__panel">
-          <nuxt-link
-            class="button"
-            :to="{ name: `cms-Sort`, params: { cms: true } }"
-            >Назад</nuxt-link>
-          <nuxt-link
-            class="button"
-            :to="{ name: `cms-Demo`, params: { cms: true } }"
-            >Далее</nuxt-link>
+          <nuxt-link class="button" :to="{ name: `cms-Sort`, params: { fromcms: true } }">Назад</nuxt-link>
+          <nuxt-link class="button" :to="{ name: `cms-Demo`, params: { fromcms: true } }">Далее</nuxt-link>
         </div>
         <div class="ee">
           <div class="ee__side ee__side--left">
             <stack-view
-            :options="{
+              :options="{
               left: true,
               compact: false,
-            }"></stack-view>
+            }"
+            ></stack-view>
           </div>
           <div class="ee__side ee__side--right">
             <edit-item/>
@@ -42,7 +37,7 @@ export default {
   components: { Sidebar, EditItem, StackView },
   mounted() {
     // redirect if came from link instead of cms
-    if (this.$route.params.cms !== true) {
+    if (this.$route.params.fromcms !== true) {
       this.$router.push({ path: '/cms/list' });
       this.canSyncState = false;
     }

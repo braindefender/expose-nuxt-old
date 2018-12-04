@@ -9,7 +9,7 @@
       <nuxt-link
         v-for="(page, index) in pageList"
         :key="index"
-        :to="{ name: `cms-${page.name}`, params: { cms: true } }"
+        :to="{ name: `cms-${page.name}`, params: { fromcms: true } }"
         :class="pageName === page.name
           ? 'sidebar-button sidebar-button--active'
           : 'sidebar-button'"

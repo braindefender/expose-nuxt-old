@@ -28,12 +28,12 @@ export default {
       cover,
       categoryList: undefined,
       catalogueList: undefined,
-      local: true,
+      local: false,
     };
   },
   mounted() {
     if (!this.local) {
-      this.$axios.$get('/main').then(res => {
+      this.$axios.$get('/catalogue/main').then(res => {
         this.catalogueList = res.catalogueList;
         this.categoryList = res.categoryList;
       });

@@ -205,14 +205,14 @@ export default {
   },
   computed: {
     expose() {
-      if (this.options && this.options.cms) {
+      if (this.options && this.options.fromcms) {
         return this.$store.state.info;
       } else {
         return this.real.info;
       }
     },
     stack() {
-      if (this.options && this.options.cms) {
+      if (this.options && this.options.fromcms) {
         return this.$store.state.stacks.stack;
       } else {
         return this.real.stacks;

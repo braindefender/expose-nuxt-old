@@ -3,7 +3,7 @@
     <sidebar></sidebar>
     <div class="cms-new-page__content">
       <Expose :options="{
-        cms: true
+        fromcms: true
       }"></Expose>
     </div>
   </div>
@@ -17,7 +17,7 @@ export default {
   name: 'Demo',
   components: { Sidebar, Expose },
   mounted() {
-    if (this.$route.params.cms !== true) {
+    if (this.$route.params.fromcms !== true) {
       this.$router.push({ path: '/cms/list' });
       this.canSyncState = false;
     }

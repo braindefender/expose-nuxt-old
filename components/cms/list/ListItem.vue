@@ -1,7 +1,7 @@
 <template>
   <div class="cms-table__row" :class="item.blocked ? 'cms-table__row--blocked' : ''">
     <div class="cms-table__list-item cms-table__list-item--main">
-      <CMSCard :item="item" :options="{ cms: true }"/>
+      <CMSCard :item="item" :options="{ fromcms: true }"/>
     </div>
     <div class="cms-table__list-item cms-table__list-item--date">{{ item.dates.create }}</div>
     <div class="cms-table__list-item cms-table__list-item--date">{{ item.dates.update }}</div>
@@ -100,7 +100,7 @@ export default {
     redirect({ item, to }) {
       console.log(item);
       this.$store.dispatch('fetchState', item._id).then(() => {
-        this.$router.push({ name: `cms-${to}`, params: { cms: true } });
+        this.$router.push({ name: `cms-${to}`, params: { fromcms: true } });
       });
     },
   },

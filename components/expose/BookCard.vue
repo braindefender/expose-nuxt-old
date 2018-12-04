@@ -62,7 +62,7 @@ export default {
     };
   },
   mounted() {
-    if (this.$route.params.cms !== undefined) {
+    if (this.$route.params.fromcms !== undefined) {
       this.$axios
         .$get('cms/book', {
           params: { irbis: this.item.irbis },
@@ -99,7 +99,7 @@ export default {
       }
     },
     link() {
-      if (!this.$route.params.cms) {
+      if (!this.$route.params.fromcms) {
         const name = this.$store.state.real.info.title
           .split('\n')
           .join('~')

@@ -4,10 +4,10 @@
     <div class="cms-new-page__content">
       <div class="cms-new-page__rows">
         <div class="cms-new-page__panel">
-          <nuxt-link class="button" :to="{ name: `cms-Info`, params: { cms: true } }">Назад</nuxt-link>
+          <nuxt-link class="button" :to="{ name: `cms-Info`, params: { fromcms: true } }">Назад</nuxt-link>
           <input class="hidden" accept="text/xml" id="xml1" type="file" ref="xml1" @input="setFile">
           <label for="xml1" class="button">Загрузить XML</label>
-          <nuxt-link class="button" :to="{ name: `cms-Edit`, params: { cms: true } }">Далее</nuxt-link>
+          <nuxt-link class="button" :to="{ name: `cms-Edit`, params: { fromcms: true } }">Далее</nuxt-link>
         </div>
         <div v-if="!isEmpty" class="es">
           <div class="es__side es__side--left">
@@ -60,7 +60,7 @@ export default {
   name: 'Sort',
   mounted() {
     // redirect if came from link instead of cms
-    if (this.$route.params.cms !== true) {
+    if (this.$route.params.fromcms !== true) {
       this.$router.push({ path: '/cms/list' });
       this.canSyncState = false;
     }

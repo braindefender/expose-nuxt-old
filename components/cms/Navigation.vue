@@ -7,7 +7,7 @@
           <nuxt-link
             v-for="(page, index) in pageList"
             :key="index"
-            :to="{ name: `cms-${page.name}`, params: { cms: true } }"
+            :to="{ name: `cms-${page.name}`, params: { fromcms: true } }"
             :class="$nuxt.$route.path.split('/').pop() === page.name
               ? 'cms-nav__menu-item cms-nav__menu-item--active'
               : 'cms-nav__menu-item'"
