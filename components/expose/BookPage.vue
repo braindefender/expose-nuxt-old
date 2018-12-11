@@ -14,11 +14,11 @@
         <div v-if="book.cover" class="book-image">
           <div class="book-image__blur">
             <div class="book-image__blur-container">
-              <img :src="book.cover" :alt="meta">
+              <img :src="cover" :alt="meta">
             </div>
           </div>
           <div class="book-image__image">
-            <img :src="book.cover" :alt="meta">
+            <img :src="cover" :alt="meta">
           </div>
         </div>
         <div v-else class="book-ph">
@@ -78,7 +78,17 @@ export default {
       image1,
     };
   },
+  methods: {
+    getCover() {
+      let coverStr = this.book.cover;
+      let pos = coverStr.indexOf('/books');
+      return coverStr.substr(0, pos + 7) + 'full_' + coverStr.substr(pos + 7);
+    },
+  },
   computed: {
+    cover() {
+      return this.getCover();
+    },
     sourceCity() {
       if (this.book.source) {
         const lowerSource = this.book.source.toLowerCase();

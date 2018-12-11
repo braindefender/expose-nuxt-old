@@ -55,10 +55,10 @@ export default {
   },
   methods: {
     onMouseEnter() {
-      this.$store.commit('sidebar/open');
+      // this.$store.commit('sidebar/open');
     },
     onMouseLeave() {
-      this.$store.commit('sidebar/close');
+      // this.$store.commit('sidebar/close');
     },
   },
 };

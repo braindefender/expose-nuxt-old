@@ -215,7 +215,7 @@ export default {
     onPICoverChange(image) {
       if (image) {
         console.log('Picture loaded.');
-        this.$store.commit('info/set', { field: 'image', value });
+        this.$store.commit('info/set', { field: 'image', value: image });
       } else {
         console.log('FileReader API not supported: use the <form>, Luke!');
       }

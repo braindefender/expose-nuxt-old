@@ -1,28 +1,28 @@
 <template>
-  <a v-if="this.item.annotation || this.item.cover || this.item.hasCover" :href="link" class="bc">
+  <div class="book-card" v-if="annotation || additional.cover">
     <image-blur :image="`${imageSrc}?_=${Date.now()}`" :meta="item.meta" :options="{ width: 125 }"/>
-    <div class="bc__content">
+    <div class="book-card__content">
       <div
         :class="item.author
-          ? 'bc__author'
-          : 'bc__author bc__author--gray'"
+          ? 'book-card__author'
+          : 'book-card__author book-card__author--gray'"
       >{{ author }}</div>
-      <div class="bc__title">{{ item.title }}</div>
-      <div class="bc__info">{{ info }}</div>
-      <div class="bc__annotation">{{ annotation }}</div>
+      <a :href="link" class="book-card__title">{{ item.title }}</a>
+      <div class="book-card__info">{{ info }}</div>
+      <div class="book-card__annotation">{{ additional.annotation || 'Информация отсутствует' }}</div>
     </div>
-  </a>
-  <div class="bc bc--small" v-else>
-    <div class="bc__line">
+  </div>
+  <div class="book-card book-card--small" v-else>
+    <div class="book-card__line">
       <div
         :class="item.author
-          ? 'bc__author'
-          : 'bc__author bc__author--gray'"
+          ? 'book-card__author'
+          : 'book-card__author book-card__author--gray'"
       >{{ author }}</div>
-      <div class="bc__info">{{ info }}</div>
+      <div class="book-card__info">{{ info }}</div>
     </div>
-    <div class="bc__line">
-      <a :href="link" class="bc__title bc__title--small">{{ item.title }}</a>
+    <div class="book-card__line">
+      <a :href="link" class="book-card__title book-card__title--small">{{ item.title }}</a>
     </div>
   </div>
 </template>
@@ -36,11 +36,29 @@ export default {
   name: 'BookCard',
   props: ['item'],
   components: { ImageBlur },
+  watch: {
+    'item.year'(oldVal, newVal) {
+      this.year = newVal;
+      this.info = this.getInfo();
+    },
+    'item.source'(oldVal, newVal) {
+      this.source = newVal;
+      this.info = this.getInfo();
+    },
+    'item.pages'(oldVal, newVal) {
+      this.pages = newVal;
+      this.info = this.getInfo();
+    },
+  },
   data() {
     return {
       source: this.item.source || '',
+      year: this.item.year || '',
+      pages: this.item.pages ? `${this.item.pages} с.` : '',
+      author: this.item.author || 'Автор не указан',
+      info: this.getInfo(),
+      additional: {},
       imageSrc: '',
-      cover: this.item.cover,
     };
   },
   mounted() {
@@ -50,54 +68,51 @@ export default {
           params: { irbis: this.item.irbis },
         })
         .then(res => {
-          // console.log('tada');
-          // console.log(res);
-          // this.additional = { ...this.item, ...res[0] };
-          this.cover = res[0].cover;
-          // this.annotation = res[0].annotation;
-          this.getImage();
+          console.log('tada');
+          console.log(res);
+          this.additional = { ...this.item, ...res[0] };
+          if (this.additional.hasCover) {
+            this.getImage();
+          }
         });
     } else {
-      this.imageSrc = this.cover;
     }
   },
   computed: {
+    meta() {
+      return `${this.author} — ${this.item.title}, ${this.source}, ${
+        this.year
+      }`;
+    },
+    cover() {
+      return this.additional.cover ? this.item.cover : noCover;
+    },
+    exposeCreate() {
+      return this.$store.state.real.info.dates.create;
+    },
     annotation() {
-      let a = this.item.annotation;
-      if (a !== '' && a !== undefined) {
-        if (a.length > 260) {
-          return `${a.slice(1, 248)}... Читать далее`;
+      if (this.item.annotation) {
+        if (this.item.annotation.length > 260) {
+          return `${this.item.annotation.slice(1, 248)}... Читать далее`;
         } else {
-          return a;
+          return this.item.annotation;
         }
       } else {
-        return 'Информация отсутствует';
+        return undefined;
       }
-    },
-    author() {
-      return this.item.author || 'Автор не указан';
-    },
-    meta() {
-      return `${this.author} — ${this.item.title}, ${this.item.source}, ${
-        this.item.year
-      }`;
     },
     link() {
       if (!this.$route.params.fromcms) {
+        const name = this.$store.state.real.info.title
+          .split('\n')
+          .join('~')
+          .split(' ')
+          .join('_');
         const title = this.item.title.split(' ').join('_');
-        return `${this.$route.path}/book/${title}`;
+        return `/expose/${name}-${this.exposeCreate}/book/${title}`;
       } else {
         return '#';
       }
-    },
-    info() {
-      return [
-        this.item.source || '',
-        this.item.year || '',
-        this.item.pages ? `${this.item.pages} стр.` : '',
-      ]
-        .filter(el => el !== '')
-        .join(', ');
     },
   },
   methods: {
@@ -105,9 +120,18 @@ export default {
       let img = new Image();
       let self = this;
       img.onload = function() {
-        self.imageSrc = self.cover;
+        self.imageSrc = self.additional.cover || self.cover;
       };
-      img.src = this.cover;
+      img.src = this.item.cover;
+    },
+    getInfo() {
+      return [
+        this.item.source || '',
+        this.item.year || '',
+        this.item.pages ? `${this.item.pages} с.` : '',
+      ]
+        .filter(el => el !== '')
+        .join(', ');
     },
   },
 };
@@ -118,8 +142,7 @@ export default {
   @import '@/styles/vars.sass'
   @import '@/styles/mixins.sass'
 
-  .bc
-    text-decoration: none
+  .book-card
     padding: 15px
     border-radius: 5px
     overflow: hidden
