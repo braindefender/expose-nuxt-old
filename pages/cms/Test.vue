@@ -1,94 +1,7 @@
 <template>
   <div class="test-page">
     <div class="expose-page">
-      <edit-item/>
-
-      <!-- <cover :options="coverOptions"/> -->
-      <!-- <div class="expose-page__grid">
-
-        <div class="expose-page__panel expose-page__sort">
-
-          <span class="expose-page__sort-title">Сортировка:</span>
-
-          <button type="button"
-            class="expose-page__sort-button expose-page__sort-button--active">
-            по названию</button>
-
-          <button type="button"
-            class="expose-page__sort-button"
-            @click="sortByAuthor">
-            по автору</button>
-
-          <button type="button"
-            class="expose-page__sort-button"
-            @click="sortByYear">
-            по году</button>
-
-        </div>
-
-        <div class="expose-page__panel expose-page__search">
-
-          <span class="expose-page__search-icon"/>
-
-          <input
-            class="expose-page__search-input"
-            placeholder="Поиск по странице"
-            type="text"/>
-
-        </div>
-
-        <div class="expose-page__content">
-
-          <expose-stack
-            v-for="(item, index) in stack.list"
-            :key="index"
-            :stack="item"/>
-
-        </div>
-
-        <div class="expose-page__content-selector">
-          <no-ssr>
-            <affix
-              class="expose-page__menu"
-              relative-element-selector=".expose-page__content-selector"
-              :offset="{
-                top: 10,
-                bottom: 0,
-                scrollAffix: false,
-                scrollContainerSelector: '.cms-new-page'
-              }">
-
-              <content-selector :stack="stack"/>
-
-              <div class="expose-page__info">
-
-                <div class="expose-page__info-title">Информация</div>
-
-                <div
-                  v-if="this.expose.maker"
-                  class="expose-page__info-text">
-                  Составитель: {{ this.expose.maker }}
-                </div>
-
-                <div
-                  v-if="this.expose.phone"
-                  class="expose-page__info-text">
-                  Телефон: <a :href="`tel:${this.phone}`">{{ this.expose.phone }}</a>
-                </div>
-
-                <div
-                  v-if="this.expose.email"
-                  class="expose-page__info-text">
-                  Email: <a :href="`mailto:${this.expose.email}`">{{ this.expose.email }}</a>
-                </div>
-
-              </div>
-
-            </affix>
-          </no-ssr>
-        </div>
-
-      </div>-->
+      <cover :options="coverOptions"/>
     </div>
   </div>
 </template>
@@ -121,6 +34,7 @@ export default {
       source: 0,
       maker: 'this.maker',
       list: [],
+      title: 'fasjdkfhasdjklh fasjkdlfhasjkdlfhajskl',
       real: {
         info: { source: 0, dates: {} },
         stacks: {
@@ -197,12 +111,7 @@ export default {
       inverse: false,
     };
   },
-  mounted() {
-    this.$store.commit(
-      'edit/selectOnEditScreen',
-      this.real.stacks.list[0].list[0],
-    );
-  },
+  mounted() {},
   computed: {
     expose() {
       if (this.options && this.options.fromcms) {
@@ -244,9 +153,10 @@ export default {
         nav: true,
         date,
         image,
-        title: this.expose.title,
+        title:
+          'Название выставки может быть очень длинным в несколько слов, а ещё и с описанием',
         source:
-          this.expose.mode !== 0 ? sourceList[this.expose.source].title : '',
+          this.expose.mode === 0 ? sourceList[this.expose.source].title : '',
         prev: undefined,
         next: undefined,
       };
@@ -275,20 +185,6 @@ export default {
     },
     dateYYYYMMDD(date) {
       return date.toISOString().split('T')[0];
-    },
-    sortByYear() {
-      this.$store.commit('stacks/sortByYear', {
-        stack: this.stack,
-        inverse: this.inverse,
-      });
-      this.inverse = !this.inverse;
-    },
-    sortByAuthor() {
-      this.$store.commit('stacks/sortByAuthor', {
-        stack: this.stack,
-        inverse: this.inverse,
-      });
-      this.inverse = !this.inverse;
     },
   },
 };

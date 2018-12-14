@@ -1,5 +1,5 @@
 <template>
-  <div class="cms-table__row" :class="item.blocked ? 'cms-table__row--blocked' : ''">
+  <div class="cms-table__row">
     <div class="cms-table__list-item cms-table__list-item--main">
       <CMSCard :item="item" :options="{ fromcms: true }"/>
     </div>
@@ -9,14 +9,16 @@
     <div role="button" class="cms-icon-big cms-icon-big--info" @click="share">Поделиться</div>
     <div v-if="shareMode">
       <multiselect
-        v-model="sharedUsers"
         selectLabel
         deselectLabel
         placeholder="Выберите пользователя"
+        v-model="sharedUsers"
         :options="usersList"
         :multiple="true"
         :hideSelected="true"
         :close-on-select="false"
+        track-by="_id"
+        label="username"
         @input="onShare"
       ></multiselect>
     </div>
@@ -61,6 +63,12 @@ export default {
   components: {
     CMSCard,
   },
+  watch: {
+    item(oldVal, newVal) {
+      this.sharedUsers = this.item.ownerID;
+      this.shareMode = false;
+    },
+  },
   props: ['item'],
   data() {
     return {
@@ -79,10 +87,9 @@ export default {
   },
   methods: {
     onShare(value) {
-      this.$emit('info/set', 'ownerID', value);
       this.$axios.$post('/cms/users', {
         id: this.item._id,
-        users: this.sharedUsers,
+        users: this.sharedUsers.map(el => el._id),
       });
     },
     share() {
@@ -106,7 +113,7 @@ export default {
   },
   mounted() {
     this.log();
-    this.sharedUsers = this.$store.state.info.ownerID;
+    this.sharedUsers = this.item.ownerID;
   },
 };
 </script>

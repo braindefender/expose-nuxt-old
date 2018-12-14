@@ -107,9 +107,7 @@ export default {
   @import '~/styles/mixins.sass'
 
   .cover
-
     width: 100%
-    // height: 320px
     padding-top: 27.826%
     position: relative
     color: white
@@ -127,7 +125,7 @@ export default {
       max-width: 680px
       font-size: 24px
       line-height: 30px
-      white-space: pre
+      white-space: pre-wrap
     &__image
       display: flex
       justify-content: center
@@ -200,5 +198,29 @@ export default {
       opacity: 0.6
       &:hover
         opacity: 0.8
+
+  @media only screen and (max-width : 1280px)
+    .cover
+      &__title
+        max-width: 600px
+        font-size: 24px
+        line-height: 28px
+
+  @media only screen and (max-width : 992px)
+    .cover
+      &__title
+        max-width: 500px
+        font-size: 21px
+        line-height: 25px
+      &__controls
+        padding: 20px
+
+  @media only screen and (max-width : 768px)
+    .cover
+      &__title
+        max-width: 500px
+        font-size: 20px
+        line-height: 24px
+
 
 </style>

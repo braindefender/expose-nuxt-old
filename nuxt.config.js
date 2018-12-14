@@ -47,6 +47,15 @@ module.exports = {
       home: '/cms/list',
     },
     strategies: {
+      social: {
+        _scheme: 'oauth2',
+        authorization_endpoint:
+          'https://login.microsoftonline.com/common/oauth2/authorize',
+        client_id: '5e1f8950-7cb1-4674-84dc-40e6013fe7da',
+        response_type: 'code',
+        redirect_uri: 'http://localhost:3000/auth/callback',
+        scope: ['profile'],
+      },
       local: {
         endpoints: {
           login: { url: '/auth/login', method: 'post', propertyName: 'token' },
@@ -61,9 +70,7 @@ module.exports = {
   axios: {
     baseURL: 'http://10.3.6.27:3333/api',
   },
-  router: {
-    // middleware: ['auth'],
-  },
+  router: {},
   modules: ['@nuxtjs/axios', '@nuxtjs/auth'],
   plugins: [
     { src: '~plugins/vue-autosize', ssr: false },
