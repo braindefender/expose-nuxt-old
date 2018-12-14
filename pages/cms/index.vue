@@ -41,13 +41,13 @@ export default {
       });
     },
     authorize() {
-      // this.$auth.loginWith('local', {
-      //   data: {
-      //     username: this.username,
-      //     password: this.password,
-      //   },
-      // });
-      this.$auth.loginWith('social');
+      this.$auth.loginWith('local', {
+        data: {
+          username: this.username,
+          password: this.password,
+        },
+      });
+      // this.$auth.loginWith('social');
     },
   },
 };
