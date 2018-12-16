@@ -1,9 +1,13 @@
 <template>
   <div class="list-item">
-    <div class="expo-card" :style="`background-image: url('${item.image}');`" @click="redirect">
+    <div
+      class="expo-card"
+      :style="`background-image: url('${item.image}');`"
+      @click="passRedirect('Info')"
+    >
       <p class="expo-card__title">{{item.title}}</p>
     </div>
-    <div class="list-item__info">
+    <div v-if="!blocked" class="list-item__info">
       <div class="list-item__dates dates-block">
         <div class="dates-block__grid">
           <p class="dates-block__name">Создано:</p>
@@ -23,21 +27,63 @@
         <div class="users-block__picker">
           <no-ssr>
             <multiselect
-              v-model="ownerList"
               selectLabel
               deselectLabel
               placeholder="Добавить пользователя"
+              v-model="sharedUsers"
               :options="userList"
               :multiple="true"
               :hideSelected="true"
               :close-on-select="false"
-              label="name"
               track-by="_id"
-              @input="() => {}"
+              label="username"
+              @input="onShare"
               :disabled="true"
             />
           </no-ssr>
         </div>
+      </div>
+      <div class="list-item__divider"/>
+      <div class="list-item__actions actions-block">
+        <div class="actions-block__grid">
+          <button
+            type="button"
+            class="actions-block__item actions-block__item--info"
+            @click="redirect('Info')"
+          />
+          <button
+            type="button"
+            class="actions-block__item actions-block__item--edit"
+            @click="redirect('Edit')"
+          />
+          <button
+            type="button"
+            class="actions-block__item actions-block__item--sort"
+            @click="redirect('Sort')"
+          />
+          <button
+            type="button"
+            class="actions-block__item actions-block__item--demo"
+            @click="redirect('Demo')"
+          />
+          <div class="actions-block__space"></div>
+          <div class="actions-block__space"></div>
+          <button
+            type="button"
+            class="actions-block__item actions-block__item--remove"
+            @click="remove"
+          />
+          <button
+            type="button"
+            class="actions-block__item actions-block__item--hide"
+            @click="hide"
+          />
+        </div>
+      </div>
+    </div>
+    <div v-else class="list-item__info">
+      <div class="list-item__alert">
+        <b>Редактирование недоступно:</b>&nbsp;выставка находится в работе.
       </div>
     </div>
   </div>
@@ -52,23 +98,28 @@ export default {
       default: () => {},
     },
   },
+  watch: {
+    item(oldVal, newVal) {
+      this.sharedUsers = this.item.ownerID;
+    },
+  },
   data() {
     return {
       userList: [
         {
           _id: '00000',
-          name: 'user name 0',
+          username: 'user name 0',
         },
         {
           _id: '00001',
-          name: 'user name 1',
+          username: 'user name 1',
         },
         {
           _id: '00002',
-          name: 'user name 2',
+          username: 'user name 2',
         },
       ],
-      ownerList: [],
+      sharedUsers: [],
     };
   },
   computed: {
@@ -84,24 +135,59 @@ export default {
       let p = this.item.dates.public.split('-');
       return '';
     },
+    usersList() {
+      return this.$store.state.usersList;
+    },
+    blocked() {
+      return this.item.blocked || this.item.workerID !== '';
+    },
   },
   methods: {
-    redirect() {
-      this.$store.dispatch('fetchState', this.item._id).then(res => {
-        this.$router.push({ name: 'cms-Info', params: { fromcms: true } });
+    hide() {
+      this.$store.dispatch('hideExpose', {
+        _id: this.item._id,
+        status: this.$sore.state.currentStatus,
       });
     },
+    onShare(value) {
+      this.$axios.$post('/cms/users', {
+        id: this.item._id,
+        users: this.sharedUsers.map(el => el._id),
+      });
+    },
+    passRedirect(to) {
+      if (!this.blocked) {
+        this.redirect(to);
+      }
+    },
+    redirect(to) {
+      this.$store.dispatch('fetchState', this.item._id).then(res => {
+        this.$router.push({ name: `cms-${to}`, params: { fromcms: true } });
+      });
+    },
+    remove() {
+      this.$store.dispatch('removeExpose', {
+        _id: this.item._id,
+        status: this.$sore.state.currentStatus,
+      });
+    },
+  },
+  mounted() {
+    this.sharedUsers = this.item.ownerID;
   },
 };
 </script>
 
 <style lang="sass">
+
   @import '~/styles/multiselect.sass'
+  @import '~/styles/mixins.sass'
+  @import '~/styles/vars.sass'
 
   .list-item
     display: flex
     flex-direction: row
-    align-items: center
+    align-items: stretch
     min-height: 100px
     background-color: white
     border-radius: 5px
@@ -110,11 +196,20 @@ export default {
       display: flex
       flex-direction: row
       flex-grow: 1
-      padding-top: 15px
-      padding-bottom: 15px
+      padding-top: 10px
+      padding-bottom: 10px
+      padding-right: 10px
     &__divider
       background-color: rgba(black, 0.2)
       width: 1px
+      margin-left: 15px
+      margin-right: 15px
+    &__alert
+      display: flex
+      justify-content: center
+      align-items: center
+      padding: 15px
+
 
   .dates-block
     display: flex
@@ -122,7 +217,6 @@ export default {
     justify-content: center
     align-items: center
     padding-left: 15px
-    padding-right: 15px
     color: rgba(black, 0.8)
     &__grid
       display: grid
@@ -139,8 +233,6 @@ export default {
       font-size: 14px
 
   .users-block
-    padding-left: 15px
-    padding-right: 15px
     font-size: 14px
     &__creator
       margin: 0
@@ -149,6 +241,53 @@ export default {
       span
         font-weight: bold
 
+  .actions-block
+    flex-grow: 1
+    &__grid
+      display: grid
+      grid-auto-flow: column
+      grid-template-rows: 36px 36px
+      grid-template-columns: 36px 36px 1fr 36px
+      grid-gap: 10px
+    &__item
+      cursor: pointer
+      width: 36px
+      height: 36px
+      position: relative
+      border-radius: 5px
+      border: 1px solid rgba(black, 0.15)
+      background-color: rgba(black, 0.05)
+      &::after
+        +posa(0)
+        content: ''
+        opacity: 0.4
+        background: center no-repeat
+        transition: all ease 0.15s
+      &:hover
+        &::after
+          opacity: 0.8
+      &--info
+        &::after
+          background-image: url('~/assets/icons/info.svg')
+      &--sort
+        &::after
+          background-image: url('~/assets/icons/sort.svg')
+      &--edit
+        &::after
+          background-image: url('~/assets/icons/edit.svg')
+      &--demo
+        &::after
+          background-image: url('~/assets/icons/demo.svg')
+      &--hide
+        &::after
+          background-image: url('~/assets/icons/hide.svg')
+      &--remove
+        background-color: rgba($color-error, 0.15)
+        border: 1px solid rgba($color-error, 0.4)
+        &::after
+          background-image: url('~/assets/icons/remove--color.svg')
+          opacity: 1
+
   .expo-card
     margin: -1px
     flex: 0 0 auto
@@ -156,8 +295,7 @@ export default {
     justify-content: center
     align-items: center
     min-height: 100px
-    min-width: 300px
-    max-width: 300px
+    width: 300px
     border-radius: 5px
     background: #333 center center no-repeat
     background-size: cover

@@ -26,22 +26,22 @@
       <div
         role="button"
         class="cms-icon-big cms-icon-big--info"
-        @click="redirect({ item, to: 'Info' })"
+        @click="redirect('Info')"
       >Информация</div>
       <div
         role="button"
         class="cms-icon-big cms-icon-big--sort"
-        @click="redirect({ item, to: 'Sort' })"
+        @click="redirect('Sort')"
       >Сортировка</div>
       <div
         role="button"
         class="cms-icon-big cms-icon-big--edit"
-        @click="redirect({ item, to: 'Edit' })"
+        @click="redirect('Edit')"
       >Редактирование</div>
       <div
         role="button"
         class="cms-icon-big cms-icon-big--demo"
-        @click="redirect({ item, to: 'Demo' })"
+        @click="redirect('Demo')"
       >Предпоказ</div>
       <div class="cms-icon-big-divider"/>
       <div role="button" class="cms-icon-big cms-icon-big--remove" @click="remove">Удаление</div>
@@ -63,16 +63,15 @@ export default {
   components: {
     CMSCard,
   },
+  props: ['item'],
   watch: {
     item(oldVal, newVal) {
       this.sharedUsers = this.item.ownerID;
       this.shareMode = false;
     },
   },
-  props: ['item'],
   data() {
     return {
-      pages: this.$store.state.static.pageList,
       shareMode: false,
       sharedUsers: [],
     };
@@ -95,24 +94,19 @@ export default {
     share() {
       this.shareMode = !this.shareMode;
     },
+    redirect(to) {
+      this.$store.dispatch('fetchState', this.item._id).then(() => {
+        this.$router.push({ name: `cms-${to}`, params: { fromcms: true } });
+      });
+    },
     remove() {
       this.$store.dispatch('removeExpose', {
         _id: this.item._id,
         status: this.$store.state.currentStatus,
       });
     },
-    log() {
-      // console.log(this.item.image);
-    },
-    redirect({ item, to }) {
-      console.log(item);
-      this.$store.dispatch('fetchState', item._id).then(() => {
-        this.$router.push({ name: `cms-${to}`, params: { fromcms: true } });
-      });
-    },
   },
   mounted() {
-    this.log();
     this.sharedUsers = this.item.ownerID;
   },
 };

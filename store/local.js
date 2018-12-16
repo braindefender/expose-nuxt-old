@@ -9,6 +9,7 @@ export const state = () => ({
       image: image0,
       title: 'Выставка книг, посвящённых строительству',
       source: 1,
+      workerID: '',
       dates: {
         public: '2018-11-15',
         create: '2018-11-15',
