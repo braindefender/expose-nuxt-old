@@ -12,12 +12,16 @@
           <div class="cms-table__header cms-table__header">Редакторы</div>
           <div class="cms-table__header cms-table__header--actions">Действия</div>
         </div>
-        <list-item
-          v-if="items.length !== 0"
-          v-for="(item, index) in items"
-          :key="index"
-          :item="item"
-        ></list-item>
+        <div class="cms-table__list">
+          <list-item
+            v-if="items.length !== 0"
+            v-for="(item, index) in items"
+            :key="index"
+            :item="item"
+          />
+          <list-item-new :item="this.$store.state.local.catalogueList[0]"/>
+          <list-item-new :item="this.$store.state.local.catalogueList[1]"/>
+        </div>
       </div>
     </div>
   </div>
@@ -25,11 +29,13 @@
 
 <script>
 import ListItem from '~/components/cms/list/ListItem';
+import ListItemNew from '~/components/cms/list/ListItemNew';
 import Sidebar from '~/components/cms/sidebar/Sidebar';
 
 export default {
   name: 'List',
   components: {
+    ListItemNew,
     ListItem,
     Sidebar,
   },
@@ -58,6 +64,7 @@ export default {
     flex-direction: column
     flex-grow: 1
     overflow-y: auto
+    background-color: #f5f5f5
     &__row
       display: flex
       width: 100%
@@ -71,6 +78,7 @@ export default {
     &__headers
       height: 60px
       box-shadow: 0 1px 0 rgba(black, 0.1)
+      background-color: white
     &__header, &__list-item
       font-size: 15px
       color: rgba(black, 0.8)
@@ -97,6 +105,13 @@ export default {
         padding-right: 20px
         width: 360px
         flex: 0 0 auto
+    &__list
+      padding-left: 15px
+      padding-right: 15px
+      > div
+        margin-bottom: 15px
+        &:last-child
+          margin-bottom: 0
     &__list-item
       position: relative
       &--action-panel

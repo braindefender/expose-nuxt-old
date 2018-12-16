@@ -67,6 +67,7 @@ fieldset[disabled] .multiselect
   min-height: 32px
   text-align: left
   color: #35495e
+  border-radius: 10px
   *
     box-sizing: border-box
   &:focus
@@ -97,7 +98,7 @@ fieldset[disabled] .multiselect
   border: none
   border-radius: 5px
   background: #fff
-  padding: 0 0 0 5px
+  padding: 0 5px
   width: 100%
   transition: border .1s ease
   box-sizing: border-box
@@ -215,17 +216,18 @@ fieldset[disabled] .multiselect
   text-decoration: none
   cursor: pointer
   position: absolute
-  width: 40px
-  height: 32px
+  width: 36px
+  height: 30px
   right: 1px
   top: 1px
   padding: 4px 8px
   text-align: center
   transition: transform 0.2s ease
+  border-radius: 5px
   &:before
     position: relative
     right: 0
-    top: 65%
+    top: 70%
     color: #999
     margin-top: 4px
     border-style: solid
@@ -328,6 +330,7 @@ fieldset[disabled] .multiselect
 .multiselect--disabled
   background: #ededed
   pointer-events: none
+  .multiselect__tags,
   .multiselect__current, .multiselect__select
     background: #ededed
     color: #a6a6a6
