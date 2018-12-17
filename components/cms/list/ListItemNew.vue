@@ -2,7 +2,7 @@
   <div class="list-item">
     <div
       class="expo-card"
-      :style="`background-image: url('${item.image}');`"
+      :style="`background-image: url('${image}');`"
       @click="passRedirect('Info')"
     >
       <p class="expo-card__title">{{item.title}}</p>
@@ -22,7 +22,7 @@
       <div class="list-item__users users-block">
         <p class="users-block__creator">
           <span>Создатель:</span>
-          {{item.creator}}
+          {{item.creator.username}}
         </p>
         <div class="users-block__picker">
           <no-ssr>
@@ -31,14 +31,13 @@
               deselectLabel
               placeholder="Добавить пользователя"
               v-model="sharedUsers"
-              :options="userList"
+              :options="usersList"
               :multiple="true"
               :hideSelected="true"
               :close-on-select="false"
               track-by="_id"
               label="username"
               @input="onShare"
-              :disabled="true"
             />
           </no-ssr>
         </div>
@@ -69,11 +68,13 @@
           <div class="actions-block__space"></div>
           <div class="actions-block__space"></div>
           <button
+            v-if="isCreator"
             type="button"
             class="actions-block__item actions-block__item--remove"
             @click="remove"
           />
           <button
+            v-if="isCreator"
             type="button"
             class="actions-block__item actions-block__item--hide"
             @click="hide"
@@ -100,29 +101,27 @@ export default {
   },
   watch: {
     item(oldVal, newVal) {
-      this.sharedUsers = this.item.ownerID;
+      this.sharedUsers = this.item.ownerID.filter(
+        el => el._id !== this.creatorID,
+      );
     },
   },
   data() {
     return {
-      userList: [
-        {
-          _id: '00000',
-          username: 'user name 0',
-        },
-        {
-          _id: '00001',
-          username: 'user name 1',
-        },
-        {
-          _id: '00002',
-          username: 'user name 2',
-        },
-      ],
       sharedUsers: [],
     };
   },
   computed: {
+    blocked() {
+      console.log(this.item.blocked);
+      console.log(this.item.workerID);
+      return this.item.blocked;
+    },
+    image() {
+      return this.item.image
+        ? this.item.image
+        : this.$store.state.static.sourceList[this.item.source].image;
+    },
     date_public() {
       let p = this.item.dates.public.split('-');
       return '';
@@ -136,17 +135,23 @@ export default {
       return '';
     },
     usersList() {
-      return this.$store.state.usersList;
+      return this.$store.state.usersList.filter(
+        el => el._id !== this.creatorID,
+      );
     },
-    blocked() {
-      return this.item.blocked || this.item.workerID !== '';
+    isCreator() {
+      return this.creatorID === this.item.creator._id;
+      // return false;
+    },
+    creatorID() {
+      return this.$store.state.auth.user._id;
     },
   },
   methods: {
     hide() {
       this.$store.dispatch('hideExpose', {
         _id: this.item._id,
-        status: this.$sore.state.currentStatus,
+        status: this.$store.state.currentStatus,
       });
     },
     onShare(value) {
@@ -173,7 +178,9 @@ export default {
     },
   },
   mounted() {
-    this.sharedUsers = this.item.ownerID;
+    this.sharedUsers = this.item.ownerID.filter(
+      el => el._id !== this.creatorID,
+    );
   },
 };
 </script>
@@ -234,6 +241,10 @@ export default {
 
   .users-block
     font-size: 14px
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
     &__creator
       margin: 0
       padding: 0

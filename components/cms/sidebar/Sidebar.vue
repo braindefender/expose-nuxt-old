@@ -198,7 +198,7 @@ export default {
         width: 96px
         height: 96px
     &__text
-      margin-bottom: 20px
+      margin-bottom: 5px
       text-align: center
     &__name
       font-weight: bold

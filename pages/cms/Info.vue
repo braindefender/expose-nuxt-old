@@ -100,6 +100,7 @@ export default {
         ownerID: this.expose.ownerID,
         workerID: this.expose.workerID,
         blocked: this.expose.blocked,
+        creator: this.expose.creator,
         _id: this.expose._id,
       };
     },

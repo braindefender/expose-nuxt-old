@@ -5,12 +5,8 @@
         <div class="sidebar-account__avatar"></div>
       </div>
       <div class="sidebar-account__text">
-        <div class="sidebar-account__name">Читальный зал</div>
-        <div class="sidebar-account__mail">readinghall@gpntbsib.ru</div>
-      </div>
-      <div class="sidebar-account__panel">
-        <p>Модерируемых выставок:</p>
-        <p>3</p>
+        <div class="sidebar-account__name">{{user.username}}</div>
+        <div class="sidebar-account__mail">{{user.email}}</div>
       </div>
     </div>
 
@@ -53,6 +49,9 @@ export default {
   computed: {
     pageName() {
       return this.$store.state.currentStatus;
+    },
+    user() {
+      return this.$store.state.auth.user;
     },
   },
   mounted() {},

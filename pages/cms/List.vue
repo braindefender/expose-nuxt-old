@@ -7,20 +7,22 @@
           <div
             class="cms-table__header cms-table__header--main cms-table__header--title"
           >Модерируемые выставки</div>
-          <div class="cms-table__header cms-table__header--date">Дата создания</div>
-          <div class="cms-table__header cms-table__header--date">Дата обновления</div>
-          <div class="cms-table__header cms-table__header">Редакторы</div>
-          <div class="cms-table__header cms-table__header--actions">Действия</div>
         </div>
         <div class="cms-table__list">
-          <list-item
+          <!-- <list-item
+            v-if="items.length !== 0"
+            v-for="(item, index) in items"
+            :key="index"
+            :item="item"
+          />-->
+          <list-item-new
             v-if="items.length !== 0"
             v-for="(item, index) in items"
             :key="index"
             :item="item"
           />
-          <list-item-new :item="this.$store.state.local.catalogueList[0]"/>
-          <list-item-new :item="this.$store.state.local.catalogueList[1]"/>
+          <!-- <list-item-new :item="this.$store.state.local.catalogueList[0]"/> -->
+          <!-- <list-item-new :item="this.$store.state.local.catalogueList[1]"/> -->
         </div>
       </div>
     </div>
