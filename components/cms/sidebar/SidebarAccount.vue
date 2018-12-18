@@ -26,7 +26,7 @@
       </div>
     </div>
 
-    <div class="sidebar-button" @click="$auth.logout()">
+    <div class="sidebar-button" @click="logout">
       <div class="sidebar-button__icon sidebar-button__icon--exit"></div>
       <div class="sidebar-button__text">Выйти из аккаунта</div>
     </div>
@@ -74,8 +74,10 @@ export default {
       return $nuxt.$route.path.split('/').pop();
     },
     logout() {
-      Cookie.remove('auth');
-      this.$store.commit('setAuth', null);
+      this.$auth.logout().then(() => {
+        Cookie.remove('auth');
+        this.$router.push('/cms');
+      });
     },
   },
 };

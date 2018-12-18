@@ -1,7 +1,11 @@
 <template>
-  <div class="auth">
-    <div v-if="success" class="auth__success">Вход выполнен</div>
-    <div v-else class="auth__error">Произошла ошибка</div>
+  <div class="cms-new-page">
+    <div class="cms-new-page__content cms-new-page__content--auth">
+      <div class="cms-auth">
+        <div class="cms-auth__title">Авторизация</div>
+        <div class="cms-auth__page">Выполняется вход</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -16,13 +20,6 @@ export default {
   },
   mounted() {
     let code = this.$route.query.code;
-    // let addr = 'https://login.microsoftonline.com/common/oauth2/token';
-    // let client_id = '5e1f8950-7cb1-4674-84dc-40e6013fe7da';
-    // let redir = 'http://localhost:3000/cms/Test';
-    // let path = `${addr}?client_id=${client_id}&code=${code}&redirect_uri=${redir}`;
-    // this.$axios.post(path).then(res => {
-    //   console.log(res);
-    // });
     this.$auth
       .loginWith('local', {
         data: { username: 'token', password: code },
@@ -33,3 +30,12 @@ export default {
   },
 };
 </script>
+
+<style lang="sass">
+  @import '~/styles/auth.sass'
+
+  .cms-new-page
+    &__content--auth
+      justify-content: center
+      align-items: center
+</style>

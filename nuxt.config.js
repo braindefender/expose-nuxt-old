@@ -1,3 +1,7 @@
+const serverAPI = 'http://10.3.6.27:3333/api';
+const redirect_uri = 'http://localhost:3000/auth/callback';
+const client_id = '5e1f8950-7cb1-4674-84dc-40e6013fe7da';
+
 module.exports = {
   /*
    ** Headers of the page
@@ -51,9 +55,9 @@ module.exports = {
         _scheme: 'oauth2',
         authorization_endpoint:
           'https://login.microsoftonline.com/common/oauth2/authorize',
-        client_id: '5e1f8950-7cb1-4674-84dc-40e6013fe7da',
+        client_id: client_id,
+        redirect_uri: redirect_uri,
         response_type: 'code',
-        redirect_uri: 'http://localhost:3000/auth/callback',
         scope: ['profile'],
       },
       local: {
@@ -68,7 +72,7 @@ module.exports = {
     },
   },
   axios: {
-    baseURL: 'http://10.3.6.27:3333/api',
+    baseURL: serverAPI,
   },
   router: {},
   modules: ['@nuxtjs/axios', '@nuxtjs/auth'],

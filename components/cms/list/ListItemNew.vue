@@ -38,6 +38,7 @@
               track-by="_id"
               label="username"
               @input="onShare"
+              :disabled="!isCreator"
             />
           </no-ssr>
         </div>
@@ -141,7 +142,7 @@ export default {
     },
     isCreator() {
       return this.creatorID === this.item.creator._id;
-      // return false;
+      // return true;
     },
     creatorID() {
       return this.$store.state.auth.user._id;
@@ -173,7 +174,7 @@ export default {
     remove() {
       this.$store.dispatch('removeExpose', {
         _id: this.item._id,
-        status: this.$sore.state.currentStatus,
+        status: this.$store.state.currentStatus,
       });
     },
   },
@@ -243,7 +244,6 @@ export default {
     font-size: 14px
     display: flex
     flex-direction: column
-    align-items: center
     justify-content: center
     &__creator
       margin: 0

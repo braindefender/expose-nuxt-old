@@ -73,70 +73,10 @@ export default {
 
 
 <style lang="sass">
-  @import '~/styles/vars.sass'
+  @import '~/styles/auth.sass'
 
   .cms-new-page
     &__content--auth
       justify-content: center
       align-items: center
-  .cms-auth
-    margin: 0 auto
-    width: 320px
-    padding: 20px
-    background-color: rgba(black, 0.01)
-    border-radius: 5px
-    box-shadow: 0 25px 65px rgba(black, 0.1), 0 5px 75px rgba(black, 0.05)
-    border: 2px solid rgba(black, 0.1)
-    &__tabs
-      width: 100%
-      display: flex
-      border-radius: 5px
-      overflow: hidden
-      margin-bottom: 15px
-    &__tab
-      cursor: pointer
-      width: 50%
-      border: none
-      outline: none
-      padding-top: 7px
-      padding-bottom: 7px
-      font-family: "PT Sans"
-      background-color: rgba(black, 0.05)
-      &--active
-        background-color: $color-accent
-        color: white
-        font-weight: bold
-    &__page
-    &__page-button
-      height: 36px
-      font-size: 16px
-      padding-left: 15px
-      padding-right: 15px
-      width: 100%
-    &__title
-      text-align: center
-      font-weight: bold
-      margin-bottom: 20px
-      font-size: 18px
-    &__field
-      margin-bottom: 20px
-      input
-        width: 100%
-        height: 36px
-        border: none
-        border-radius: 5px
-        border: 2px solid rgba(black, 0.15)
-        padding-left: 15px
-        transition: all ease-in-out 0.15s
-        &:focus
-          border: 0
-          outline: 0
-          border: 2px solid rgba($color-accent, 1)
-    &__buttons
-      .button
-        height: 36px
-        font-size: 16px
-        margin-bottom: 10px
-        &:last-child
-          margin-bottom: 0
 </style>
