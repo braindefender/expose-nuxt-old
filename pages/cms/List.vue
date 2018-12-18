@@ -9,20 +9,12 @@
           >Модерируемые выставки</div>
         </div>
         <div class="cms-table__list">
-          <!-- <list-item
-            v-if="items.length !== 0"
-            v-for="(item, index) in items"
-            :key="index"
-            :item="item"
-          />-->
           <list-item-new
             v-if="items.length !== 0"
             v-for="(item, index) in items"
             :key="index"
             :item="item"
           />
-          <!-- <list-item-new :item="this.$store.state.local.catalogueList[0]"/> -->
-          <!-- <list-item-new :item="this.$store.state.local.catalogueList[1]"/> -->
         </div>
       </div>
     </div>
@@ -30,7 +22,6 @@
 </template>
 
 <script>
-import ListItem from '~/components/cms/list/ListItem';
 import ListItemNew from '~/components/cms/list/ListItemNew';
 import Sidebar from '~/components/cms/sidebar/Sidebar';
 
@@ -38,7 +29,6 @@ export default {
   name: 'List',
   components: {
     ListItemNew,
-    ListItem,
     Sidebar,
   },
   middleware: 'authenticated',

@@ -1,3 +1,5 @@
+import Vue from 'vue';
+
 export const state = () => ({
   _id: '',
   mode: 1,
@@ -23,7 +25,8 @@ export const mutations = {
     state[field] = value;
   },
   setDate(state, { field, value }) {
-    state.dates[field] = value;
+    Vue.$set(state.dates, field, value);
+    // state.dates[field] = value;
   },
 };
 

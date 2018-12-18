@@ -92,7 +92,7 @@
 
     <div class="ec__row">
       <div class="ec__title">Категория</div>
-      <category-picker @updateCategories="changeCategories"></category-picker>
+      <category-picker @updateCategories="changeCategories"/>
     </div>
     <div class="ec__row">
       <div class="ec__title">Описание</div>

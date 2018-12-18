@@ -19,6 +19,31 @@
         </div>
       </div>
       <div class="list-item__divider"/>
+      <div class="list-item__actions actions-block">
+        <div class="actions-block__grid">
+          <button
+            type="button"
+            class="actions-block__item actions-block__item--info"
+            @click="redirect('Info')"
+          />
+          <button
+            type="button"
+            class="actions-block__item actions-block__item--edit"
+            @click="redirect('Edit')"
+          />
+          <button
+            type="button"
+            class="actions-block__item actions-block__item--sort"
+            @click="redirect('Sort')"
+          />
+          <button
+            type="button"
+            class="actions-block__item actions-block__item--demo"
+            @click="redirect('Demo')"
+          />
+        </div>
+      </div>
+      <div class="list-item__divider"/>
       <div class="list-item__users users-block">
         <p class="users-block__creator">
           <span>Создатель:</span>
@@ -43,31 +68,8 @@
           </no-ssr>
         </div>
       </div>
-      <div class="list-item__divider"/>
-      <div class="list-item__actions actions-block">
+      <div class="list-item__actions actions-block actions-block--grow">
         <div class="actions-block__grid">
-          <button
-            type="button"
-            class="actions-block__item actions-block__item--info"
-            @click="redirect('Info')"
-          />
-          <button
-            type="button"
-            class="actions-block__item actions-block__item--edit"
-            @click="redirect('Edit')"
-          />
-          <button
-            type="button"
-            class="actions-block__item actions-block__item--sort"
-            @click="redirect('Sort')"
-          />
-          <button
-            type="button"
-            class="actions-block__item actions-block__item--demo"
-            @click="redirect('Demo')"
-          />
-          <div class="actions-block__space"></div>
-          <div class="actions-block__space"></div>
           <button
             v-if="isCreator"
             type="button"
@@ -156,9 +158,11 @@ export default {
       });
     },
     onShare(value) {
+      let users = [this.creatorID];
+      users = users.concat(this.sharedUsers.map(el => el._id));
       this.$axios.$post('/cms/users', {
         id: this.item._id,
-        users: this.sharedUsers.map(el => el._id),
+        users,
       });
     },
     passRedirect(to) {
@@ -253,13 +257,14 @@ export default {
         font-weight: bold
 
   .actions-block
-    flex-grow: 1
+    &--grow
+      flex-grow: 1
     &__grid
       display: grid
       grid-auto-flow: column
       grid-template-rows: 36px 36px
-      grid-template-columns: 36px 36px 1fr 36px
       grid-gap: 10px
+      justify-items: end
     &__item
       cursor: pointer
       width: 36px

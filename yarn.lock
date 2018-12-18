@@ -7070,9 +7070,9 @@ vue-router@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.1.tgz#d9b05ad9c7420ba0f626d6500d693e60092cc1e9"
 
-vue-scrollactive@^0.7.1:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/vue-scrollactive/-/vue-scrollactive-0.7.1.tgz#b9f768d0b32b428ef6c646e584b228ed8ac69b8a"
+vue-scrollactive@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/vue-scrollactive/-/vue-scrollactive-0.8.0.tgz#0f1b741018d7deee9fe3d120feb3ad23a8253629"
   dependencies:
     bezier-easing "^2.0.3"
 
