@@ -170,7 +170,9 @@ export default {
           },
         })
         .then(res => {
-          this.$store.commit('setState', res);
+          // this.$store.commit('setState', res);
+          this.$store.dispatch('edit/selectOnEditScreen', this.item);
+          this.$store.dispatch('fetchState', this.$store.state.info._id);
           console.log('Uploaded XML');
         })
         .catch(err => {

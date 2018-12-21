@@ -83,5 +83,6 @@ module.exports = {
     { src: '~plugins/vue-scrollactive', ssr: false },
     { src: '~plugins/vue-multiselect', ssr: false },
     { src: '~plugins/vue-awesome-swiper', ssr: false },
+    { src: '~plugins/vue-tooltip' },
   ],
 };

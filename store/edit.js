@@ -29,14 +29,14 @@ export const mutations = {
     }
     Vue.set(item, field, to);
   },
-  addImage(state, payload) {
-    state.selected.images.push(payload);
+  addImage(state, image) {
+    state.selected.images.push(image);
   },
-  addFullImage(state, payload) {
-    state.selected.fullImages.push(payload);
+  addFullImage(state, image) {
+    state.selected.fullImages.push(image);
   },
-  removeImageAt(state, payload) {
-    state.selected.images.splice(payload, 1);
+  removeImageAt(state, index) {
+    state.selected.images.splice(index, 1);
   },
   mutateObject(state, { source, patch }) {
     console.log('source', source);
@@ -51,7 +51,7 @@ export const mutations = {
 };
 
 export const actions = {
-  selectOnEditScreen({ state, dispatch, commit }, item) {
+  selectOnEditScreen({ commit }, item) {
     this.$axios
       .$get('cms/book', {
         params: { irbis: item.irbis },
@@ -66,7 +66,7 @@ export const actions = {
         console.log(err);
       });
   },
-  pushBook({ state, dispatch, commit }, item) {
+  pushBook({ commit }, item) {
     this.$axios.$post('/cms/book', item);
   },
 };

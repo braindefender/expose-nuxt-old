@@ -40,6 +40,15 @@
   @import '@/styles/mixins.sass'
   @import '@/styles/vars.sass'
 
+  .popover
+    background-color: rgba(black, 0.75)
+    backdrop-filter: blur(5px);
+    color: white
+    font-size: 12px
+    padding: 5px 10px
+    margin: 5px
+    border-radius: 5px
+
   .bold
     font-weight: bold
 

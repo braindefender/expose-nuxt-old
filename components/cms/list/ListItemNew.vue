@@ -23,21 +23,25 @@
         <div class="actions-block__grid">
           <button
             type="button"
+            v-tooltip.top="{content: 'Информация', classes: 'popover'}"
             class="actions-block__item actions-block__item--info"
             @click="redirect('Info')"
           />
           <button
             type="button"
+            v-tooltip.top="{content: 'Редактирование', classes: 'popover'}"
             class="actions-block__item actions-block__item--edit"
             @click="redirect('Edit')"
           />
           <button
             type="button"
+            v-tooltip.top="{content: 'Сортировка', classes: 'popover'}"
             class="actions-block__item actions-block__item--sort"
             @click="redirect('Sort')"
           />
           <button
             type="button"
+            v-tooltip.top="{content: 'Предпоказ', classes: 'popover'}"
             class="actions-block__item actions-block__item--demo"
             @click="redirect('Demo')"
           />
@@ -63,7 +67,7 @@
               track-by="_id"
               label="username"
               @input="onShare"
-              :disabled="!isCreator"
+              :disabled="!canModify"
             />
           </no-ssr>
         </div>
@@ -71,13 +75,15 @@
       <div class="list-item__actions actions-block actions-block--grow">
         <div class="actions-block__grid">
           <button
-            v-if="isCreator"
+            v-if="canModify"
+            v-tooltip.left="{content: 'Удалить выставку', classes: 'popover'}"
             type="button"
             class="actions-block__item actions-block__item--remove"
             @click="remove"
           />
           <button
-            v-if="isCreator"
+            v-if="canModify"
+            v-tooltip.left="{content: 'Скрыть выставку', classes: 'popover'}"
             type="button"
             class="actions-block__item actions-block__item--hide"
             @click="hide"
@@ -104,9 +110,7 @@ export default {
   },
   watch: {
     item(oldVal, newVal) {
-      this.sharedUsers = this.item.ownerID.filter(
-        el => el._id !== this.creatorID,
-      );
+      this.getSharedUsers();
     },
   },
   data() {
@@ -139,15 +143,18 @@ export default {
     },
     usersList() {
       return this.$store.state.usersList.filter(
-        el => el._id !== this.creatorID,
+        el => el._id !== this.currentUser._id,
       );
     },
-    isCreator() {
-      return this.creatorID === this.item.creator._id;
+    canModify() {
+      if (this.currentUser.username.substr(0, 5) === 'admin') {
+        return true;
+      }
+      return this.currentUser._id === this.item.creator._id;
       // return true;
     },
-    creatorID() {
-      return this.$store.state.auth.user._id;
+    currentUser() {
+      return this.$store.state.auth.user;
     },
   },
   methods: {
@@ -158,7 +165,7 @@ export default {
       });
     },
     onShare(value) {
-      let users = [this.creatorID];
+      let users = [this.currentUser._id];
       users = users.concat(this.sharedUsers.map(el => el._id));
       this.$axios.$post('/cms/users', {
         id: this.item._id,
@@ -181,11 +188,17 @@ export default {
         status: this.$store.state.currentStatus,
       });
     },
+    getSharedUsers() {
+      this.sharedUsers = this.item.ownerID.filter(
+        el => el._id !== this.currentUser._id,
+      );
+      this.sharedUsers = this.sharedUsers.filter(
+        el => el.username.substr(0, 5) !== 'admin',
+      );
+    },
   },
   mounted() {
-    this.sharedUsers = this.item.ownerID.filter(
-      el => el._id !== this.creatorID,
-    );
+    this.getSharedUsers();
   },
 };
 </script>
