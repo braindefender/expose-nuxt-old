@@ -1,7 +1,6 @@
 <template>
   <div class="cms-new-page">
-    <!-- <Navigation></Navigation> -->
-    <sidebar></sidebar>
+    <sidebar/>
     <div class="cms-new-page__content">
       <div class="cms-new-page__columns">
         <div class="cms-new-page__rows" style="flex-grow: 0; overflow-y: auto">
@@ -9,13 +8,13 @@
             <nuxt-link class="button" :to="{ name: `cms-List` }">Назад</nuxt-link>
             <nuxt-link class="button" :to="{ name: `cms-Sort`, params: { fromcms: true } }">Далее</nuxt-link>
           </div>
-          <Weekly v-if="expose.mode === 0" @set="set" @setDate="setDate"/>
-          <Thematic v-if="expose.mode === 1" @set="set" @setDate="setDate"/>
+          <Weekly v-if="expose.mode === 0"/>
+          <Thematic v-if="expose.mode === 1"/>
         </div>
         <div class="ec__preview">
           <Cover :options="options"/>
-          <Annotation v-if="expose.mode !== 0" :text="annotation"></Annotation>
-          <div class="ec__preview-image"></div>
+          <Annotation v-if="expose.mode !== 0" :text="expose.annotation"/>
+          <div class="ec__preview-image"/>
         </div>
       </div>
     </div>
@@ -23,166 +22,43 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-
-import Sidebar from '~/components/cms/sidebar/Sidebar';
-
 import Annotation from '@/components/expose/Annotation';
 import Cover from '@/components/expose/Cover';
-
-import Weekly from '~/components/cms/info/Weekly';
 import Thematic from '~/components/cms/info/Thematic';
-
-import weekly0 from '@/assets/images/jamie-taylor-110195-unsplash.jpg';
-import weekly1 from '@/assets/images/janko-ferlic-174927-unsplash.jpg';
+import Weekly from '~/components/cms/info/Weekly';
+import Sidebar from '~/components/cms/sidebar/Sidebar';
 
 export default {
   name: 'Info',
   components: {
+    Annotation,
     Cover,
+    Thematic,
     Weekly,
     Sidebar,
-    Thematic,
-    Annotation,
-  },
-  beforeDestroy() {
-    if (this.canSyncState) {
-      this.syncState();
-    }
   },
   mounted() {
     if (this.$route.params.fromcms !== true) {
       this.$router.push({ path: '/cms/list' });
-      this.canSyncState = false;
-    } else {
-      this.$store.dispatch('fetchCategoryList');
+    }
+  },
+  beforeDestroy() {
+    if (this.$route.params.fromcms === true) {
+      this.$store.dispatch('syncState');
     }
   },
   data() {
-    return {
-      canSyncState: true,
-      sourceList: this.$store.state.static.sourceList,
-    };
+    return {};
   },
   computed: {
-    annotation: {
-      get() {
-        return this.$store.state.info.annotation;
-      },
-      set(value) {
-        this.$store.commit('info/set', { field: 'annotation', value });
-      },
-    },
-    source: {
-      get() {
-        return this.$store.state.info.source;
-      },
-      set(value) {
-        this.$store.commit('info/set', { field: 'annotation', value });
-      },
-    },
     expose() {
       return this.$store.state.info;
     },
-    info() {
-      return this.expose.mode === 0 ? this.weekly : this.theme;
-    },
-    common() {
-      return {
-        source: this.source,
-        dates: {
-          create: this.$store.state.info.dates.create,
-          update: this.$store.state.info.dates.update,
-          public: this.$store.state.info.dates.public,
-          from: this.$store.state.info.dates.from,
-          to: this.$store.state.info.dates.to,
-        },
-        ownerID: this.expose.ownerID,
-        workerID: this.expose.workerID,
-        blocked: this.expose.blocked,
-        creator: this.expose.creator,
-        _id: this.expose._id,
-      };
-    },
-    weekly() {
-      return {
-        ...this.common,
-        ...{
-          mode: 0,
-          title: this.sourceList[this.expose.source].weekly,
-          phone: this.sourceList[this.expose.source].phone,
-          email: this.sourceList[this.expose.source].email,
-          image: '',
-          annotation: '',
-        },
-      };
-    },
-    theme() {
-      return {
-        ...this.common,
-        ...{
-          mode: 1,
-          title: this.expose.title.trim(),
-          phone: this.expose.phone,
-          email: this.expose.email,
-          image: this.expose.image,
-          annotation: this.expose.annotation,
-          categories: this.expose.categories,
-        },
-      };
-    },
     options() {
-      const source =
-        this.expose.mode === 0
-          ? `\n`
-          : this.sourceList[this.expose.source].title;
-      const image =
-        this.expose.mode !== 0
-          ? this.expose.image
-          : this.sourceList[this.expose.source].image;
-      const title =
-        this.expose.mode === 0
-          ? this.sourceList[this.expose.source].weekly
-          : this.expose.title;
-      let date = {};
-      if (this.expose.dates.from) {
-        date.from = this.getDateFrom(this.expose.dates.from);
-        date.to = this.getDateFrom(this.expose.dates.to);
-      } else {
-        date.from = this.getDateFrom(this.expose.dates.public);
-        date.to = undefined;
-      }
       return {
         nav: true,
         fromcms: true,
-        date,
-        title,
-        image,
-        source,
-        prev: undefined,
-        next: undefined,
-      };
-    },
-  },
-  methods: {
-    syncState() {
-      this.$store.dispatch('syncInfoState', this.info);
-    },
-    set(field, value) {
-      this.$store.commit('info/set', { field, value });
-    },
-    setDate(field, value) {
-      this.$store.commit('info/setDate', { field, value });
-    },
-    getDateInYYYYMMDD(date) {
-      return date.toISOString().split('T')[0];
-    },
-    getDateFrom(input) {
-      const date = new Date(input);
-      return {
-        day: date.getDate(),
-        month: date.getMonth(),
-        year: date.getFullYear(),
+        ...this.expose,
       };
     },
   },

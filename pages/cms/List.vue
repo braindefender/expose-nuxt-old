@@ -43,6 +43,7 @@ export default {
   mounted() {
     this.$store.dispatch('fetchExposeList', this.$store.state.currentStatus);
     this.$store.dispatch('fetchUsersList');
+    this.$store.dispatch('fetchCategoryList');
   },
 };
 </script>

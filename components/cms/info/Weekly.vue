@@ -46,16 +46,14 @@ import Toggle from '~/components/cms/common/Toggle';
 export default {
   name: 'Weekly',
   components: { Toggle },
-  mounted() {
-    this.$store.dispatch('info/weeklyUpdate');
-  },
+  mounted() {},
   computed: {
     mode: {
       get() {
         return this.$store.state.info.mode;
       },
       set(value) {
-        this.$store.commit('info/set', { field: 'mode', value });
+        this.$store.dispatch('info/changeModeTo', value);
       },
     },
     source: {
@@ -92,14 +90,12 @@ export default {
     },
   },
   methods: {
-    setDate(field, value) {
-      this.$emit('setDate', field, value);
+    setModeTo(value) {
+      this.$store.dispatch('info/changeModeTo', value);
     },
-    setModeTo(id) {
-      this.$emit('set', 'mode', id);
-    },
-    setSourceTo(id) {
-      this.$emit('set', 'source', id);
+    setSourceTo(value) {
+      this.$store.commit('info/set', { field: 'source', value });
+      this.$store.dispatch('info/changeModeTo', this.mode);
     },
   },
 };

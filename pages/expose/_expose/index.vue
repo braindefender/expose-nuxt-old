@@ -32,7 +32,7 @@
                 scrollContainerSelector: '.cms-new-page'
               }"
             >
-              <ContentSelector :stack="stack"></ContentSelector>
+              <ContentSelector :stack="stack"/>
 
               <div class="expose-page__info">
                 <div class="expose-page__info-title">Информация</div>
@@ -40,10 +40,12 @@
                   v-if="expose.maker"
                   class="expose-page__info-text"
                 >Составитель: {{ expose.maker }}</div>
-                <div v-if="expose.phone" class="expose-page__info-text">Телефон:
+                <div v-if="expose.phone" class="expose-page__info-text">
+                  Телефон:
                   <a :href="`tel:${this.phone}`">{{ prettyPhone }}</a>
                 </div>
-                <div v-if="expose.email" class="expose-page__info-text">Email:
+                <div v-if="expose.email" class="expose-page__info-text">
+                  Email:
                   <a :href="`mailto:${expose.email}`">{{ expose.email }}</a>
                 </div>
               </div>
@@ -160,36 +162,9 @@ export default {
     },
     coverOptions() {
       const sourceList = this.$store.state.static.sourceList;
-      let image = this.expose.image;
-      switch (this.expose.mode) {
-        case 0:
-          image = sourceList[this.expose.source].image;
-          break;
-        case 1:
-          image = image ? image : sourceList[this.expose.source].image;
-          break;
-      }
-      let date = {};
-      if (this.expose.dates.from) {
-        date.from = this.date(this.expose.dates.from);
-        date.to = this.date(this.expose.dates.to);
-      } else if (this.expose.dates.public) {
-        date.from = this.date(this.expose.dates.public);
-        date.to = undefined;
-      } else {
-        date.from = this.date('2018-11-09');
-        date.to = undefined;
-      }
       return {
-        // nav: true,
         cms: this.options ? this.options.fromcms : false,
-        date,
-        image,
-        title: this.expose.title,
-        source:
-          this.expose.mode !== 0 ? sourceList[this.expose.source].title : '',
-        prev: undefined,
-        next: undefined,
+        ...this.expose,
       };
     },
   },

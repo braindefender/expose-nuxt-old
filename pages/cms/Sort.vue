@@ -29,6 +29,17 @@
                 checkOnClick: true,
               }"
             />
+            <div v-if="$store.state.stacks.stack.list.length === 0" class="es-empty-stack">
+              <p class="es-empty-stack__heading">Список разделов пуст!</p>
+              <div
+                class="es-empty-stack__text"
+              >Выберите книги из списка слева, чтобы создать категорию.</div>
+              <div
+                v-if="$store.state.stacks.checkedList.length === 0"
+                class="es-empty-stack__arrow es-empty-stack__arrow--left"
+              />
+              <div v-else class="es-empty-stack__arrow es-empty-stack__arrow--top"/>
+            </div>
           </div>
         </div>
 
@@ -134,6 +145,49 @@ export default {
 
   @import '@/styles/vars.sass'
   @import '@/styles/mixins.sass'
+
+  @keyframes move_left_right
+    0%
+      transform: translateX(0px)
+    100%
+      transform: translateX(-10px)
+
+  @keyframes move_up_down
+    0%
+      transform: translateY(0px) rotate(90deg)
+    100%
+      transform: translateY(10px) rotate(90deg)
+
+  .es-empty-stack
+    background-color: white
+    border-radius: 5px
+    display: flex
+    flex-direction: column
+    align-items: center
+    padding: 40px
+    position: relative
+    &__heading
+      color: $color-accent
+      font-weight: bold
+      font-size: 18px
+      margin-bottom: 10px
+    &__text
+      color: rgba(black, 0.5)
+      font-size: 15px
+    &__arrow
+      position: absolute
+      height: 12px
+      width: 24px
+      &--top
+        top: 25px
+        right: 100px
+        background: url('~/assets/icons/arrow-left.svg') center no-repeat
+        animation: move_up_down 1s infinite alternate-reverse ease-in-out
+      &--left
+        top: 25px
+        left: 25px
+        background: url('~/assets/icons/arrow-left.svg') center no-repeat
+        animation: move_left_right 1s infinite alternate-reverse ease-in-out
 
   .es-empty
     width: 600px

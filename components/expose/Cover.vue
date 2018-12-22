@@ -1,7 +1,7 @@
 <template>
   <div class="cover">
     <div class="cover__inner cover__image">
-      <img :src="options.image" alt>
+      <img :src="imageTag" alt>
     </div>
     <div class="cover__inner cover__content">
       <div class="cover__title">{{ options.title }}</div>
@@ -12,29 +12,9 @@
       </div>
     </div>
     <div class="cover__inner cover__controls">
-      <div
-        v-if="options.nav"
-        class="cover-control cover-control--left"
-        :class="options.prev ? '' : 'cover-control--disabled'"
-      >
-        <a href="#" class="cover-control__link">
-          <span class="cover-control__title">Предыдущая неделя</span>
-          <span class="cover-control__info">{{ prevDate }}</span>
-        </a>
-      </div>
       <div class="cover-control cover-control--center">
         <span class="cover-control__title">{{ todayDate }}</span>
-        <span class="cover-control__info">{{ options.source }}</span>
-      </div>
-      <div
-        v-if="options.nav"
-        class="cover-control cover-control--right"
-        :class="options.next ? '' : 'cover-control--disabled'"
-      >
-        <a href="#" class="cover-control__link">
-          <span class="cover-control__title">Следующая неделя</span>
-          <span class="cover-control__info">{{ nextDate }}</span>
-        </a>
+        <span class="cover-control__info">{{ options.mode === 0 ? `\n` : sourceTag }}</span>
       </div>
     </div>
   </div>
@@ -47,47 +27,50 @@ export default {
   data() {
     return {
       months: this.$store.state.static.months,
+      sl: this.$store.state.static.sourceList,
     };
   },
   computed: {
-    prevDate() {
-      if (this.options.prev) {
-        return this.generateDate(
-          this.options.prev.date.from,
-          this.options.prev.date.to,
-        );
-      }
-      return `\n`;
-    },
-    nextDate() {
-      if (this.options.next) {
-        return this.generateDate(
-          this.options.next.date.from,
-          this.options.next.date.to,
-        );
-      }
-      return `\n`;
+    dateMode() {
+      let d = this.options.dates;
+      let mode = d.from !== '' && d.to !== '';
+      return mode;
     },
     todayDate() {
-      if (this.options.date) {
+      if (this.dateMode) {
         return this.generateFullDate(
-          this.options.date.from,
-          this.options.date.to,
+          this.getDateFrom(this.options.dates.from),
+          this.getDateFrom(this.options.dates.to),
         );
       } else {
-        return '\n';
+        if (this.options.dates.public) {
+          return this.generateFullDate(
+            this.getDateFrom(this.options.dates.public),
+          );
+        } else {
+          return '\n';
+        }
       }
+    },
+    imageTag() {
+      if (this.options.mode === 0) {
+        return this.sl[this.options.source].image;
+      } else {
+        return this.options.image || this.sl.image;
+      }
+    },
+    sourceTag() {
+      return this.sl[this.options.source].title;
     },
   },
   methods: {
-    generateDate(from, to) {
-      if (to) {
-        return `с ${from.day} ${this.months[from.month]} по ${to.day} ${
-          this.months[to.month]
-        }`;
-      } else {
-        return `от ${from.day} ${this.months[from.month]}, ${from.year}`;
-      }
+    getDateFrom(input) {
+      const date = new Date(input);
+      return {
+        day: date.getDate(),
+        month: date.getMonth(),
+        year: date.getFullYear(),
+      };
     },
     generateFullDate(from, to) {
       if (to) {

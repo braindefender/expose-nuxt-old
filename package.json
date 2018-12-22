@@ -22,6 +22,7 @@
     "eslint-plugin-import": "^2.13.0",
     "gsap": "^2.0.2",
     "js-cookie": "^2.2.0",
+    "lodash": "^4.17.11",
     "nuxt": "^1.0.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",

@@ -9,7 +9,7 @@ export const state = () => ({
       weekly: `Еженедельная выставка новых поступлений\nГПНТБ СО РАН`,
       image: weekly0,
       email: 'abonement@gpntbsib.ru',
-      phone: '+7 (913) 001-4485',
+      phone: '+7 (913) 001-0000',
     },
     {
       index: 1,
@@ -17,7 +17,7 @@ export const state = () => ({
       weekly: `Еженедельная выставка новых поступлений\nотделения ГПНТБ СО РАН`,
       image: weekly1,
       email: 'abonement@gpntbsib.ru',
-      phone: '+7 (913) 001-4485',
+      phone: '+7 (913) 001-0000',
     },
   ],
   months: [

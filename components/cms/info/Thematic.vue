@@ -133,7 +133,12 @@ export default {
         return this.$store.state.info.title;
       },
       set(value) {
-        this.$store.commit('info/set', { field: 'title', value });
+        let self = this;
+        // console.log(value);
+        self.$store.commit('info/set', {
+          field: 'title',
+          value: value.trim(),
+        });
       },
     },
     annotation: {
@@ -198,10 +203,11 @@ export default {
       this.$store.commit('info/set', { field, value });
     },
     setModeTo(value) {
-      this.$store.commit('info/set', { field: 'mode', value });
+      this.$store.dispatch('info/changeModeTo', value);
     },
     setSourceTo(value) {
       this.$store.commit('info/set', { field: 'source', value });
+      this.$store.dispatch('info/changeModeTo', this.mode);
     },
     changePhoneTo(value) {
       this.$store.commit('info/set', { field: 'phone', value });
