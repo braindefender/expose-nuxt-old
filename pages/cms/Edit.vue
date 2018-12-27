@@ -1,7 +1,6 @@
 <template>
   <div class="cms-new-page">
-    <!-- <Navigation></Navigation> -->
-    <sidebar></sidebar>
+    <sidebar/>
     <div class="cms-new-page__content">
       <div class="cms-new-page__rows">
         <div class="cms-new-page__panel">
@@ -15,7 +14,7 @@
               left: true,
               compact: false,
             }"
-            ></stack-view>
+            />
           </div>
           <div class="ee__side ee__side--right">
             <edit-item/>
@@ -39,29 +38,16 @@ export default {
     // redirect if came from link instead of cms
     if (this.$route.params.fromcms !== true) {
       this.$router.push({ path: '/cms/list' });
-      this.canSyncState = false;
     }
   },
   beforeDestroy() {
     this.$store.commit('edit/updateSelected', { selected: false });
-    if (this.canSyncState) {
-      // console.log('hui');
-      this.syncState();
+    if (this.$route.params.fromcms === true) {
+      this.$store.commit('syncState');
     }
   },
   data() {
-    return {
-      canSyncState: true,
-    };
-  },
-  computed: {},
-  methods: {
-    fetchState() {
-      this.$store.dispatch('fetchState');
-    },
-    syncState() {
-      this.$store.dispatch('syncState');
-    },
+    return {};
   },
 };
 </script>

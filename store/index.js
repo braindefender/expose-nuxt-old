@@ -18,9 +18,9 @@ export const mutations = {
     state.stacks = stacks;
     state.info = info;
   },
-  syncState(state) {
+  syncState({ stacks, info }) {
     this.$axios
-      .$post('/cms/state', { stacks: state.stacks, info: state.info })
+      .$post('/cms/state', { stacks, info })
       .catch(err => console.log(`[Error] Cannot post state to server: ${err}`));
   },
   setInfoState(state, payload) {

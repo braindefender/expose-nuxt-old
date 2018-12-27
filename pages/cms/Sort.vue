@@ -73,18 +73,16 @@ export default {
     // redirect if came from link instead of cms
     if (this.$route.params.fromcms !== true) {
       this.$router.push({ path: '/cms/list' });
-      this.canSyncState = false;
     }
   },
   beforeDestroy() {
-    if (this.canSyncState) {
-      this.syncState();
+    if (this.$route.params.fromcms === true) {
+      this.$store.dispatch('syncState');
     }
   },
   components: { Sidebar, StackEdit },
   data() {
     return {
-      canSyncState: true,
       file: '',
     };
   },
@@ -97,9 +95,6 @@ export default {
     },
   },
   methods: {
-    syncState() {
-      this.$store.dispatch('syncState');
-    },
     uploadXML() {
       this.$store.dispatch('syncState').then(() => {
         const _id = this.$store.state.info._id;
@@ -112,11 +107,17 @@ export default {
               'Content-Type': 'multipart/form-data',
             },
           })
-          .then(() => {
-            console.log('Uploaded XML');
+          .then(res => {
+            console.log('Uploaded XML...');
+            console.log('...with response:');
+            console.log(res);
+
             this.$axios
               .$get('/cms/xmlready', { params: { exposeid: _id } })
               .then(res => {
+                console.log('Requested state...');
+                console.log('...after XML upload');
+                console.log(res);
                 this.$store.commit('setState', res);
               });
           })

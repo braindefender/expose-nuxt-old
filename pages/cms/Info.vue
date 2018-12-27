@@ -44,7 +44,7 @@ export default {
   },
   beforeDestroy() {
     if (this.$route.params.fromcms === true) {
-      this.$store.dispatch('syncState');
+      this.$store.commit('syncState');
     }
   },
   data() {
