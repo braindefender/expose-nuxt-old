@@ -175,6 +175,8 @@ export default {
         background-image: url('~/assets/sidebar/sidebar-icon-save.svg');
       &--work
         background-image: url('~/assets/sidebar/sidebar-icon-work.svg');
+      &--post
+        background-image: url('~/assets/sidebar/sidebar-icon-post.svg');
 
   .sidebar-account
     padding-top: 30px

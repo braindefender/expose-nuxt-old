@@ -12,6 +12,7 @@
 <style lang="sass">
 
   @import '~/assets/fonts/PTSans/stylesheet.css'
+  @import '~/assets/fonts/PTMono/stylesheet.css'
 
   html
     font-family: 'PT Sans', -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif

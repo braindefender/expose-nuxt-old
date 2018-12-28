@@ -27,7 +27,7 @@
       </div>
 
       <div class="sidebar-button" @click="final">
-        <div class="sidebar-button__icon sidebar-button__icon--save"></div>
+        <div class="sidebar-button__icon sidebar-button__icon--post"></div>
         <div class="sidebar-button__text">Опубликовать</div>
       </div>
     </div>
