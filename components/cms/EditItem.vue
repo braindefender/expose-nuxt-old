@@ -3,6 +3,7 @@
     <div class="ee-card__top">
       <div class="ee-card__label">Редактирование записи</div>
       <div class="ee-card__controls">
+        <div class="button" type="button" @click="revert">Отменить изменения</div>
         <input class="hidden" id="xml" type="file" ref="xml" @input="loadXML">
         <label for="xml" class="button">Загрузить XML</label>
         <div class="button" type="button" @click="save">Сохранить</div>
@@ -146,6 +147,9 @@ export default {
     }),
   },
   methods: {
+    revert() {
+      this.$store.dispatch('edit/updateOnEditScreen', this.item);
+    },
     save() {
       // this.$axios.$post('/cms/book', this.item);
       this.$store.dispatch('edit/pushBook', this.item);

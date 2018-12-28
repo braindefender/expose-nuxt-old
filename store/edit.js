@@ -66,6 +66,22 @@ export const actions = {
         console.log(err);
       });
   },
+  updateOnEditScreen({ commit }, item) {
+    this.$axios
+      .$get('cms/bookupdate', {
+        params: { irbis: item.irbis },
+      })
+      .then(res => {
+        console.log(res);
+        // commit('mutateObject', { source: item, patch: res[0] });
+        let fullItem = { item, patch: res };
+        fullItem.cover += `?_=${Date.now()}`;
+        commit('selectOnEditScreen', fullItem);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
   pushBook({ commit }, item) {
     this.$axios.$post('/cms/book', item);
   },
