@@ -120,8 +120,6 @@ export default {
   },
   computed: {
     blocked() {
-      console.log(this.item.blocked);
-      console.log(this.item.workerID);
       return this.item.blocked;
     },
     image() {

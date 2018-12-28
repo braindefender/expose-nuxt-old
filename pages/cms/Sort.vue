@@ -76,8 +76,10 @@ export default {
     }
   },
   beforeDestroy() {
+    console.log('Destroy Sort');
+    console.log(this.$route.params.fromcms);
     if (this.$route.params.fromcms === true) {
-      this.$store.dispatch('syncState');
+      this.$store.commit('syncState');
     }
   },
   components: { Sidebar, StackEdit },

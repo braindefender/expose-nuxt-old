@@ -41,8 +41,8 @@ export default {
     }
   },
   beforeDestroy() {
-    this.$store.commit('edit/updateSelected', { selected: false });
     if (this.$route.params.fromcms === true) {
+      this.$store.commit('edit/updateSelected', { selected: false });
       this.$store.commit('syncState');
     }
   },

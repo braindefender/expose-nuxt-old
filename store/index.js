@@ -96,13 +96,17 @@ export const actions = {
     });
   },
   syncState({ state }) {
+    console.log('in sync state')
     return new Promise((resolve, reject) => {
       this.$axios
         .$post('/cms/state', {
           stacks: state.stacks,
           info: state.info,
         })
-        .then(() => resolve())
+        .then(() => {
+          resolve();
+          console.log('in sync state resolve')
+        })
         .catch(err => {
           console.log(`[Error] Cannot post state to server: ${err}`);
           reject();

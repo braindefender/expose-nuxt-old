@@ -153,7 +153,9 @@ export default {
     save() {
       // this.$axios.$post('/cms/book', this.item);
       this.$store.dispatch('edit/pushBook', this.item);
-      this.$store.dispatch('syncState');
+      if (this.$route.params.fromcms === true) {
+        this.$store.dispatch('syncState');
+      }
     },
     loadXML() {
       this.file = this.$refs.xml.files[0];

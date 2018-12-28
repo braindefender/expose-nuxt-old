@@ -31,7 +31,6 @@ export default {
     ListItemNew,
     Sidebar,
   },
-  middleware: 'authenticated',
   data() {
     return {};
   },
