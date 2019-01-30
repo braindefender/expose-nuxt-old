@@ -6,8 +6,8 @@
   "private": true,
   "scripts": {
     "dev": "nuxt",
-    "devd": "nuxt --hostname 10.3.6.27 --port 3000",
-    "devm": "nuxt --hostname 0.0.0.0 --port 3000",
+    "devl": "nuxt --hostname 10.3.6.27 --port 3000",
+    "deve": "nuxt --hostname 10.3.6.27 --port 4000",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
