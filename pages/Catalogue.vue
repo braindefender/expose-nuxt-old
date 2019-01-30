@@ -1,34 +1,26 @@
 <template>
-  <div class="expose-main">
-    <div class="container">
-
-      <div class="expose-main__cover">
-        <div class="expose-main__cover-inner expose-main__cover-image">
-          <img :src="cover" alt="">
-        </div>
-        <div class="expose-main__cover-inner expose-main__cover-content">
-          <div class="expose-main__cover-title">Каталог выставок ГПНТБ СО РАН</div>
-        </div>
+  <div class="main">
+    <section class="cover-section" :style="`background-image: url(${cover})`">
+      <div class="cover-section__content">
+        <h1>Каталог выставок ГПНТБ СО РАН</h1>
       </div>
+    </section>
+    <section class="content-section">
       <div class="cat-preview">
         <div class="cat-layout">
           <div class="cat-layout__panel">
             <div class="cat-layout__title">Каталог выставок</div>
             <div class="cat-layout__sort">
-              <button type="button"
-                class="cat-layout__sort-button">
-                по алфавиту</button>
-              <button type="button"
-                class="cat-layout__sort-button cat-layout__sort-button--active">
-                по дате обновления</button>
+              <button type="button" class="cat-layout__sort-button">по алфавиту</button>
+              <button
+                type="button"
+                class="cat-layout__sort-button cat-layout__sort-button--active"
+              >по дате обновления</button>
             </div>
           </div>
           <div class="cat-layout__content">
             <div class="cat-layout__grid">
-              <expose-card
-                v-for="(item, index) in list"
-                :key="index"
-                :item="item"/>
+              <expose-card v-for="(item, index) in list" :key="index" :item="item"/>
             </div>
           </div>
           <div class="cat-layout__panel">
@@ -37,8 +29,7 @@
           </div>
         </div>
       </div>
-
-    </div>
+    </section>
   </div>
 </template>
 
@@ -59,7 +50,7 @@ export default {
     };
   },
   mounted() {
-    this.$axios.$get(`/catalogue`).then(res => {
+    this.$axios.$get(`/catalogue/catalogue`).then(res => {
       console.log(res);
       this.list = res.catalogueList;
       this.pages = res.pages;
@@ -88,3 +79,7 @@ export default {
   },
 };
 </script>
+
+<style lang="sass">
+  @import '~/styles/main.sass'
+</style>

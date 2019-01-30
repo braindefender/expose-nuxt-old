@@ -12,7 +12,7 @@ import { setContext, getLocation, getRouteData } from './utils'
 import { createStore } from './store.js'
 
 /* Plugins */
-import nuxt_plugin_axios_51b5145b from 'nuxt_plugin_axios_51b5145b' // Source: ./axios.js
+import nuxt_plugin_axios_964d9206 from 'nuxt_plugin_axios_964d9206' // Source: ./axios.js
 import nuxt_plugin_vueautosize_62effbee from 'nuxt_plugin_vueautosize_62effbee' // Source: ..\\plugins\\vue-autosize (ssr: false)
 import nuxt_plugin_vuepictureinput_c0e86986 from 'nuxt_plugin_vuepictureinput_c0e86986' // Source: ..\\plugins\\vue-picture-input (ssr: false)
 import nuxt_plugin_vueaffix_edf5a65c from 'nuxt_plugin_vueaffix_edf5a65c' // Source: ..\\plugins\\vue-affix (ssr: false)
@@ -20,7 +20,7 @@ import nuxt_plugin_vuescrollactive_0f34125e from 'nuxt_plugin_vuescrollactive_0f
 import nuxt_plugin_vuemultiselect_57bfe612 from 'nuxt_plugin_vuemultiselect_57bfe612' // Source: ..\\plugins\\vue-multiselect (ssr: false)
 import nuxt_plugin_vueawesomeswiper_0e14f460 from 'nuxt_plugin_vueawesomeswiper_0e14f460' // Source: ..\\plugins\\vue-awesome-swiper (ssr: false)
 import nuxt_plugin_vuetooltip_595f7285 from 'nuxt_plugin_vuetooltip_595f7285' // Source: ..\\plugins\\vue-tooltip
-import nuxt_plugin_plugin_24c5d86c from 'nuxt_plugin_plugin_24c5d86c' // Source: ./auth\\plugin.js
+import nuxt_plugin_plugin_735134ec from 'nuxt_plugin_plugin_735134ec' // Source: ./auth\\plugin.js
 
 
 // Component: <no-ssr>
@@ -159,9 +159,9 @@ async function createApp (ssrContext) {
 
   // Plugin execution
   
-  if (typeof nuxt_plugin_axios_51b5145b === 'function') await nuxt_plugin_axios_51b5145b(app.context, inject)
+  if (typeof nuxt_plugin_axios_964d9206 === 'function') await nuxt_plugin_axios_964d9206(app.context, inject)
   if (typeof nuxt_plugin_vuetooltip_595f7285 === 'function') await nuxt_plugin_vuetooltip_595f7285(app.context, inject)
-  if (typeof nuxt_plugin_plugin_24c5d86c === 'function') await nuxt_plugin_plugin_24c5d86c(app.context, inject)
+  if (typeof nuxt_plugin_plugin_735134ec === 'function') await nuxt_plugin_plugin_735134ec(app.context, inject)
   
   if (process.browser) { 
     if (typeof nuxt_plugin_vueautosize_62effbee === 'function') await nuxt_plugin_vueautosize_62effbee(app.context, inject)

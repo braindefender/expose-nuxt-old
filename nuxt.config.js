@@ -1,6 +1,5 @@
-const serverAPI = 'http://10.3.6.27:3333/api';
-const redirect_uri = 'http://localhost:3000/auth/callback';
-const client_id = '5e1f8950-7cb1-4674-84dc-40e6013fe7da';
+const conf = require('./expose.config.js')
+const config = process.env.DEV == 1 ? conf.local : conf.external;
 
 module.exports = {
   /*
@@ -55,8 +54,8 @@ module.exports = {
         _scheme: 'oauth2',
         authorization_endpoint:
           'https://login.microsoftonline.com/common/oauth2/authorize',
-        client_id: client_id,
-        redirect_uri: redirect_uri,
+        client_id: config.client_id,
+        redirect_uri: config.redirect_uri,
         response_type: 'code',
         scope: ['profile'],
       },
@@ -72,7 +71,7 @@ module.exports = {
     },
   },
   axios: {
-    baseURL: serverAPI,
+    baseURL: config.serverAPI,
   },
   router: {},
   modules: ['@nuxtjs/axios', '@nuxtjs/auth'],
