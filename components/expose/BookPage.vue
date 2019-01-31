@@ -292,4 +292,7 @@ export default {
       text-align: center
       font-size: 12px
 
+  @media only screen and (max-width : 320px)
+    .container
+
 </style>

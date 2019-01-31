@@ -1,5 +1,5 @@
 <template>
-  <div class="e-card">
+  <a class="e-card" :href="link">
     <div class="e-card__layer e-card__shadow-blur">
       <div class="e-card__shadow-blur-container">
         <img :src="image" :alt="meta">
@@ -12,7 +12,7 @@
       <div class="e-card__title">{{ item.title }}</div>
       <div class="e-card__date">{{ prettyDate }}</div>
     </div>
-  </div>
+  </a>
 </template>
 
 <script>
@@ -38,6 +38,18 @@ export default {
         ? this.item.image
         : this.$store.state.static.sourceList[this.item.source].image;
     },
+    link() {
+      if (this.options && this.options.fromcms) {
+        return '#';
+      } else {
+        const name = this.item.title
+          .split('\n')
+          .join('~')
+          .split(' ')
+          .join('_');
+        return `/expose/${name}-${this.item.dates.create}`;
+      }
+    },
   },
   methods: {
     redirect() {
@@ -45,15 +57,6 @@ export default {
         this.$store.dispatch('fetchState', this.item._id).then(res => {
           // если не дали загрузить, то обновить экран
           this.$router.push({ name: 'cms-Info', params: { fromcms: true } });
-        });
-      } else {
-        const name = this.item.title
-          .split('\n')
-          .join('~')
-          .split(' ')
-          .join('_');
-        this.$router.push({
-          path: `/expose/${name}-${this.item.dates.create}`,
         });
       }
     },

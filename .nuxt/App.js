@@ -4,14 +4,14 @@ import NuxtLoading from './components/nuxt-loading.vue'
 
 let layouts = {
 
-  "_default": () => import('..\\layouts\\default.vue'  /* webpackChunkName: "layouts_default" */).then(m => m.default || m)
+  "_default": () => import('../layouts/default.vue'  /* webpackChunkName: "layouts/default" */).then(m => m.default || m)
 
 }
 
 let resolvedLayouts = {}
 
 export default {
-  head: {"title":"expose","meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":"Nuxt.js project"}],"link":[{"rel":"icon","type":"image\u002Fx-icon","href":"\u002Ffavicon.ico"}],"style":[],"script":[]},
+  head: {"title":"expose","meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":"Каталог виртуальных выставок ГПНТБ СО РАН"}],"link":[{"rel":"icon","type":"image\u002Fx-icon","href":"\u002Ffavicon.ico"}],"style":[],"script":[]},
   render(h, props) {
     const loadingEl = h('nuxt-loading', { ref: 'loading' })
     const layoutEl = h(this.layout || 'nuxt')
