@@ -33,6 +33,7 @@ import EditItem from '@/components/cms/EditItem';
 
 export default {
   name: 'Edit',
+  middleware: 'auth',
   components: { Sidebar, EditItem, StackView },
   mounted() {
     // redirect if came from link instead of cms

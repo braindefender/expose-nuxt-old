@@ -8,13 +8,8 @@
             class="cms-table__header cms-table__header--main cms-table__header--title"
           >Модерируемые выставки</div>
         </div>
-        <div class="cms-table__list">
-          <list-item-new
-            v-if="items.length !== 0"
-            v-for="(item, index) in items"
-            :key="index"
-            :item="item"
-          />
+        <div v-if="items.length !== 0" class="cms-table__list">
+          <list-item-new v-for="(item, index) in items" :key="index" :item="item"/>
         </div>
       </div>
     </div>
@@ -27,6 +22,7 @@ import Sidebar from '~/components/cms/sidebar/Sidebar';
 
 export default {
   name: 'List',
+  middleware: 'auth',
   components: {
     ListItemNew,
     Sidebar,

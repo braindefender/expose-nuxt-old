@@ -15,6 +15,7 @@ import Expose from '@/pages/expose/_expose/index';
 
 export default {
   name: 'Demo',
+  middleware: 'auth',
   components: { Sidebar, Expose },
   mounted() {
     if (this.$route.params.fromcms !== true) {

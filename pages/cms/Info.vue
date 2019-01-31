@@ -30,6 +30,7 @@ import Sidebar from '~/components/cms/sidebar/Sidebar';
 
 export default {
   name: 'Info',
+  middleware: 'auth',
   components: {
     Annotation,
     Cover,

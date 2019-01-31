@@ -6,9 +6,14 @@
       </div>
     </section>
     <section class="content-section">
-      <slider></slider>
-      <catalogue-preview v-if="catalogueList !== ''" :list="catalogueList"></catalogue-preview>
-      <category-preview v-if="categoryList !== undefined" :list="categoryList"></category-preview>
+      <slider/>
+      <catalogue-preview v-if="catalogueList !== ''" :list="catalogueList"/>
+      <category-preview v-if="categoryList !== undefined" :list="categoryList"/>
+    </section>
+    <section v-if="preload" class="content-section content-section--preload">
+      <slider-preload/>
+      <catalogue-preview-preload/>
+      <!-- <category-preload/> -->
     </section>
   </div>
 </template>
@@ -17,11 +22,19 @@
 import cover from '~/assets/images/alfons-morales-410757-unsplash.jpg';
 
 import CataloguePreview from '~/components/expose/catalogue/CataloguePreview';
+import CataloguePreviewPreload from '~/components/expose/catalogue/CataloguePreviewPreload';
 import CategoryPreview from '~/components/expose/category/CategoryPreview';
 import Slider from '~/components/expose/slider/Slider';
+import SliderPreload from '~/components/expose/slider/SliderPreload';
 
 export default {
-  components: { CataloguePreview, CategoryPreview, Slider },
+  components: {
+    CataloguePreview,
+    CataloguePreviewPreload,
+    CategoryPreview,
+    Slider,
+    SliderPreload,
+  },
   name: 'Main',
   data() {
     return {
@@ -29,11 +42,13 @@ export default {
       categoryList: undefined,
       catalogueList: undefined,
       local: false,
+      preload: true,
     };
   },
   mounted() {
     if (!this.local) {
       this.$axios.$get('/catalogue/main').then(res => {
+        this.preload = false;
         this.catalogueList = res.catalogueList;
         this.categoryList = res.categoryList;
       });

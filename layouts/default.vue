@@ -322,11 +322,15 @@
 
   // Category / Catalogue layouts
   .cat-layout
-    max-width: 1700px
+    width: 1700px
     padding-bottom: 20px
     margin: 0 auto
+    display: flex
+    flex-direction: column
     &__content
       display: flex
+      flex-grow: 1
+      width: 100%
       justify-content: center
     &__grid
       display: grid
@@ -340,6 +344,7 @@
       border-radius: 5px
       // overflow: hidden
     &__panel
+      width: 100%
       display: flex
       flex-direction: row
       justify-content: space-between
@@ -350,10 +355,10 @@
       font-weight: bold
       font-family: 'PT Sans'
     &__action
+      +tdn
       cursor: pointer
       font-size: 14px
       color: #4680ff
-      +tdn
     &__sort
       font-size: 0
     &__sort-button
@@ -406,6 +411,30 @@
       z-index: 100
       box-shadow: 0 1px 0 rgba(black, 0.1)
       background-color: #F6F7FB
+
+  .preloader-mask
+    background: rgba(black, 0.1)
+    color: transparent
+    border-radius: 5px
+    pointer-events: none
+    cursor: none
+    position: relative
+    border-radius: 5px
+    overflow: hidden
+    &::after
+      +posa(0)
+      content: ''
+      background: linear-gradient(to left, rgba(white, 0.0), rgba(white, 0.5), rgba(white, 0.0))
+      animation: gradientanimation 2.5s ease infinite
+      background-size: 200% 200%
+
+  @keyframes gradientanimation
+    0%
+      background-position: 0% 0%
+    50%
+      background-position: 100% 0%
+    100%
+      background-position: 0% 0%
 
   @import '~/styles/media.sass'
 

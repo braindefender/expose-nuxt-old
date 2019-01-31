@@ -1,29 +1,17 @@
 <template>
   <div class="expose-stack">
-
     <div class="expose-stack__top" :id="stack.title.replace(/\s+/g, '-')">
       <div class="expose-stack__title">{{ stack.title }}</div>
       <div class="expose-stack__info">{{ info }}</div>
     </div>
 
     <div class="expose-stack__bot">
-      <div v-for="(item, index) in stack.list" :key="index"
-        v-if="item.clean !== true"
-        class="expose-stack__item">
+      <div v-for="(item, index) in this.filteredItems" :key="index" class="expose-stack__item">
+        <expose-stack v-if="item.kind === 'stack'" :stack="item"></expose-stack>
 
-        <expose-stack
-          v-if="item.kind === 'stack'"
-          :stack="item">
-        </expose-stack>
-
-        <book-card
-          v-if="item.kind === 'book'"
-          :item="item">
-        </book-card>
-
+        <book-card v-if="item.kind === 'book'" :item="item"></book-card>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -43,6 +31,9 @@ export default {
     },
     count() {
       return this.countList(this.stack);
+    },
+    filteredItems() {
+      return stack.list.filter(item => !item.clean);
     },
   },
   methods: {

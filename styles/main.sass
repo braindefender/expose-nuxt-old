@@ -25,6 +25,29 @@
     justify-content: center
     flex-direction: column
 
+@media only screen and (max-width : 1024px)
+  .main
+    .cover-section
+      &__content
+        h1
+          font-size: 32px
+
+@media only screen and (max-width : 425px)
+  .main
+    .cover-section
+      &__content
+        background-color: rgba(black, 0.5)
+        h1
+          font-size: 24px
+
+@media only screen and (max-width : 375px)
+  .main
+    .cover-section
+      &__content
+        background-color: rgba(black, 0.5)
+        h1
+          font-size: 20px
+
 @media only screen and (max-width : 320px)
   .main
     .cover-section

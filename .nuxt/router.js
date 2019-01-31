@@ -6,18 +6,17 @@ Vue.use(Router)
 const _13109a0e = () => import('../pages/404.vue' /* webpackChunkName: "pages/404" */).then(m => m.default || m)
 const _4407ba6c = () => import('../pages/Catalogue.vue' /* webpackChunkName: "pages/Catalogue" */).then(m => m.default || m)
 const _e5f5d9a6 = () => import('../pages/Category.vue' /* webpackChunkName: "pages/Category" */).then(m => m.default || m)
-const _1787614d = () => import('../pages/auth/callback.vue' /* webpackChunkName: "pages/auth/callback" */).then(m => m.default || m)
-const _783c2aaa = () => import('../pages/expose/_expose/index.vue' /* webpackChunkName: "pages/expose/_expose/index" */).then(m => m.default || m)
-const _b9cb7428 = () => import('../pages/expose/_expose/book/_id.vue' /* webpackChunkName: "pages/expose/_expose/book/_id" */).then(m => m.default || m)
-const _5b0c8f53 = () => import('../pages/index.vue' /* webpackChunkName: "pages/index" */).then(m => m.default || m)
-const _3a1ee019 = () => import('../pages/_cms.vue' /* webpackChunkName: "pages/_cms" */).then(m => m.default || m)
 const _3c5e1ce6 = () => import('../pages/cms/index.vue' /* webpackChunkName: "pages/cms/index" */).then(m => m.default || m)
+const _1787614d = () => import('../pages/auth/callback.vue' /* webpackChunkName: "pages/auth/callback" */).then(m => m.default || m)
 const _1546a8d0 = () => import('../pages/cms/Demo.vue' /* webpackChunkName: "pages/cms/Demo" */).then(m => m.default || m)
 const _21cab03f = () => import('../pages/cms/Edit.vue' /* webpackChunkName: "pages/cms/Edit" */).then(m => m.default || m)
 const _662e963a = () => import('../pages/cms/Info.vue' /* webpackChunkName: "pages/cms/Info" */).then(m => m.default || m)
 const _128288d3 = () => import('../pages/cms/List.vue' /* webpackChunkName: "pages/cms/List" */).then(m => m.default || m)
 const _255b4dd3 = () => import('../pages/cms/Sort.vue' /* webpackChunkName: "pages/cms/Sort" */).then(m => m.default || m)
 const _7df302c7 = () => import('../pages/cms/Test.vue' /* webpackChunkName: "pages/cms/Test" */).then(m => m.default || m)
+const _783c2aaa = () => import('../pages/expose/_expose/index.vue' /* webpackChunkName: "pages/expose/_expose/index" */).then(m => m.default || m)
+const _b9cb7428 = () => import('../pages/expose/_expose/book/_id.vue' /* webpackChunkName: "pages/expose/_expose/book/_id" */).then(m => m.default || m)
+const _5b0c8f53 = () => import('../pages/index.vue' /* webpackChunkName: "pages/index" */).then(m => m.default || m)
 
 
 
@@ -93,9 +92,44 @@ export function createRouter () {
 			name: "Category"
 		},
 		{
+			path: "/cms",
+			component: _3c5e1ce6,
+			name: "cms"
+		},
+		{
 			path: "/auth/callback",
 			component: _1787614d,
 			name: "auth-callback"
+		},
+		{
+			path: "/cms/Demo",
+			component: _1546a8d0,
+			name: "cms-Demo"
+		},
+		{
+			path: "/cms/Edit",
+			component: _21cab03f,
+			name: "cms-Edit"
+		},
+		{
+			path: "/cms/Info",
+			component: _662e963a,
+			name: "cms-Info"
+		},
+		{
+			path: "/cms/List",
+			component: _128288d3,
+			name: "cms-List"
+		},
+		{
+			path: "/cms/Sort",
+			component: _255b4dd3,
+			name: "cms-Sort"
+		},
+		{
+			path: "/cms/Test",
+			component: _7df302c7,
+			name: "cms-Test"
 		},
 		{
 			path: "/expose/:expose?",
@@ -111,47 +145,6 @@ export function createRouter () {
 			path: "/",
 			component: _5b0c8f53,
 			name: "index"
-		},
-		{
-			path: "/:cms",
-			component: _3a1ee019,
-			children: [
-				{
-					path: "",
-					component: _3c5e1ce6,
-					name: "cms"
-				},
-				{
-					path: "Demo",
-					component: _1546a8d0,
-					name: "cms-Demo"
-				},
-				{
-					path: "Edit",
-					component: _21cab03f,
-					name: "cms-Edit"
-				},
-				{
-					path: "Info",
-					component: _662e963a,
-					name: "cms-Info"
-				},
-				{
-					path: "List",
-					component: _128288d3,
-					name: "cms-List"
-				},
-				{
-					path: "Sort",
-					component: _255b4dd3,
-					name: "cms-Sort"
-				},
-				{
-					path: "Test",
-					component: _7df302c7,
-					name: "cms-Test"
-				}
-			]
 		}
     ],
     

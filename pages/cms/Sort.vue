@@ -69,6 +69,7 @@ import StackEdit from '@/components/cms/stack/StackEdit';
 
 export default {
   name: 'Sort',
+  middleware: 'auth',
   mounted() {
     // redirect if came from link instead of cms
     if (this.$route.params.fromcms !== true) {
