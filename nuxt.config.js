@@ -84,4 +84,7 @@ module.exports = {
     { src: '~plugins/vue-awesome-swiper', ssr: false },
     { src: '~plugins/vue-tooltip' },
   ],
+  // serverMiddleware: [
+  //   'redirect-ssl',
+  // ]
 };

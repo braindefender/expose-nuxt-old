@@ -33,7 +33,7 @@ export default {
       return this.countList(this.stack);
     },
     filteredItems() {
-      return stack.list.filter(item => !item.clean);
+      return this.stack.list.filter(item => !item.clean);
     },
   },
   methods: {

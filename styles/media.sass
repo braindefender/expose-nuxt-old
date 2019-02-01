@@ -30,15 +30,40 @@
       grid-template-columns: 540px
       grid-gap: 40px 40px
 
-/* Extra Small Devices, Phones */
-@media only screen and (max-width : 480px)
-	/**/
+@media only screen and (max-width : 1024px)
+	.cat-layout
+    width: 944px
+    &__grid
+      grid-template-columns: 452px 452px
+      grid-gap: 40px 40px
+      justify-items: center
 
+@media only screen and (max-width : 768px)
+	.cat-layout
+    width: 728px
+    &__grid
+      grid-template-columns: 728px
+      grid-gap: 15px 0px
+      justify-items: center
+
+@media only screen and (max-width : 425px)
+	.cat-layout
+    width: 385px
+    &__grid
+      grid-template-columns: 385px
+      grid-gap: 15px 0px
+
+@media only screen and (max-width : 375px)
+	.cat-layout
+    width: 335px
+    &__grid
+      grid-template-columns: 335px
+      grid-gap: 15px 0px
 
 /* Custom, iPhone Retina */
 @media only screen and (max-width : 320px)
 	.cat-layout
-    max-width: 300px
+    width: 300px
     &__grid
       grid-template-columns: 300px
       grid-gap: 15px 0px

@@ -7,9 +7,9 @@
   "scripts": {
     "dev": "nuxt",
     "devl": "nuxt --port 3000",
-    "deve": "nuxt --port 4000",
+    "deve": "nuxt --hostname 10.3.6.27 --port 4000",
     "build": "nuxt build",
-    "start": "nuxt start",
+    "start": "nuxt start --hostname 10.3.6.27 --port 4000",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint",
