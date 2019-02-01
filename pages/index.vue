@@ -8,7 +8,7 @@
     <section class="content-section">
       <slider/>
       <catalogue-preview v-if="catalogueList !== ''" :list="catalogueList"/>
-      <category-preview v-if="categoryList !== undefined" :list="categoryList"/>
+      <category-preview v-if="categoryList !== ''" :list="categoryList"/>
     </section>
     <section v-if="preload" class="content-section content-section--preload">
       <slider-preload/>
@@ -39,8 +39,8 @@ export default {
   data() {
     return {
       cover,
-      categoryList: undefined,
-      catalogueList: undefined,
+      categoryList: '',
+      catalogueList: '',
       local: false,
       preload: true,
     };

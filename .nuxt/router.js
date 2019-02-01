@@ -3,20 +3,20 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-const _13109a0e = () => import('../pages/404.vue' /* webpackChunkName: "pages/404" */).then(m => m.default || m)
-const _4407ba6c = () => import('../pages/Catalogue.vue' /* webpackChunkName: "pages/Catalogue" */).then(m => m.default || m)
-const _e5f5d9a6 = () => import('../pages/Category.vue' /* webpackChunkName: "pages/Category" */).then(m => m.default || m)
-const _3c5e1ce6 = () => import('../pages/cms/index.vue' /* webpackChunkName: "pages/cms/index" */).then(m => m.default || m)
-const _1787614d = () => import('../pages/auth/callback.vue' /* webpackChunkName: "pages/auth/callback" */).then(m => m.default || m)
-const _1546a8d0 = () => import('../pages/cms/Demo.vue' /* webpackChunkName: "pages/cms/Demo" */).then(m => m.default || m)
-const _21cab03f = () => import('../pages/cms/Edit.vue' /* webpackChunkName: "pages/cms/Edit" */).then(m => m.default || m)
-const _662e963a = () => import('../pages/cms/Info.vue' /* webpackChunkName: "pages/cms/Info" */).then(m => m.default || m)
-const _128288d3 = () => import('../pages/cms/List.vue' /* webpackChunkName: "pages/cms/List" */).then(m => m.default || m)
-const _255b4dd3 = () => import('../pages/cms/Sort.vue' /* webpackChunkName: "pages/cms/Sort" */).then(m => m.default || m)
-const _7df302c7 = () => import('../pages/cms/Test.vue' /* webpackChunkName: "pages/cms/Test" */).then(m => m.default || m)
-const _783c2aaa = () => import('../pages/expose/_expose/index.vue' /* webpackChunkName: "pages/expose/_expose/index" */).then(m => m.default || m)
-const _b9cb7428 = () => import('../pages/expose/_expose/book/_id.vue' /* webpackChunkName: "pages/expose/_expose/book/_id" */).then(m => m.default || m)
-const _5b0c8f53 = () => import('../pages/index.vue' /* webpackChunkName: "pages/index" */).then(m => m.default || m)
+const _72b3b496 = () => import('..\\pages\\404.vue' /* webpackChunkName: "pages_404" */).then(m => m.default || m)
+const _1364ae7b = () => import('..\\pages\\cms\\index.vue' /* webpackChunkName: "pages_cms_index" */).then(m => m.default || m)
+const _d6b48ab2 = () => import('..\\pages\\Catalogue.vue' /* webpackChunkName: "pages_Catalogue" */).then(m => m.default || m)
+const _170a8bb0 = () => import('..\\pages\\Category.vue' /* webpackChunkName: "pages_Category" */).then(m => m.default || m)
+const _390698ea = () => import('..\\pages\\cms\\Demo.vue' /* webpackChunkName: "pages_cms_Demo" */).then(m => m.default || m)
+const _69053b25 = () => import('..\\pages\\cms\\Sort.vue' /* webpackChunkName: "pages_cms_Sort" */).then(m => m.default || m)
+const _562c7625 = () => import('..\\pages\\cms\\List.vue' /* webpackChunkName: "pages_cms_List" */).then(m => m.default || m)
+const _c0e6c202 = () => import('..\\pages\\auth\\callback.vue' /* webpackChunkName: "pages_auth_callback" */).then(m => m.default || m)
+const _65749d91 = () => import('..\\pages\\cms\\Edit.vue' /* webpackChunkName: "pages_cms_Edit" */).then(m => m.default || m)
+const _1092a235 = () => import('..\\pages\\cms\\Info.vue' /* webpackChunkName: "pages_cms_Info" */).then(m => m.default || m)
+const _7cc61fce = () => import('..\\pages\\cms\\Test.vue' /* webpackChunkName: "pages_cms_Test" */).then(m => m.default || m)
+const _d0e3ee36 = () => import('..\\pages\\expose\\_expose\\index.vue' /* webpackChunkName: "pages_expose__expose_index" */).then(m => m.default || m)
+const _45322ff8 = () => import('..\\pages\\expose\\_expose\\book\\_id.vue' /* webpackChunkName: "pages_expose__expose_book__id" */).then(m => m.default || m)
+const _8f62c4a0 = () => import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */).then(m => m.default || m)
 
 
 
@@ -78,72 +78,72 @@ export function createRouter () {
     routes: [
 		{
 			path: "/404",
-			component: _13109a0e,
+			component: _72b3b496,
 			name: "404"
 		},
 		{
+			path: "/cms",
+			component: _1364ae7b,
+			name: "cms"
+		},
+		{
 			path: "/Catalogue",
-			component: _4407ba6c,
+			component: _d6b48ab2,
 			name: "Catalogue"
 		},
 		{
 			path: "/Category",
-			component: _e5f5d9a6,
+			component: _170a8bb0,
 			name: "Category"
 		},
 		{
-			path: "/cms",
-			component: _3c5e1ce6,
-			name: "cms"
-		},
-		{
-			path: "/auth/callback",
-			component: _1787614d,
-			name: "auth-callback"
-		},
-		{
 			path: "/cms/Demo",
-			component: _1546a8d0,
+			component: _390698ea,
 			name: "cms-Demo"
 		},
 		{
+			path: "/cms/Sort",
+			component: _69053b25,
+			name: "cms-Sort"
+		},
+		{
+			path: "/cms/List",
+			component: _562c7625,
+			name: "cms-List"
+		},
+		{
+			path: "/auth/callback",
+			component: _c0e6c202,
+			name: "auth-callback"
+		},
+		{
 			path: "/cms/Edit",
-			component: _21cab03f,
+			component: _65749d91,
 			name: "cms-Edit"
 		},
 		{
 			path: "/cms/Info",
-			component: _662e963a,
+			component: _1092a235,
 			name: "cms-Info"
 		},
 		{
-			path: "/cms/List",
-			component: _128288d3,
-			name: "cms-List"
-		},
-		{
-			path: "/cms/Sort",
-			component: _255b4dd3,
-			name: "cms-Sort"
-		},
-		{
 			path: "/cms/Test",
-			component: _7df302c7,
+			component: _7cc61fce,
 			name: "cms-Test"
 		},
 		{
 			path: "/expose/:expose?",
-			component: _783c2aaa,
+			component: _d0e3ee36,
 			name: "expose-expose"
 		},
 		{
 			path: "/expose/:expose?/book/:id?",
-			component: _b9cb7428,
+			component: _45322ff8,
 			name: "expose-expose-book-id"
 		},
 		{
 			path: "/",
-			component: _5b0c8f53,
+			component: _8f62c4a0,
 			name: "index"
 		}
     ],
