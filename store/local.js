@@ -46,7 +46,20 @@ export const state = () => ({
       },
     },
   ],
-  categoryList: [],
+  categoryList: [
+    {
+      title: 'Библиотечное дело',
+      date: '25 декабря, 2018',
+      count: '16',
+      image: image0,
+    },
+    {
+      title: 'Археология. Геодезия',
+      date: '28 декабря, 2018',
+      count: '22',
+      image: image1,
+    },
+  ],
 });
 
 export const mutations = {};
