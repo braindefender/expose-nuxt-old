@@ -250,4 +250,19 @@ export default {
       &__overlay
         font-size: 16px
 
+  @media only screen and (max-width : 1024px)
+    .sidebar
+      width: 74px
+      &__content
+        height: 100vh
+      &__panel
+        display: none
+
+    .sidebar-account
+      display: none
+
+    .sidebar-button
+      &__text
+        display: none
+
 </style>

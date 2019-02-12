@@ -268,8 +268,11 @@ export default {
         font-weight: bold
 
   .actions-block
+    display: flex
+    align-items: center
     &--grow
       flex-grow: 1
+      justify-content: flex-end
     &__grid
       display: grid
       grid-auto-flow: column
@@ -284,6 +287,8 @@ export default {
       border-radius: 5px
       border: 1px solid rgba(black, 0.15)
       background-color: rgba(black, 0.05)
+      transition: all ease-in-out 0.15s
+      box-shadow: 0 2px 10px rgba(black, 0)
       &::after
         +posa(0)
         content: ''
@@ -291,6 +296,7 @@ export default {
         background: center no-repeat
         transition: all ease 0.15s
       &:hover
+        box-shadow: 0 2px 10px rgba(black, 0.25)
         &::after
           opacity: 0.8
       &--info
@@ -349,4 +355,21 @@ export default {
       z-index: 1
       margin: 0
       padding: 0
+
+  @media only screen and (max-width : 1024px)
+    .list-item
+      &__divider
+        margin-left: 8px
+        margin-right: 8px
+    .dates-block
+      padding-left: 10px
+      &__grid
+        grid-template-columns: auto
+        grid-gap: 5px 5px
+      &__name
+        text-align: left
+    .expo-card
+      width: 240px
+      font-size: 14px
+
 </style>

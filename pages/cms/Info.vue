@@ -289,4 +289,10 @@ export default {
         line-height: 20px
         font-weight: bold
 
+  @media only screen and (max-width : 1024px)
+    .ec
+      &__box
+        padding-left: 10px
+        padding-right: 10px
+
 </style>

@@ -10,6 +10,9 @@ export const state = () => ({
 });
 
 export const mutations = {
+  clear(state) {
+    // state.selected = undefined
+  },
   selectOnEditScreen(state, { item, patch }) {
     state.original.selected = false;
     state.original = item;

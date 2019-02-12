@@ -19,6 +19,7 @@ export const mutations = {
     state.info = info;
   },
   syncState({ stacks, info }) {
+    console.log(stacks.list)
     this.$axios
       .$post('/cms/state', { stacks, info })
       .catch(err => console.log(`[Error] Cannot post state to server: ${err}`));
@@ -100,8 +101,8 @@ export const actions = {
     return new Promise((resolve, reject) => {
       this.$axios
         .$post('/cms/state', {
-          stacks: state.stacks,
           info: state.info,
+          stacks: state.stacks,
         })
         .then(() => {
           resolve();

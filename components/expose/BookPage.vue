@@ -104,9 +104,7 @@ export default {
         .join(', ');
     },
     meta() {
-      return `${this.book.author} — ${this.book.title}, ${this.book.source}, ${
-        this.book.year
-      }`;
+      return `${this.book.author} — ${this.book.title}`;
     },
     authors() {
       if (this.book.authors) {

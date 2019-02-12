@@ -54,7 +54,7 @@ fieldset[disabled] .multiselect
 .multiselect, .multiselect__input, .multiselect__single
   font-family: inherit
   font-size: 14px
-  font-weight: bold
+  font-weight: normal
   -ms-touch-action: manipulation
   touch-action: manipulation
 
@@ -255,7 +255,7 @@ fieldset[disabled] .multiselect
   border-top: none
   border-bottom-left-radius: 5px
   border-bottom-right-radius: 5px
-  z-index: 1
+  z-index: 9999
   -webkit-overflow-scrolling: touch
 
 .multiselect__content
@@ -315,7 +315,7 @@ fieldset[disabled] .multiselect
 .multiselect__option--selected
   background: #f3f3f3
   color: #35495e
-  font-weight: 700
+  font-weight: 400
   &:after
     content: attr(data-selected)
     color: silver

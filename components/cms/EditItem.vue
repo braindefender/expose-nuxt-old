@@ -31,7 +31,7 @@
           <div class="ee-image-block__title">Обложка</div>
           <div class="ee-image-block__images">
             <image-picker
-              :prefill="cover"
+              :prefill="nonCachedImage"
               :meta="metadata"
               @change="onCoverChange"
               @remove="onCoverRemove"
@@ -130,8 +130,17 @@ export default {
   },
   beforeDestroy() {
     this.save();
+    this.$store.commit('edit/clear');
   },
   computed: {
+    nonCachedImage() {
+      if (this.cover != undefined && this.cover.substr(0, 4) == 'http') {
+        console.log(`${this.cover}?${Math.random()}`);
+        return `${this.cover}?${Math.random()}`;
+      } else {
+        return this.cover;
+      }
+    },
     authors() {
       return this.item.authors
         ? this.item.authors.join(', ')

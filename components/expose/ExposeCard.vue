@@ -47,7 +47,9 @@ export default {
           .join('~')
           .split(' ')
           .join('_');
-        return `/expose/${name}-${this.item.dates.create}`;
+        const date = this.item.dates.create;
+        // const date = this.item.dates.public;
+        return `/expose/${name}-${date}`;
       }
     },
   },

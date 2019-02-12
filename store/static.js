@@ -9,15 +9,15 @@ export const state = () => ({
       weekly: `Еженедельная выставка новых поступлений\nГПНТБ СО РАН`,
       image: weekly0,
       email: 'abonement@gpntbsib.ru',
-      phone: '+7 (913) 001-0000',
+      phone: '+7 (383) 266-85-18',
     },
     {
       index: 1,
       title: 'Отделение ГПНТБ СО РАН',
       weekly: `Еженедельная выставка новых поступлений\nотделения ГПНТБ СО РАН`,
       image: weekly1,
-      email: 'abonement@gpntbsib.ru',
-      phone: '+7 (913) 001-0000',
+      email: 'branchconfhall@gpntbsib.ru',
+      phone: '+7 (383) 330-17-59',
     },
   ],
   months: [

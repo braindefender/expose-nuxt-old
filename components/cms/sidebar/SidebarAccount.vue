@@ -10,13 +10,18 @@
       </div>
     </div>
 
-    <sidebar-button text="Создать выставку" icon="add" @click="create"/>
-
+    <sidebar-button
+      text="Создать выставку"
+      icon="add"
+      @click="create"
+      v-tooltip.left="{content:  'Создать выставку', classes: 'popover'}"
+    />
     <div class="sidebar-button-box">
       <div
         v-for="(page, index) in statusList"
         :key="index"
         @click="getPages(page.name)"
+        v-tooltip.left="{content: page.title, classes: 'popover'}"
         :class="pageName === page.name
           ? 'sidebar-button sidebar-button--active'
           : 'sidebar-button'"
@@ -26,7 +31,11 @@
       </div>
     </div>
 
-    <div class="sidebar-button" @click="logout">
+    <div
+      class="sidebar-button"
+      @click="logout"
+      v-tooltip.left="{content: 'Выйти из аккаунта', classes: 'popover'}"
+    >
       <div class="sidebar-button__icon sidebar-button__icon--exit"></div>
       <div class="sidebar-button__text">Выйти из аккаунта</div>
     </div>
@@ -82,7 +91,3 @@ export default {
   },
 };
 </script>
-
-<style lang="sass">
-
-</style>

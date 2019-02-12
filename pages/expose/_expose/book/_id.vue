@@ -1,7 +1,5 @@
 <template>
-  <book-page
-    v-if="book !== undefined"
-    :book="book"/>
+  <book-page v-if="book !== undefined" :book="book"/>
 </template>
 
 <script>
@@ -18,7 +16,7 @@ export default {
       .then(res => {
         this.$axios
           .$get('/info/return', {
-            params: { _id: res.data.id },
+            params: { _id: res.data.id, title: this.path.expose },
           })
           .then(resp => {
             console.log('in book', res.data);
