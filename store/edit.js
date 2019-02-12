@@ -18,6 +18,7 @@ export const mutations = {
     state.original = item;
     state.original.selected = true;
     state.selected = { ...item, ...patch };
+    checkDynamicFields(patch, ['cover', 'annotation'], state.original);
   },
   updateSelected(state, item) {
     state.original = item;
@@ -40,15 +41,17 @@ export const mutations = {
   },
   removeImageAt(state, index) {
     state.selected.images.splice(index, 1);
+    if (state.selected.fullImages) {
+      state.selected.fullImages.splice(index, 1);
+    }
   },
   mutateObject(state, { source, patch }) {
     console.log('source', source);
     console.log('patch', patch);
     Object.keys(patch).forEach(key => {
-      source[key] = patch[key];
+      state.selected[key] = patch[key];
     });
-    state.selected.selected = false;
-    state.selected = source;
+    checkDynamicFields(patch, ['cover', 'annotation'], state.original);
     state.selected.selected = true;
   },
 };
@@ -75,17 +78,30 @@ export const actions = {
         params: { irbis: item.irbis },
       })
       .then(res => {
-        console.log(res);
-        // commit('mutateObject', { source: item, patch: res[0] });
+        // console.log(res);
         let fullItem = { item, patch: res };
         fullItem.cover += `?_=${Date.now()}`;
-        commit('selectOnEditScreen', fullItem);
+        res.cover += `?_=${Date.now()}`;
+        commit('mutateObject', { source: item, patch: res });
+        // commit('selectOnEditScreen', fullItem);
       })
       .catch(err => {
         console.log(err);
       });
   },
   pushBook({ commit }, item) {
+    console.log(item)
     this.$axios.$post('/cms/book', item);
   },
 };
+
+const checkDynamicFields = function (item, fields, out) {
+  fields.forEach(field => {
+    let hasField = item[field] && item[field] !== "";
+    Vue.set(out, `has${cap(field)}`, hasField);
+  });
+}
+
+function cap(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}

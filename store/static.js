@@ -6,7 +6,7 @@ export const state = () => ({
     {
       index: 0,
       title: 'ГПНТБ СО РАН',
-      weekly: `Еженедельная выставка новых поступлений\nГПНТБ СО РАН`,
+      weekly: `Еженедельная выставка новых${String.fromCharCode(160)}поступлений\nГПНТБ СО РАН`,
       image: weekly0,
       email: 'abonement@gpntbsib.ru',
       phone: '+7 (383) 266-85-18',
@@ -14,7 +14,7 @@ export const state = () => ({
     {
       index: 1,
       title: 'Отделение ГПНТБ СО РАН',
-      weekly: `Еженедельная выставка новых поступлений\nотделения ГПНТБ СО РАН`,
+      weekly: `Еженедельная выставка новых${String.fromCharCode(160)}поступлений\nотделения ГПНТБ СО РАН`,
       image: weekly1,
       email: 'branchconfhall@gpntbsib.ru',
       phone: '+7 (383) 330-17-59',

@@ -7,7 +7,7 @@
     >
       <p class="expo-card__title">{{item.title}}</p>
     </div>
-    <div v-if="!blocked" class="list-item__info">
+    <div class="list-item__info">
       <div class="list-item__dates dates-block">
         <div class="dates-block__grid">
           <p class="dates-block__name">Создано:</p>
@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="list-item__divider"/>
-      <div class="list-item__actions actions-block">
+      <div v-if="!blocked" class="list-item__actions actions-block">
         <div class="actions-block__grid">
           <button
             type="button"
@@ -47,8 +47,8 @@
           />
         </div>
       </div>
-      <div class="list-item__divider"/>
-      <div class="list-item__users users-block">
+      <div v-if="!blocked" class="list-item__divider"/>
+      <div v-if="!blocked" class="list-item__users users-block">
         <p class="users-block__creator">
           <span>Создатель:</span>
           {{item.creator.username}}
@@ -72,7 +72,7 @@
           </no-ssr>
         </div>
       </div>
-      <div class="list-item__actions actions-block actions-block--grow">
+      <div v-if="!blocked" class="list-item__actions actions-block actions-block--grow">
         <div class="actions-block__grid">
           <button
             v-if="canModify"
@@ -82,7 +82,7 @@
             @click="remove"
           />
           <button
-            v-if="canModify"
+            v-if="false"
             v-tooltip.left="{content: 'Скрыть выставку', classes: 'popover'}"
             type="button"
             class="actions-block__item actions-block__item--hide"
@@ -90,9 +90,7 @@
           />
         </div>
       </div>
-    </div>
-    <div v-else class="list-item__info">
-      <div class="list-item__alert">
+      <div v-if="blocked" class="list-item__alert">
         <b>Редактирование недоступно:</b>&nbsp;выставка находится в работе.
       </div>
     </div>
@@ -231,8 +229,6 @@ export default {
       display: flex
       justify-content: center
       align-items: center
-      padding: 15px
-
 
   .dates-block
     display: flex
@@ -276,8 +272,8 @@ export default {
     &__grid
       display: grid
       grid-auto-flow: column
-      grid-template-rows: 36px 36px
-      grid-gap: 10px
+      grid-template-rows: 36px
+      grid-gap: 15px
       justify-items: end
     &__item
       cursor: pointer
@@ -355,6 +351,12 @@ export default {
       z-index: 1
       margin: 0
       padding: 0
+
+  @media only screen and (max-width : 1440px)
+    .actions-block
+      &__grid
+        grid-template-rows: 36px 36px
+        grid-gap: 10px
 
   @media only screen and (max-width : 1024px)
     .list-item

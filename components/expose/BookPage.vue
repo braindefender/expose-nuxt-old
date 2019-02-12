@@ -14,11 +14,11 @@
         <div v-if="book.cover" class="book-image">
           <div class="book-image__blur">
             <div class="book-image__blur-container">
-              <img :src="cover" :alt="meta">
+              <img :src="full(this.book.cover)" :alt="meta">
             </div>
           </div>
           <div class="book-image__image">
-            <img :src="cover" :alt="meta">
+            <img :src="full(this.book.cover)" :alt="meta">
           </div>
         </div>
         <div v-else class="book-ph">
@@ -54,6 +54,13 @@
         :meta="`${meta}-${index}`"
         :options="{ width: 125 }"
       />
+      <!-- <img
+        v-for="(image, index) in book.images"
+        :key="index"
+        :alt="`${meta}-${index}`"
+        :src="image"
+        :slot="`${full(image)}`"
+      >-->
     </div>
     <div class="book-contents" v-if="book.contents">
       <div class="book-contents__title">Содержание</div>
@@ -79,16 +86,12 @@ export default {
     };
   },
   methods: {
-    getCover() {
-      let coverStr = this.book.cover;
-      let pos = coverStr.indexOf('/books');
-      return coverStr.substr(0, pos + 7) + 'full_' + coverStr.substr(pos + 7);
+    full(path) {
+      let pos = path.indexOf('/books');
+      return path.substr(0, pos + 7) + 'full_' + path.substr(pos + 7);
     },
   },
   computed: {
-    cover() {
-      return this.getCover();
-    },
     sourceCity() {
       if (this.book.source) {
         const lowerSource = this.book.source.toLowerCase();

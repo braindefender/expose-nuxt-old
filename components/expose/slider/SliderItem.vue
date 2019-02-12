@@ -53,7 +53,7 @@ export default {
         .split(' ')
         .join('_');
       this.$router.push({
-        path: `/expose/${name}-${this.item.dates.create}`,
+        path: `/expose/${name}-${this.item._id.slice(-8)}`,
       });
     },
   },

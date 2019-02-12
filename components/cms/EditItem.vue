@@ -237,6 +237,11 @@ export default {
         field: 'cover',
         to: undefined,
       });
+      this.$store.commit('edit/set', {
+        item: this.item,
+        field: 'fullCover',
+        to: undefined,
+      });
     },
     onImageAdd({ full, cropped }) {
       if (full) {
