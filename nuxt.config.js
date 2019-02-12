@@ -1,4 +1,4 @@
-const conf = require('./expose.config.js')
+const conf = require('./expose.config.js');
 const config = process.env.DEV == 1 ? conf.local : conf.external;
 
 module.exports = {
@@ -10,7 +10,11 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Каталог виртуальных выставок ГПНТБ СО РАН' },
+      {
+        hid: 'description',
+        name: 'description',
+        content: 'Каталог виртуальных выставок ГПНТБ СО РАН',
+      },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
@@ -83,6 +87,7 @@ module.exports = {
     { src: '~plugins/vue-multiselect', ssr: false },
     { src: '~plugins/vue-awesome-swiper', ssr: false },
     { src: '~plugins/vue-tooltip' },
+    { src: '~plugins/vue-img' },
   ],
   // serverMiddleware: [
   //   'redirect-ssl',

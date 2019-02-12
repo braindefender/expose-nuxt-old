@@ -54,13 +54,16 @@
         :meta="`${meta}-${index}`"
         :options="{ width: 125 }"
       />
-      <!-- <img
+      <img
         v-for="(image, index) in book.images"
         :key="index"
         :alt="`${meta}-${index}`"
         :src="image"
-        :slot="`${full(image)}`"
-      >-->
+        v-img="{
+          src: `${full(image)}`,
+          thumbnails: true,
+        }"
+      >
     </div>
     <div class="book-contents" v-if="book.contents">
       <div class="book-contents__title">Содержание</div>

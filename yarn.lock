@@ -506,7 +506,6 @@ async-limiter@~1.0.0:
 async@0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/async/-/async-0.9.0.tgz#ac3613b1da9bed1b47510bb4651b8931e47146c7"
-  integrity sha1-rDYTsdqb7RtHUQu0ZRuJMeRxRsc=
 
 async@^2.1.2, async@^2.4.1:
   version "2.6.1"
@@ -6456,7 +6455,6 @@ std-env@^1.1.0:
 stdio@0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/stdio/-/stdio-0.2.2.tgz#3a2259ee1644fb8578e5f6866fe872a03bbb3cce"
-  integrity sha1-OiJZ7hZE+4V45faGb+hyoDu7PM4=
 
 stdout-stream@^1.4.0:
   version "1.4.0"
@@ -6975,6 +6973,10 @@ uuid@^3.0.0, uuid@^3.1.0:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
 
+v-img@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/v-img/-/v-img-0.2.0.tgz#60fe336a43f725a935800f59681f151ac4d8d86a"
+
 v-tooltip@^2.0.0-rc.33:
   version "2.0.0-rc.33"
   resolved "https://registry.yarnpkg.com/v-tooltip/-/v-tooltip-2.0.0-rc.33.tgz#78f7d8e9c34265622be65ba9dc78c67f1dc02b73"
@@ -7307,7 +7309,6 @@ window-size@0.1.0:
 winser@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/winser/-/winser-1.0.3.tgz#4ebacff96a7e5b46d47684773f4bf77239a379cf"
-  integrity sha1-TrrP+Wp+W0bUdoR3P0v3cjmjec8=
   dependencies:
     async "0.9.0"
     stdio "0.2.2"
