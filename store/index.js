@@ -17,7 +17,7 @@ export const mutations = {
     state.info = info;
   },
   syncState({ stacks, info }) {
-    console.log(stacks.list)
+    console.log(stacks.list);
     this.$axios
       .$post('/cms/state', { stacks, info })
       .catch(err => console.log(`[Error] Cannot post state to server: ${err}`));
@@ -39,8 +39,8 @@ export const mutations = {
     state[field] = value;
   },
   setSortType(state, value) {
-    state.sortType = state.static.listSortTypes[value];
-  }
+    state.sortType = value;
+  },
 };
 
 export const actions = {
@@ -59,18 +59,18 @@ export const actions = {
         });
     });
   },
-  fetchExposeList({ commit, state }, options) {
+  fetchExposeList({ commit, state }, { type, sort, direction }) {
     return new Promise((resolve, reject) => {
       this.$axios
-        .$get(`/cms/list/${options.type}?sort=${options.sort}`)
+        .$get(`/cms/list/${type}?sort=${sort}&direction=${direction}`)
         .then(res => {
           commit('setExposeList', res);
-          console.log(`Got ${options.type} expose list from server:`, res);
+          console.log(`Got ${type} expose list from server:`, res);
           resolve(res);
         })
         .catch(err => {
           console.log(
-            `[Error] Cannot get ${options.type} expose list from server:`,
+            `[Error] Cannot get ${type} expose list from server:`,
             err,
           );
           reject(err);
@@ -98,7 +98,7 @@ export const actions = {
     });
   },
   syncState({ state }) {
-    console.log('in sync state')
+    console.log('in sync state');
     return new Promise((resolve, reject) => {
       this.$axios
         .$post('/cms/state', {
@@ -107,7 +107,7 @@ export const actions = {
         })
         .then(() => {
           resolve();
-          console.log('in sync state resolve')
+          console.log('in sync state resolve');
         })
         .catch(err => {
           console.log(`[Error] Cannot post state to server: ${err}`);
@@ -149,15 +149,20 @@ export const actions = {
     this.$axios
       .post('/cms/list/delete', {}, { params: { _id, status } })
       .then(res => {
-        dispatch('fetchExposeList', { type: status, sort: state.sortType.mode });
+        dispatch('fetchExposeList', {
+          type: status,
+          sort: state.sortType.mode,
+          direction: -1,
+        });
         console.log('Got list from server after delete:', res);
       });
   },
-  setSortType({ commit, dispatch, state }, value) {
-    commit('setSortType', value);
+  setSortType({ commit, dispatch, state }, { type, direction }) {
+    commit('setSortType', type);
     dispatch('fetchExposeList', {
       type: state.currentStatus,
-      sort: state.static.listSortTypes[value].mode,
-    })
-  }
+      sort: type.mode,
+      direction: direction ? 1 : -1,
+    });
+  },
 };

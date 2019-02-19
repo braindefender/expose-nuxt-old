@@ -67,7 +67,7 @@ export default {
     getPages(type) {
       let sortMode = this.$store.state.sortType.mode;
       this.$store
-        .dispatch('fetchExposeList', { type, sort: sortMode })
+        .dispatch('fetchExposeList', { type, sort: sortMode, direction: -1 })
         .then(res => {
           this.$store.commit('set', {
             field: 'currentStatus',

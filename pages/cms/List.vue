@@ -8,10 +8,14 @@
             class="cms-table__header cms-table__header--main cms-table__header--title"
           >Модерируемые выставки</div>
           <div class="cms-table__toggle">
-            <Toggle
-              :list="this.$store.state.static.listSortTypes"
-              :check="sortType.index"
-              :call="setSortType"
+            <sort-menu
+              :list="listSortTypes"
+              :check="sortType"
+              :callback="setSortType"
+              :fields="{
+                check: 'mode',
+                title: 'title',
+              }"
             />
           </div>
         </div>
@@ -27,6 +31,7 @@
 import ListItemNew from '~/components/cms/list/ListItemNew';
 import Sidebar from '~/components/cms/sidebar/Sidebar';
 import Toggle from '~/components/cms/common/Toggle';
+import SortMenu from '~/components/cms/common/SortMenu';
 
 export default {
   name: 'List',
@@ -35,6 +40,7 @@ export default {
     ListItemNew,
     Sidebar,
     Toggle,
+    SortMenu,
   },
   data() {
     return {};
@@ -49,18 +55,22 @@ export default {
     currentStatus() {
       return this.$store.state.currentStatus;
     },
+    listSortTypes() {
+      return this.$store.state.static.listSortTypes;
+    },
   },
   mounted() {
     this.$store.dispatch('fetchExposeList', {
       type: this.currentStatus,
       sort: this.sortType.mode,
+      direction: -1,
     });
     this.$store.dispatch('fetchUsersList');
     this.$store.dispatch('fetchCategoryList');
   },
   methods: {
-    setSortType(value) {
-      this.$store.dispatch('setSortType', value);
+    setSortType(option) {
+      this.$store.dispatch('setSortType', option);
     },
   },
 };

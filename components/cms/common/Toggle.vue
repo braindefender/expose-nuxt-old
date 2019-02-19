@@ -32,21 +32,18 @@ export default {
     font-size: 14px
     height: 32px
     &__item
-      margin-left: -1px
-      margin-right: -1px
-      cursor: pointer
       display: flex
       align-items: center
       justify-content: center
-      flex-grow: 1
-      flex-shrink: 0
-      flex-basis: max-content
+      flex: 1 0 max-content
       height: 32px
-      border-radius: 5px
+      border-radius: inherit
       border: 2px solid rgba($color-accent, 0)
+      color: rgba(black, 0.6)
+      margin-left: -1px
+      margin-right: -1px
       padding-left: 15px
       padding-right: 15px
-      color: rgba(black, 0.6)
       cursor: pointer
       user-select: none
       &--active
