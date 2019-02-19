@@ -35,7 +35,9 @@ export default {
       display: flex
       align-items: center
       justify-content: center
-      flex: 1 0 max-content
+      flex-grow: 1
+      flex-shrink: 0
+      flex-basis: max-content
       height: 32px
       border-radius: inherit
       border: 2px solid rgba($color-accent, 0)
