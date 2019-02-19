@@ -6,7 +6,7 @@
       :class="check == item.index ? 'cms-toggle__item--active' : ''"
       class="cms-toggle__item"
       @click="call(item.index)"
-      >{{item.title}}</div>
+    >{{item.title}}</div>
   </div>
 </template>
 
@@ -47,6 +47,8 @@ export default {
       padding-left: 15px
       padding-right: 15px
       color: rgba(black, 0.6)
+      cursor: pointer
+      user-select: none
       &--active
         border: 2px solid rgba($color-accent, 1)
         font-weight: bold

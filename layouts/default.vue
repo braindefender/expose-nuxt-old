@@ -111,6 +111,12 @@
       &:active
         &::before
           background-color: rgba($color-accent, 0.25)
+    &--dimmed
+      background: rgba($color-accent, 0.1)
+      color: rgba(black, 0.8)
+      border: 1px solid rgba($color-accent, 0.5)
+      transition: all ease 0.3s
+
 
   .button-error
     +button($color-error)

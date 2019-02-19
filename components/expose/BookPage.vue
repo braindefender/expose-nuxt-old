@@ -47,13 +47,6 @@
       </div>
     </div>
     <div v-if="book.images !== 0" class="book-page__images">
-      <image-blur
-        v-for="(image, index) in book.images"
-        :key="index"
-        :image="image"
-        :meta="`${meta}-${index}`"
-        :options="{ width: 125 }"
-      />
       <img
         v-for="(image, index) in book.images"
         :key="index"
@@ -255,7 +248,7 @@ export default {
       width: 100%
       display: flex
       flex-direction: row
-      justify-content: space-between
+      justify-content: center
       min-height: 50px
       margin-bottom: 30px
       padding-top: 30px

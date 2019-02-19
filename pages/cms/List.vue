@@ -7,6 +7,13 @@
           <div
             class="cms-table__header cms-table__header--main cms-table__header--title"
           >Модерируемые выставки</div>
+          <div class="cms-table__toggle">
+            <Toggle
+              :list="this.$store.state.static.listSortTypes"
+              :check="sortType.index"
+              :call="setSortType"
+            />
+          </div>
         </div>
         <div v-if="items.length !== 0" class="cms-table__list">
           <list-item-new v-for="(item, index) in items" :key="index" :item="item"/>
@@ -19,6 +26,7 @@
 <script>
 import ListItemNew from '~/components/cms/list/ListItemNew';
 import Sidebar from '~/components/cms/sidebar/Sidebar';
+import Toggle from '~/components/cms/common/Toggle';
 
 export default {
   name: 'List',
@@ -26,6 +34,7 @@ export default {
   components: {
     ListItemNew,
     Sidebar,
+    Toggle,
   },
   data() {
     return {};
@@ -34,11 +43,25 @@ export default {
     items() {
       return this.$store.state.exposeList;
     },
+    sortType() {
+      return this.$store.state.sortType;
+    },
+    currentStatus() {
+      return this.$store.state.currentStatus;
+    },
   },
   mounted() {
-    this.$store.dispatch('fetchExposeList', this.$store.state.currentStatus);
+    this.$store.dispatch('fetchExposeList', {
+      type: this.currentStatus,
+      sort: this.sortType.mode,
+    });
     this.$store.dispatch('fetchUsersList');
     this.$store.dispatch('fetchCategoryList');
+  },
+  methods: {
+    setSortType(value) {
+      this.$store.dispatch('setSortType', value);
+    },
   },
 };
 </script>
@@ -67,6 +90,11 @@ export default {
       height: 60px
       box-shadow: 0 1px 0 rgba(black, 0.1)
       background-color: white
+      padding-right: 15px
+      display: flex
+      justify-content: space-between
+    &__toggle
+      max-width: 50%
     &__header, &__list-item
       font-size: 15px
       color: rgba(black, 0.8)

@@ -3,14 +3,14 @@
     <div class="ec__row">
       <div class="ec__title">Тип выставки</div>
       <div class="ec__toggle">
-        <Toggle :list="this.$store.state.static.modeList" :check="mode" :call="setModeTo"></Toggle>
+        <Toggle :list="this.$store.state.static.modeList" :check="mode" :call="setModeTo"/>
       </div>
     </div>
 
     <div class="ec__row">
       <div class="ec__title">Место проведения</div>
       <div class="ec__toggle">
-        <Toggle :list="this.$store.state.static.sourceList" :check="source" :call="setSourceTo"></Toggle>
+        <Toggle :list="this.$store.state.static.sourceList" :check="source" :call="setSourceTo"/>
       </div>
     </div>
 

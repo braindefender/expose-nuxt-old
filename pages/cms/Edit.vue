@@ -5,7 +5,7 @@
       <div class="cms-new-page__rows">
         <div class="cms-new-page__panel">
           <nuxt-link class="button" :to="{ name: `cms-Sort`, params: { fromcms: true } }">Назад</nuxt-link>
-          <nuxt-link class="button" :to="{ name: `cms-Demo`, params: { fromcms: true } }">Далее</nuxt-link>
+          <!-- <nuxt-link class="button" :to="{ name: `cms-Demo`, params: { fromcms: true } }">Далее</nuxt-link> -->
         </div>
         <div class="ee">
           <div class="ee__side ee__side--left">

@@ -55,4 +55,9 @@ export const state = () => ({
     { name: 'public', title: 'Опубликованные' },
     { name: 'waiting', title: 'Ожидающие публикации' },
   ],
+  listSortTypes: [
+    { index: 0, title: 'по дате обновления', mode: 'update' },
+    { index: 1, title: 'по дате создания', mode: 'create' },
+    { index: 2, title: 'по дате публикации', mode: 'public' },
+  ],
 });

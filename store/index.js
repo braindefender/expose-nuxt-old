@@ -1,8 +1,5 @@
 import Vue from 'vue';
 
-import weekly0 from '@/assets/images/jamie-taylor-110195-unsplash.jpg';
-import weekly1 from '@/assets/images/janko-ferlic-174927-unsplash.jpg';
-
 export const state = () => ({
   workerID: 'dummyuser',
   currentPage: 0,
@@ -11,6 +8,7 @@ export const state = () => ({
   categoryList: [],
   exposeList: [],
   real: {},
+  sortType: { index: 0, title: 'по дате обновления', mode: 'update' },
 });
 
 export const mutations = {
@@ -40,6 +38,9 @@ export const mutations = {
   set(state, { field, value }) {
     state[field] = value;
   },
+  setSortType(state, value) {
+    state.sortType = state.static.listSortTypes[value];
+  }
 };
 
 export const actions = {
@@ -58,18 +59,18 @@ export const actions = {
         });
     });
   },
-  fetchExposeList({ commit, state }, payload) {
+  fetchExposeList({ commit, state }, options) {
     return new Promise((resolve, reject) => {
       this.$axios
-        .$get(`/cms/list/${payload}`)
+        .$get(`/cms/list/${options.type}?sort=${options.sort}`)
         .then(res => {
           commit('setExposeList', res);
-          console.log(`Got ${payload} expose list from server:`, res);
+          console.log(`Got ${options.type} expose list from server:`, res);
           resolve(res);
         })
         .catch(err => {
           console.log(
-            `[Error] Cannot get ${payload} expose list from server:`,
+            `[Error] Cannot get ${options.type} expose list from server:`,
             err,
           );
           reject(err);
@@ -129,8 +130,6 @@ export const actions = {
     });
   },
   pushFinalState({ commit, state }) {
-    // commit('syncState');
-    // commit('pushFinalState', { root: true });
     return new Promise((resolve, reject) => {
       this.$axios
         .post('/cms/final', {
@@ -147,12 +146,18 @@ export const actions = {
     });
   },
   removeExpose({ commit, dispatch, state }, { _id, status }) {
-    // console.log(payload);
     this.$axios
       .post('/cms/list/delete', {}, { params: { _id, status } })
       .then(res => {
-        dispatch('fetchExposeList', status);
+        dispatch('fetchExposeList', { type: status, sort: state.sortType.mode });
         console.log('Got list from server after delete:', res);
       });
   },
+  setSortType({ commit, dispatch, state }, value) {
+    commit('setSortType', value);
+    dispatch('fetchExposeList', {
+      type: state.currentStatus,
+      sort: state.static.listSortTypes[value].mode,
+    })
+  }
 };

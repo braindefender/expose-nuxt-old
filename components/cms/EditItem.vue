@@ -3,7 +3,7 @@
     <div class="ee-card__top">
       <div class="ee-card__label">Редактирование записи</div>
       <div class="ee-card__controls">
-        <div class="button" type="button" @click="revert">Отменить изменения</div>
+        <div class="button button--dimmed" type="button" @click="revert">Отменить изменения</div>
         <input class="hidden" id="xml" type="file" ref="xml" @input="loadXML">
         <label for="xml" class="button">Загрузить XML</label>
         <div class="button" type="button" @click="save">Сохранить</div>
@@ -313,6 +313,7 @@ export default {
     padding-bottom: 20px
     padding-left: 20px
     padding-right: 20px
+    position: relative
     &__cover
       width: 100%
       display: flex
@@ -535,5 +536,13 @@ export default {
     margin-right: 10px
     &:last-child
       margin-right: 0
+
+  @media only screen and (max-width : 1800px)
+    .ee-card
+      &__top
+        flex-direction: column
+        height: auto
+      &__label
+        margin-bottom: 14px
 
 </style>

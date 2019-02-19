@@ -63,15 +63,17 @@ export default {
       return this.$store.state.auth.user;
     },
   },
-  mounted() {},
   methods: {
     getPages(type) {
-      this.$store.dispatch('fetchExposeList', type).then(res => {
-        this.$store.commit('set', {
-          field: 'currentStatus',
-          value: type,
+      let sortMode = this.$store.state.sortType.mode;
+      this.$store
+        .dispatch('fetchExposeList', { type, sort: sortMode })
+        .then(res => {
+          this.$store.commit('set', {
+            field: 'currentStatus',
+            value: type,
+          });
         });
-      });
     },
     create() {
       // this.$axios.$get('/cms/new').then(res => console.log(res));
