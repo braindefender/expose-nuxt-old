@@ -42,13 +42,13 @@ export default {
       if (this.options && this.options.fromcms) {
         return '#';
       } else {
-        const name = this.item.mode ? `ВНП-${this.item.source}` : this.item.shortLink;
+        const name = this.item.mode ? `ВНП` : this.item.shortLink;
         // const name = this.item.title
         //   .split('\n')
         //   .join('~')
         //   .split(' ')
         //   .join('_');
-        return `/expose/${name}-${this.item._id.slice(-8)}`;
+        return `/expose/${name}-${this.item.source}-${this.item._id.slice(-8)}`;
       }
     },
   },

@@ -52,6 +52,17 @@
     </div>
 
     <div class="ec__row">
+      <div class="ec__title">Короткая ссылка</div>
+      <input
+        placeholder="latin-symbols-only"
+        class="ec__textarea ec__textarea--title"
+        name="shortLink"
+        @input="changeShortLink($event.target.value)"
+        :value="shortLink"
+      >
+    </div>
+
+    <div class="ec__row">
       <div class="ec__title">Обложка</div>
       <div class="ec__loader">
         <no-ssr>
@@ -111,6 +122,7 @@
 </template>
 
 <script>
+import { slugify } from 'transliteration';
 import { TheMask } from 'vue-the-mask';
 
 import Toggle from '~/components/cms/common/Toggle';
@@ -119,6 +131,11 @@ import CategoryPicker from '~/components/cms/info/CategoryPicker';
 export default {
   name: 'Thematic',
   components: { CategoryPicker, Toggle, TheMask },
+  data() {
+    return {
+      shortLink: this.$store.state.info.shortLink,
+    };
+  },
   computed: {
     mode: {
       get() {
@@ -134,11 +151,11 @@ export default {
       },
       set(value) {
         let self = this;
-        // console.log(value);
         self.$store.commit('info/set', {
           field: 'title',
           value: value.trim(),
         });
+        this.changeShortLink(value);
       },
     },
     annotation: {
@@ -199,6 +216,19 @@ export default {
     },
   },
   methods: {
+    changeShortLink(value) {
+      let mod = slugify(value);
+      console.log(mod);
+      mod.replace(/\s/, '-');
+      console.log(mod);
+      mod.trim();
+      // .replace(/[^(\\x00-\\xFF)]+(?:$|\\s*)/, '');
+      this.shortLink = mod;
+      this.$store.commit('info/set', {
+        field: 'shortLink',
+        value: mod,
+      });
+    },
     set(field, value) {
       this.$store.commit('info/set', { field, value });
     },
