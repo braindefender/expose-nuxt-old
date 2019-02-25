@@ -42,7 +42,8 @@ export default {
       if (this.options && this.options.fromcms) {
         return '#';
       } else {
-        const name = this.item.mode ? `ВНП` : this.item.shortLink;
+        const name = this.item.mode ? this.item.shortLink : `vnp`;
+        // console.log(name);
         // const name = this.item.title
         //   .split('\n')
         //   .join('~')

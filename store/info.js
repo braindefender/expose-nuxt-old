@@ -48,7 +48,7 @@ export const actions = {
       case 1: {
         commit('set', { field: 'mode', value: 1 });
         commit('set', { field: 'title', value: 'Измените название выставки' });
-        commit('set', { field: 'shortLink', value: 'change-short-link' });
+        commit('set', { field: 'shortLink', value: 'izmenite-nazvanie-vystavki' });
         break;
       }
     }

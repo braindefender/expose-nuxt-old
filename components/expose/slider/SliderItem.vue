@@ -47,13 +47,14 @@ export default {
   },
   methods: {
     redirect() {
-      const name = this.item.title
-        .split('\n')
-        .join('~')
-        .split(' ')
-        .join('_');
+      // const name = this.item.title
+      //   .split('\n')
+      //   .join('~')
+      //   .split(' ')
+      //   .join('_');
+      const name = this.item.mode ? this.item.shortLink : `vnp`;
       this.$router.push({
-        path: `/expose/${name}-${this.item._id.slice(-8)}`,
+        path: `/expose/${name}-${this.item.source}-${this.item._id.slice(-8)}`,
       });
     },
   },
