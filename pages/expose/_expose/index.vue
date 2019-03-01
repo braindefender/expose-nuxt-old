@@ -2,7 +2,7 @@
   <div class="container">
     <div class="expose-page">
       <cover :options="coverOptions"/>
-
+      <annotation :text="expose.annotation"/>
       <div class="expose-page__grid">
         <div class="expose-page__panel expose-page__sort">
           <span class="expose-page__sort-title">Сортировка:</span>
@@ -60,11 +60,12 @@
 <script>
 import ContentSelector from '@/components/expose/ContentSelector';
 import Cover from '@/components/expose/Cover';
+import Annotation from '@/components/expose/Annotation';
 import ExposeStack from '@/components/expose/ExposeStack';
 
 export default {
   name: 'Expose',
-  components: { Cover, ContentSelector, ExposeStack },
+  components: { Annotation, Cover, ContentSelector, ExposeStack },
   props: ['options'],
   mounted() {
     if (!this.options) {

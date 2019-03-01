@@ -4,7 +4,7 @@
       <div class="ee-card__label">Редактирование записи</div>
       <div class="ee-card__controls">
         <div class="button button--dimmed" type="button" @click="revert">Отменить изменения</div>
-        <input class="hidden" id="xml" type="file" ref="xml" @input="loadXML">
+        <input class="hidden" id="xml" type="file" accept="text/xml" ref="xml" @input="loadXML">
         <label for="xml" class="button">Загрузить XML</label>
         <div class="button" type="button" @click="save">Сохранить</div>
       </div>

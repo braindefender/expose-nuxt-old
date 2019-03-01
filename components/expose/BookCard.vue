@@ -85,7 +85,7 @@ export default {
     link() {
       if (!this.$route.params.fromcms) {
         // const title = this.item.title.split(' ').join('_');
-        const title = this.item.irbis;
+        const title = this.item.webirbis;
         return `${this.$route.path}/book/${title}`;
       } else {
         return '#';

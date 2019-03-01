@@ -5,7 +5,7 @@
       <div class="cms-new-page__columns">
         <div class="cms-new-page__rows" style="flex-grow: 0; overflow-y: auto">
           <div class="cms-new-page__panel">
-            <nuxt-link class="button" :to="{ name: `cms-List` }">Назад</nuxt-link>
+            <!-- <nuxt-link class="button" :to="{ path: 'list' }">Назад</nuxt-link> -->
             <nuxt-link class="button" :to="{ name: `cms-Sort`, params: { fromcms: true } }">Далее</nuxt-link>
           </div>
           <Weekly v-if="expose.mode === 0"/>
