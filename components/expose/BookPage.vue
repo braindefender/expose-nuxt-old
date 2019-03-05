@@ -114,11 +114,7 @@ export default {
     },
     irbisLink() {
       if (this.book.irbis) {
-        return (
-          'http://webirbis.spsl.nsc.ru/irbis64r_01/cgi/cgiirbis_64.exe' +
-          '?Z21ID=&I21DBN=CAT&P21DBN=CAT&S21STN=1&S21REF=3&S21FMT=fullwebr&C21COM=S&S21CNR=20&S21P01=0&S21P02=1&S21P03=I=&S21STR=' +
-          this.book.irbis.replace(/\*/g, '%2A').replace(/\//g, '%2F')
-        );
+        return this.book.basePath;
       } else {
         return undefined;
       }

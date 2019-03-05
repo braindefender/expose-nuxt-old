@@ -4,6 +4,7 @@ export const state = () => ({
   _id: '',
   mode: 1,
   source: 0,
+  sourceMod: 0,
   title: '',
   image: '',
   email: '',
@@ -36,12 +37,20 @@ export const actions = {
       // weekly
       case 0: {
         let sl = rootState.static.sourceList[state.source];
+        let sml = rootState.static.sourceMod;
+        let sm = state.sourceMod;
+        if (sml[state.source] != undefined) {
+          commit('set', { field: 'title', value: sl.weekly });
+          commit('set', { field: 'phone', value: sml[state.source][sm].phone });
+          commit('set', { field: 'email', value: sml[state.source][sm].email });
+        } else {
+          commit('set', { field: 'title', value: sl.weekly });
+          commit('set', { field: 'phone', value: sl.phone });
+          commit('set', { field: 'email', value: sl.email });
+        }
         commit('set', { field: 'mode', value: 0 });
         commit('set', { field: 'image', value: '' });
         commit('set', { field: 'annotation', value: '' });
-        commit('set', { field: 'title', value: sl.weekly });
-        commit('set', { field: 'phone', value: sl.phone });
-        commit('set', { field: 'email', value: sl.email });
         break;
       }
       // thematic

@@ -75,18 +75,17 @@
       <div v-if="!blocked" class="list-item__actions actions-block actions-block--grow">
         <div class="actions-block__grid">
           <button
+            v-tooltip.left="{content: 'Перейти к выставке', classes: 'popover'}"
+            type="button"
+            class="actions-block__item actions-block__item--hide"
+            @click="open"
+          />
+          <button
             v-if="canModify"
             v-tooltip.left="{content: 'Удалить выставку', classes: 'popover'}"
             type="button"
             class="actions-block__item actions-block__item--remove"
             @click="remove"
-          />
-          <button
-            v-if="false"
-            v-tooltip.left="{content: 'Скрыть выставку', classes: 'popover'}"
-            type="button"
-            class="actions-block__item actions-block__item--hide"
-            @click="hide"
           />
         </div>
       </div>
@@ -154,11 +153,11 @@ export default {
     },
   },
   methods: {
-    hide() {
-      this.$store.dispatch('hideExpose', {
-        _id: this.item._id,
-        status: this.$store.state.currentStatus,
-      });
+    open() {
+      let link = this.item.mode ? this.item.shortLink : `vnp`;
+      this.$router.push(
+        `/expose/${link}-${this.item.source}-${this.item._id.slice(-8)}`,
+      );
     },
     onShare(value) {
       let users = [this.currentUser._id];

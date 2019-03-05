@@ -13,12 +13,38 @@ export const state = () => ({
     },
     {
       index: 1,
-      title: 'Отделение ГПНТБ СО РАН',
+      title: 'Отделение',
       weekly: `Еженедельная выставка новых${String.fromCharCode(160)}поступлений\nотделения ГПНТБ СО РАН`,
       image: weekly1,
       email: 'branchconfhall@gpntbsib.ru',
       phone: '+7 (383) 330-17-59',
     },
+    {
+      index: 2,
+      title: 'СибНСХБ',
+      weekly: `Еженедельная выставка новых${String.fromCharCode(160)}поступлений\nСибНСХБ – филиала ГПНТБ СО РАН`,
+      image: weekly1,
+      email: 'branchconfhall@gpntbsib.ru',
+      phone: '+7 (383) 330-17-59',
+    },
+  ],
+  sourceMod: [
+    [
+      {
+        index: 0,
+        title: 'Читальный зал №7',
+        email: 'cheze@gpntbsib.ru',
+        phone: '+7 (383) 330-17-59',
+      },
+      {
+        index: 1,
+        title: 'Читальный зал №13',
+        email: 'cheze13@gpntbsib.ru',
+        phone: '+7 (383) 330-17-59',
+      }
+    ],
+    undefined,
+    undefined,
   ],
   months: [
     'января',

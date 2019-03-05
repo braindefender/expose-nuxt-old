@@ -43,12 +43,6 @@ export default {
         return '#';
       } else {
         const name = this.item.mode ? this.item.shortLink : `vnp`;
-        // console.log(name);
-        // const name = this.item.title
-        //   .split('\n')
-        //   .join('~')
-        //   .split(' ')
-        //   .join('_');
         return `/expose/${name}-${this.item.source}-${this.item._id.slice(-8)}`;
       }
     },

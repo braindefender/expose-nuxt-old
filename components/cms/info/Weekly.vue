@@ -14,6 +14,13 @@
       </div>
     </div>
 
+    <div v-if="sourceModList" class="ec__row">
+      <div class="ec__title">Читальный зал</div>
+      <div class="ec__toggle">
+        <Toggle :list="sourceModList" :check="sourceMod" :call="setSourceModTo"/>
+      </div>
+    </div>
+
     <div class="ec__row">
       <div class="ec__title">Даты проведения</div>
       <div class="ec__date-picker">
@@ -48,6 +55,9 @@ export default {
   components: { Toggle },
   mounted() {},
   computed: {
+    sourceModList() {
+      return this.$store.state.static.sourceMod[this.source];
+    },
     mode: {
       get() {
         return this.$store.state.info.mode;
@@ -62,6 +72,14 @@ export default {
       },
       set(value) {
         this.$store.commit('info/set', { field: 'source', value });
+      },
+    },
+    sourceMod: {
+      get() {
+        return this.$store.state.info.sourceMod;
+      },
+      set(value) {
+        this.$store.commit('info/set', { field: 'sourceMod', value });
       },
     },
     dates_from: {
@@ -95,6 +113,10 @@ export default {
     },
     setSourceTo(value) {
       this.$store.commit('info/set', { field: 'source', value });
+      this.$store.dispatch('info/changeModeTo', this.mode);
+    },
+    setSourceModTo(value) {
+      this.$store.commit('info/set', { field: 'sourceMod', value });
       this.$store.dispatch('info/changeModeTo', this.mode);
     },
   },
