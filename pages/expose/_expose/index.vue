@@ -40,13 +40,22 @@
                   v-if="expose.maker"
                   class="expose-page__info-text"
                 >Составитель: {{ expose.maker }}</div>
-                <div v-if="expose.phone" class="expose-page__info-text">
+                <div v-if="expose.phones" class="expose-page__info-text">
                   Телефон:
-                  <a :href="`tel:${this.phone}`">{{ prettyPhone }}</a>
+                  <a
+                    v-for="(phone, index) in expose.phones"
+                    :key="index"
+                    :href="`tel:${linkPhone(phone)}`"
+                    class="expose-page__phone"
+                  >{{ phone }}</a>
                 </div>
                 <div v-if="expose.email" class="expose-page__info-text">
                   Email:
                   <a :href="`mailto:${expose.email}`">{{ expose.email }}</a>
+                </div>
+                <div v-if="expose.alt" class="expose-page__info-text">
+                  Ссылка:
+                  <a :href="`mailto:${expose.sourceLink}`">{{ expose.alt }}</a>
                 </div>
               </div>
             </affix>
@@ -132,6 +141,16 @@ export default {
       });
       this.inverse = !this.inverse;
     },
+    linkPhone(phone) {
+      return `+${phone.replace(/\D/g, '')}`;
+    },
+    prettyPhone(phone) {
+      const clean = phone.replace(/\D/g, '');
+      const match = clean.match(/^(\d{1})(\d{3})(\d{3})(\d{4})$/);
+      if (match) {
+        return `+${match[1]} (${match[2]}) ${match[3]}-${match[4]}`;
+      }
+    },
   },
   computed: {
     expose() {
@@ -150,16 +169,6 @@ export default {
     },
     path() {
       return $nuxt.$route.path.split('/').pop();
-    },
-    phone() {
-      return `+${this.expose.phone.replace(/\D/g, '')}`;
-    },
-    prettyPhone() {
-      const clean = this.expose.phone.replace(/\D/g, '');
-      const match = clean.match(/^(\d{1})(\d{3})(\d{3})(\d{4})$/);
-      if (match) {
-        return `+${match[1]} (${match[2]}) ${match[3]}-${match[4]}`;
-      }
     },
     coverOptions() {
       const sourceList = this.$store.state.static.sourceList;
@@ -200,6 +209,7 @@ export default {
       color: rgba(black, 0.25)
 
   .expose-page
+
     &__grid
       padding-top: 20px
       display: grid
@@ -209,6 +219,7 @@ export default {
       min-width: 320px
       max-width: 1200px
       margin: 0 auto
+
     &__panel
       font-size: 14px
       border-radius: 5px
@@ -219,11 +230,14 @@ export default {
       align-items: center
       background-color: rgba(black, 0.05)
       color: black
+
     &__menu
       padding-left: 15px
+
     &__search
       padding-left: 12px
       font-size: 0
+
     &__search-icon
       display: inline-block
       width: 20px
@@ -231,6 +245,7 @@ export default {
       background: url('/assets/icon-search.svg') center center no-repeat
       opacity: 0.25
       margin-right: 5px
+
     &__search-input
       font-size: 13px
       border: none
@@ -238,10 +253,13 @@ export default {
       background: none
       &::placeholder
         color: rgba(black, 0.4)
+
     &__sort
       padding-left: 30px
+
     &__sort-title
       margin-right: 20px
+
     &__sort-button
       margin: 0
       padding: 0
@@ -258,6 +276,10 @@ export default {
       &--active
         font-weight: bold
         color: black
+
+    &__phone
+      display: block
+
     &__info-title
       color: black
       font-weight: bold
@@ -265,6 +287,7 @@ export default {
       line-height: 20px
       padding-top: 15px
       margin-bottom: 15px
+
     &__info-text
       font-size: 14px
       line-height: 20px
