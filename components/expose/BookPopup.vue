@@ -11,7 +11,7 @@
         <div class="book-popup__cover-year">{{ book.year }}</div>
       </div>
       <div class="book-popup__links">
-        <a class="book-popup__link" :href="book.link">Перейти в каталог</a>
+        <a class="book-popup__link" :href="book.basePath">Перейти в каталог</a>
         <a class="book-popup__link" href="#">Полный текст</a>
       </div>
     </div>
@@ -306,6 +306,7 @@ export default {
       transition: all ease 0.2s
       position: relative
       overflow: hidden
+      cursor: pointer
       &:hover
         background-color: rgba(black, 0.1)
       &:active, &:focus
