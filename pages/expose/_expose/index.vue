@@ -2,7 +2,7 @@
   <div class="container">
     <div class="expose-page">
       <cover :options="coverOptions"/>
-      <annotation :text="expose.annotation"/>
+      <annotation v-if="expose.mode != 0" :text="expose.annotation"/>
       <div class="expose-page__grid">
         <div class="expose-page__panel expose-page__sort">
           <span class="expose-page__sort-title">Сортировка:</span>

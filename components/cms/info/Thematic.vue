@@ -262,7 +262,7 @@ export default {
       this.$store.dispatch('info/changeModeTo', this.mode);
     },
     changePhoneTo(value) {
-      this.$store.commit('info/set', { field: 'phone', value });
+      this.$store.commit('info/set', { field: 'phones', value: [value] });
     },
     changeCategories(value) {
       this.$store.commit('info/set', { field: 'categories', value });

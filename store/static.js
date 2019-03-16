@@ -41,6 +41,14 @@ export const state = () => ({
     [
       {
         index: 0,
+        title: 'Общее',
+        alt: null,
+        email: 'abonement@spsl.nsc.ru',
+        phones: ['+7 (383) 266-17-59'],
+        sourceLink: '',
+      },
+      {
+        index: 1,
         title: 'Читальный зал №8',
         alt: 'Ч/З Периодики',
         email: 'narr@spsl.nsc.ru',
@@ -48,7 +56,7 @@ export const state = () => ({
         sourceLink: '',
       },
       {
-        index: 1,
+        index: 2,
         title: 'Читальный зал №10',
         alt: 'Ч/З Справочной литературы',
         email: 'sbo@gpntbsib.ru',
