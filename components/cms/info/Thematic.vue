@@ -102,7 +102,7 @@
         type="tel"
         class="ec__input"
         :masked="true"
-        mask="+7 (###) ###-####"
+        mask="+7 (###) ###-##-##"
         v-model="phones"
         @input="changePhoneTo"
       />
