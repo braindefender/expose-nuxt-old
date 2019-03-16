@@ -11,7 +11,7 @@ export const state = () => ({
       )}поступлений\nГПНТБ СО РАН`,
       image: weekly0,
       email: 'abonement@gpntbsib.ru',
-      phone: ['+7 (383) 266-85-18'],
+      phones: ['+7 (383) 266-85-18'],
       sourceLink: '',
     },
     {

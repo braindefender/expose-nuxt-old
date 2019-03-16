@@ -103,7 +103,7 @@
         class="ec__input"
         :masked="true"
         mask="+7 (###) ###-####"
-        v-model="phone"
+        v-model="phones"
         @input="changePhoneTo"
       />
     </div>
@@ -200,12 +200,12 @@ export default {
         this.$store.commit('info/set', { field: 'email', value });
       },
     },
-    phone: {
+    phones: {
       get() {
-        return this.$store.state.info.phone;
+        return this.$store.state.info.phones[0];
       },
       set(value) {
-        this.$store.commit('info/set', { field: 'phone', value });
+        this.$store.commit('info/set', { field: 'phones', value: [value] });
       },
     },
     dates_from: {

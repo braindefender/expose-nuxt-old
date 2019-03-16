@@ -8,7 +8,7 @@ export const state = () => ({
   title: '',
   image: '',
   email: '',
-  phone: '',
+  phones: '',
   author: 'Автор выставки',
   dates: {
     create: '1984-01-01',
