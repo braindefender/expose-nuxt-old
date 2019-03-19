@@ -1,14 +1,23 @@
 <template>
-  <book-page v-if="book !== undefined" :book="book"/>
+  <div class="fullscreen-container book-page">
+    <div v-if="expose" class="book-page__return">
+      <div class="book-page__return-image">
+        <img :src="exposeImage" :alt="expose.title">
+      </div>
+      <a :href="`/expose/${expose.link}`" class="book-page__return-link">{{ expose.title }}</a>
+    </div>
+
+    <book-popup v-if="book" :book="book" :opened="true"/>
+  </div>
 </template>
 
 <script>
-import BookPage from '~/components/expose/BookPage';
+import BookPopup from '~/components/expose/BookPopup';
 
 export default {
   name: 'Item',
   components: {
-    BookPage,
+    BookPopup,
   },
   mounted() {
     this.$axios
@@ -19,10 +28,8 @@ export default {
             params: { _id: res.data.id, title: this.path.expose },
           })
           .then(resp => {
-            console.log('in book', res.data);
-            console.log('in return', resp);
             this.book = res.data;
-            this.book.expose = resp.expose;
+            this.expose = resp.expose;
           })
           .catch(err => {
             console.log('Error: cannot get return object', err);
@@ -30,7 +37,7 @@ export default {
       })
       .catch(err => {
         console.log(`Error: get book named: ${this.path.book}`, err);
-        // this.$router.push({ path: '/' });
+        this.$router.push({ path: '/' });
       });
   },
   data() {
@@ -38,24 +45,7 @@ export default {
       exposeLink: '',
       bookLink: '',
       book: undefined,
-      // book: {
-      //   expose: {},
-      //   cover: '',
-      //   title:
-      //     'Фазовый состав многокомпонентных гамма-сплавов на основе алюминидов титана: учеб. пособие',
-      //   year: 2017,
-      //   source: 'ВИАМ',
-      //   authors: ['Белов Н.А.', 'Белов В.Д.', 'Дашкевич Н.И.'],
-      //   author: 'Белов Н.А.',
-      //   annotation:
-      //     'В учебном пособии обобщены результаты экспериментальных и расчетных исследований авторов в области многокомпонентных гамма-сплавов на основе алюминидов титана. С использованием программы Thermo-Calc проанализировано влияние наиболее часто используемых легирующих элементов на структуру и фазовый состав. Приведены результаты экспериментальных плавок по приготовлению гамма-сплавов типа TNM. \n\nКнига рассчитана на широкий круг специалистов, которые используют для работы гамма-сплавы, а также может быть полезна аспирантам и магистрантам, обучающимся по материаловедческим специальностям, прежде всего в области легких сплавов, при выполнении диссертационных и квалификационных работ, связанных с гамма-сплавами.',
-      //   info: [
-      //     {
-      //       name: 'ISBN',
-      //       value: '8-800555-3535',
-      //     },
-      //   ],
-      // },
+      expose: undefined,
     };
   },
   computed: {
@@ -66,6 +56,68 @@ export default {
         book: path[path.length - 1],
       };
     },
+    exposeImage() {
+      if (this.expose) {
+        if (this.expose.source !== undefined) {
+          return this.expose.cover !== ''
+            ? this.expose.cover
+            : this.$store.state.static.sourceList[this.expose.source].image;
+        } else {
+          return undefined;
+        }
+      } else {
+        return undefined;
+      }
+    },
   },
 };
 </script>
+
+<style lang="sass">
+
+@import '~/styles/mixins.sass'
+
+.fullscreen-container
+  +posa(0px)
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  background-color: rgba(black, 0.1)
+
+.book-page
+  &__return
+    width: 1024px
+    margin-bottom: 30px
+    position: relative
+    z-index: 5
+    border-radius: 10px
+    overflow: hidden
+    &::after
+      +posa(0)
+      content: ''
+      background-color: rgba(black, 0.4)
+  &__return-image
+    +posa(0)
+    display: flex
+    align-items: center
+    img
+      width: 100%
+  &__return-link
+    +tdn
+    position: relative
+    z-index: 10
+    display: flex
+    align-items: center
+    height: 60px
+    padding-left: 50px
+    color: white
+    &::after
+      +posa(0)
+      left: 20px
+      right: auto
+      width: 15px
+      content: ''
+      background: url('~/assets/icon-chevron-left.svg') center center no-repeat
+
+</style>

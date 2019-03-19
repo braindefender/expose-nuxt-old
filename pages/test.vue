@@ -1,6 +1,6 @@
 <template>
   <div class="fullscreen-container">
-    <book-popup :book="book"/>
+    <book-popup :book="book" :opened="false"/>
   </div>
 </template>
 

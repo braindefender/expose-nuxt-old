@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="book-popup__content">
-      <div class="book-popup__controls">
+      <div v-if="!opened" class="book-popup__controls">
         <a class="book-popup__badge book-popup__badge--link" :href="link">Открыть в новом окне</a>
       </div>
       <div class="book-popup__title">{{ book.title }}</div>
@@ -78,6 +78,11 @@ export default {
     book: {
       type: Object,
       required: true,
+    },
+    opened: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
   },
   data() {
@@ -162,7 +167,8 @@ export default {
     &__content
       display: grid
       grid-row-gap: 10px
-      grid-template-rows: 24px repeat(5, min-content)
+      grid-template-rows: repeat(5, min-content)
+      grid-auto-rows: min-content
 
     &__controls
       font-size: 0
@@ -232,6 +238,7 @@ export default {
       color: rgba(black, 0.8)
       padding-top: 6px
       padding-bottom: 6px
+      white-space: pre-wrap
 
     &__additional
       display: grid
