@@ -90,17 +90,18 @@ export const actions = {
       });
   },
   pushBook({ commit }, item) {
-    console.log(item)
-    this.$axios.$post('/cms/book', item);
+    console.log(item);
+    // this.$axios.$post('/cms/book', item);
+    this.$axios.post('/cms/test', item);
   },
 };
 
-const checkDynamicFields = function (item, fields, out) {
+const checkDynamicFields = function(item, fields, out) {
   fields.forEach(field => {
-    let hasField = item[field] && item[field] !== "";
+    let hasField = item[field] && item[field] !== '';
     Vue.set(out, `has${cap(field)}`, hasField);
   });
-}
+};
 
 function cap(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
