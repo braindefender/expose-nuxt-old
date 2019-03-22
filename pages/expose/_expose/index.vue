@@ -4,7 +4,7 @@
       <cover :options="coverOptions"/>
       <annotation v-if="expose.mode != 0" :text="expose.annotation"/>
       <div class="expose-page__grid">
-        <div class="expose-page__panel expose-page__sort">
+        <div v-if="false" class="expose-page__panel expose-page__sort">
           <span class="expose-page__sort-title">Сортировка:</span>
           <button
             type="button"
@@ -13,14 +13,14 @@
           <button type="button" class="expose-page__sort-button" @click="sortByAuthor">по автору</button>
           <button type="button" class="expose-page__sort-button" @click="sortByYear">по году</button>
         </div>
-        <div class="expose-page__panel expose-page__search">
-          <span class="expose-page__search-icon"></span>
-          <input class="expose-page__search-input" type="text" placeholder="Поиск по странице">
-        </div>
         <div class="expose-page__content">
           <expose-stack v-for="(item, index) in stack.list" :key="index" :stack="item"/>
         </div>
         <div class="expose-page__content-selector">
+          <div v-if="false" class="expose-page__panel expose-page__search">
+            <span class="expose-page__search-icon"></span>
+            <input class="expose-page__search-input" type="text" placeholder="Поиск по странице">
+          </div>
           <no-ssr>
             <affix
               class="expose-page__menu"
@@ -213,7 +213,7 @@ export default {
       padding-top: 20px
       display: grid
       grid-template-columns: 2fr 1fr
-      grid-template-rows: 40px auto
+      grid-template-rows: auto
       grid-gap: 20px 15px
       min-width: 320px
       max-width: 1200px
@@ -236,6 +236,8 @@ export default {
     &__search
       padding-left: 12px
       font-size: 0
+      height: 40px
+      margin-bottom: 10px
 
     &__search-icon
       display: inline-block

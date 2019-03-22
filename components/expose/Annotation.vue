@@ -16,6 +16,7 @@ export default {
   .expose-annotation
     width: 100%
     background-color: white
+    margin-bottom: 15px
     &__text
       margin: 0 auto
       padding-top: 35px

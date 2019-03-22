@@ -38,7 +38,7 @@
     <div v-if="opened" class="bc__popup-wrapper">
       <div class="bc__popup-bg" @click="closePopup"></div>
       <div class="bc__popup">
-        <book-popup :book="book"/>
+        <book-popup :book="book" @close="closePopup"/>
       </div>
     </div>
   </div>

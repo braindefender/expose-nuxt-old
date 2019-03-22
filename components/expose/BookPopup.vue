@@ -12,12 +12,17 @@
       </div>
       <div class="book-popup__links">
         <a class="book-popup__link" :href="book.basePath">Перейти в каталог</a>
-        <a class="book-popup__link" href="#">Полный текст</a>
+        <a v-if="book.link" class="book-popup__link" :href="book.link">Полный текст</a>
       </div>
     </div>
     <div class="book-popup__content">
       <div v-if="!opened" class="book-popup__controls">
         <a class="book-popup__badge book-popup__badge--link" :href="link">Открыть в новом окне</a>
+        <button
+          type="button"
+          class="book-popup__circle-button book-popup__circle-button--close"
+          @click="closePopup"
+        ></button>
       </div>
       <div class="book-popup__title">{{ book.title }}</div>
       <div class="book-popup__authors">{{ authors }}</div>
@@ -118,7 +123,7 @@ export default {
       return path.substr(0, pos + 7) + 'full_' + path.substr(pos + 7);
     },
     closePopup() {
-      this.$emit('closePopup');
+      this.$emit('close');
     },
   },
 };
@@ -173,17 +178,13 @@ export default {
     &__controls
       font-size: 0
       display: flex
-      justify-content: flex-end
+      justify-content: space-between
 
     &__badges
       display: flex
 
     &__badge
-      +tdn
-      display: flex
-      justify-content: center
-      align-items: center
-      outline: none
+      +button
       font-size: 13px
       height: 24px
       padding-left: 10px
@@ -192,7 +193,6 @@ export default {
       background-color: rgba(black, 0.05)
       color: rgba(black, 0.6)
       margin-right: 10px
-      position: relative
       overflow: hidden
       &:last-child
         margin-right: 0
@@ -219,6 +219,30 @@ export default {
           top: 32px
           bottom: -32px
 
+    &__circle-button
+      +button
+      height: 24px
+      width: 24px
+      background-color: rgba(black, 0.05)
+      border-radius: 50%
+      &:hover
+        background-color: rgba(black, 0.1)
+      &:active
+        background-color: rgba(black, 0.15)
+
+      &--close
+        &::before, &::after
+          position: absolute
+          content: ''
+          width: 10px
+          height: 2px
+          background-color: $color-accent
+          border-radius: 5em
+        &::before
+          transform: rotate(45deg)
+        &::after
+          transform: rotate(-45deg)
+
     &__title
       font-size: 20px
       line-height: 22px
@@ -239,6 +263,9 @@ export default {
       padding-top: 6px
       padding-bottom: 6px
       white-space: pre-wrap
+      max-height: 160px
+      overflow-y: scroll
+      overflow-x: hidden
 
     &__additional
       display: grid
@@ -298,11 +325,7 @@ export default {
       grid-gap: 15px 15px
 
     &__link
-      +tdn
-      outline: none
-      display: flex
-      justify-content: center
-      align-items: center
+      +button
       height: 32px
       border-radius: 5px
       font-size: 13px
@@ -311,9 +334,7 @@ export default {
       padding-left: 15px
       padding-right: 15px
       transition: all ease 0.2s
-      position: relative
       overflow: hidden
-      cursor: pointer
       &:hover
         background-color: rgba(black, 0.1)
       &:active, &:focus
