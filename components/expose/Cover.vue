@@ -56,7 +56,13 @@ export default {
       if (this.options.mode === 0) {
         return this.sl[this.options.source].image;
       } else {
-        return this.options.image || this.sl.image;
+        let img;
+        if (this.options.image.substr(0, 4) == 'http') {
+          img = this.fullImage(this.options.image);
+        } else {
+          img = this.options.image;
+        }
+        return img || this.sl.image;
       }
     },
     sourceTag() {
@@ -64,6 +70,11 @@ export default {
     },
   },
   methods: {
+    fullImage(image) {
+      console.log(image);
+      let pos = image.lastIndexOf('/');
+      return image.substr(0, pos + 1) + 'full_' + image.substr(pos + 1);
+    },
     getDateFrom(input) {
       const date = new Date(input);
       return {

@@ -171,7 +171,6 @@ export default {
       return $nuxt.$route.path.split('/').pop();
     },
     coverOptions() {
-      const sourceList = this.$store.state.static.sourceList;
       return {
         cms: this.options ? this.options.fromcms : false,
         ...this.expose,

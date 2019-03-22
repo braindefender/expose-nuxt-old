@@ -91,8 +91,8 @@ export const actions = {
   },
   pushBook({ commit }, item) {
     console.log(item);
-    this.$axios.$post('/cms/book', item);
-    // this.$axios.post('/cms/test', item);
+    // this.$axios.$post('/cms/book', item);
+    this.$axios.post('/cms/test', item);
   },
 };
 
