@@ -1,4 +1,5 @@
 @import '~/styles/vars.sass'
+@import '~/styles/mixins.sass'
 
 fieldset[disabled] .multiselect
   pointer-events: none
@@ -53,7 +54,7 @@ fieldset[disabled] .multiselect
 
 .multiselect, .multiselect__input, .multiselect__single
   font-family: inherit
-  font-size: 14px
+  font-size: 13px
   font-weight: normal
   -ms-touch-action: manipulation
   touch-action: manipulation
@@ -84,6 +85,8 @@ fieldset[disabled] .multiselect
       border-bottom-right-radius: 0
   .multiselect__select
     transform: rotate(180deg)
+    &::before
+      border-color: $color-accent transparent transparent transparent
 
 .multiselect--above.multiselect--active
   .multiselect__current, .multiselect__input, .multiselect__tags
@@ -102,7 +105,6 @@ fieldset[disabled] .multiselect
   width: 100%
   transition: border .1s ease
   box-sizing: border-box
-  // margin-bottom: 8px
   vertical-align: top
   padding-top: 2px
 
@@ -141,12 +143,12 @@ fieldset[disabled] .multiselect
   display: block
   padding-top: 3px
   padding-left: 3px
-  padding-right: 32px
+  padding-right: 30px
   padding-bottom: 3px
   border-radius: 5px
   border: 1px solid rgba(black,0.2)
   background: #fff
-  font-size: 14px
+  font-size: 13px
 
 .multiselect__tag
   position: relative
@@ -155,39 +157,39 @@ fieldset[disabled] .multiselect
   justify-content: flex-start
   align-items: center
   height: 24px
-  padding-left: 10px
-  padding-right: 26px
-  border-radius: 5px
-  margin-right: 5px
+  padding-left: 7px
+  padding-right: 29px
+  border-radius: 3px
   color: white
-  font-size: 14px
+  font-size: 13px
   background: $color-accent
-  // margin-bottom: 5px
   white-space: nowrap
   overflow: hidden
   max-width: 100%
   text-overflow: ellipsis
 
 .multiselect__tag-icon
+  +posa(0)
   cursor: pointer
-  margin-left: 7px
-  position: absolute
-  right: 0
-  top: 0
-  bottom: 0
-  font-weight: 700
-  font-style: normal
-  width: 22px
-  text-align: center
-  line-height: 22px
+  left: auto
+  width: 24px
   transition: all .2s ease
-  border-radius: 5px
-  &:after
-    content: "\D7"
-    color: white
-    font-size: 16px
-    position: relative
-    top: 1px
+  border-radius: 3px
+  &::before, &::after
+    position: absolute
+    top: 50%
+    left: 50%
+    margin-left: -4px
+    margin-top: -1px
+    width: 8px
+    height: 2px
+    border-radius: 5em
+    background-color: white
+    content: ''
+  &::before
+    transform: rotate(-45deg)
+  &::after
+    transform: rotate(45deg)
   &:focus, &:hover
     background: rgba(black, 0.1)
   &:focus:after, &:hover:after
@@ -209,30 +211,28 @@ fieldset[disabled] .multiselect
   cursor: pointer
 
 .multiselect__select
-  line-height: 16px
-  box-sizing: border-box
   display: block
-  margin: 0
   text-decoration: none
   cursor: pointer
   position: absolute
-  width: 36px
+  width: 30px
   height: 30px
   right: 1px
   top: 1px
-  padding: 4px 8px
-  text-align: center
-  transition: transform 0.2s ease
+  transition: all 0.2s ease
   border-radius: 5px
   &:before
+    top: calc(50% + 3px)
+    transition: all 0.2s ease
+    left: 50%
+    margin-left: -4px
+    width: 0
+    height: 0
+    border-style: solid
+    border-width: 6px 4px 0 4px
+    border-color: #999 transparent transparent transparent
     position: relative
     right: 0
-    top: 70%
-    color: #999
-    margin-top: 4px
-    border-style: solid
-    border-width: 5px 5px 0
-    border-color: #999 transparent transparent
     content: ""
 
 .multiselect__placeholder

@@ -13,6 +13,7 @@
       <div class="book-popup__links">
         <a class="book-popup__link" :href="book.basePath">Перейти в каталог</a>
         <a v-if="book.link" class="book-popup__link" :href="book.link">Полный текст</a>
+        <button v-if="book.contents" class="book-popup__link" type="button" @click="showContents">Содержание</button>
       </div>
     </div>
     <div class="book-popup__content">

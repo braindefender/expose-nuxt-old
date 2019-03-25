@@ -1,18 +1,19 @@
 <template>
-  <div class="fullscreen-container">
-    <category-card/>
-  </div>
+  <div class="fullscreen-container"></div>
 </template>
 
 <script>
-import CategoryCard from '~/components/expose/category/CategoryCard';
+// if (process.browser) {
+//   const draw = require('~/js/index.js');
+// }
 
 export default {
   name: 'Test',
-  components: { CategoryCard },
+  components: {},
   data() {
     return {};
   },
+  mounted() {},
 };
 </script>
 

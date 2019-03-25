@@ -20,10 +20,16 @@
           </div>
         </div>
         <div v-if="items.length !== 0" class="cms-table__list">
-          <list-item-new v-for="(item, index) in items" :key="index" :item="item"/>
+          <list-item-new
+            v-for="(item, index) in items"
+            :key="index"
+            :item="item"
+            @prompt="showModal"
+          />
         </div>
       </div>
     </div>
+    <modal v-show="modal" :show="modal" :options="modalOptions"/>
   </div>
 </template>
 
@@ -32,6 +38,7 @@ import ListItemNew from '~/components/cms/list/ListItemNew';
 import Sidebar from '~/components/cms/sidebar/Sidebar';
 import Toggle from '~/components/cms/common/Toggle';
 import SortMenu from '~/components/cms/common/SortMenu';
+import Modal from '~/components/common/Modal';
 
 export default {
   name: 'List',
@@ -41,9 +48,16 @@ export default {
     Sidebar,
     Toggle,
     SortMenu,
+    Modal,
   },
   data() {
-    return {};
+    return {
+      modal: false,
+      modalOptions: {
+        okcallback: () => undefined,
+        cancelcallback: () => undefined,
+      },
+    };
   },
   computed: {
     items() {
@@ -72,6 +86,16 @@ export default {
     setSortType(option) {
       this.$store.dispatch('setSortType', option);
     },
+    showModal(options) {
+      this.modalOptions = { oktext: 'Ок', canceltext: 'Отменить', ...options };
+      let self = this;
+      this.modalOptions.cancelcallback = () => (self.modal = false);
+      this.modalOptions.okcallback = () => {
+        options.okcallback();
+        self.modal = false;
+      };
+      this.modal = true;
+    },
   },
 };
 </script>
@@ -90,7 +114,6 @@ export default {
       display: flex
       width: 100%
       align-items: center
-      margin-bottom: 20px
       flex: 0 0 auto
       position: relative
       &--blocked
@@ -132,8 +155,7 @@ export default {
         width: 360px
         flex: 0 0 auto
     &__list
-      padding-left: 15px
-      padding-right: 15px
+      padding: 15px
       > div
         margin-bottom: 15px
         &:last-child

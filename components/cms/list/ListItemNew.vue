@@ -11,11 +11,11 @@
       <div class="list-item__dates dates-block">
         <div class="dates-block__grid">
           <p class="dates-block__name">Создано:</p>
-          <p class="dates-block__value">{{item.dates.create}}</p>
+          <p class="dates-block__value">{{pretty(item.dates.create)}}</p>
           <p class="dates-block__name">Обновлено:</p>
-          <p class="dates-block__value">{{item.dates.update}}</p>
+          <p class="dates-block__value">{{pretty(item.dates.update)}}</p>
           <p class="dates-block__name">Опубликовано:</p>
-          <p class="dates-block__value">{{item.dates.public}}</p>
+          <p class="dates-block__value">{{pretty(item.dates.public)}}</p>
         </div>
       </div>
       <div class="list-item__divider"/>
@@ -97,7 +97,10 @@
 </template>
 
 <script>
+import Modal from '~/components/common/Modal';
+
 export default {
+  components: { Modal },
   props: {
     item: {
       type: Object,
@@ -116,6 +119,9 @@ export default {
     };
   },
   computed: {
+    months() {
+      return this.$store.state.static.months;
+    },
     blocked() {
       return this.item.blocked;
     },
@@ -123,18 +129,6 @@ export default {
       return this.item.image
         ? this.item.image
         : this.$store.state.static.sourceList[this.item.source].image;
-    },
-    date_public() {
-      let p = this.item.dates.public.split('-');
-      return '';
-    },
-    date_update() {
-      let p = this.item.dates.public.split('-');
-      return '';
-    },
-    date_create() {
-      let p = this.item.dates.public.split('-');
-      return '';
     },
     usersList() {
       return this.$store.state.usersList.filter(
@@ -153,6 +147,10 @@ export default {
     },
   },
   methods: {
+    pretty(date) {
+      let p = date.split('-').map(i => parseInt(i));
+      return `${p[2]} ${this.months[p[1] - 1]}, ${p[0]}`;
+    },
     open() {
       let link = this.item.mode ? this.item.shortLink : `vnp`;
       this.$router.push(
@@ -178,10 +176,19 @@ export default {
       });
     },
     remove() {
-      this.$store.dispatch('removeExpose', {
-        _id: this.item._id,
-        status: this.$store.state.currentStatus,
-      });
+      let self = this;
+      let options = {
+        okcallback: () => {
+          self.$store.dispatch('removeExpose', {
+            _id: self.item._id,
+            status: self.$store.state.currentStatus,
+          });
+        },
+        header: 'Удаление',
+        body: 'Действительно удалить выставку?',
+        showcancel: true,
+      };
+      this.prompt(options);
     },
     getSharedUsers() {
       this.sharedUsers = this.item.ownerID.filter(
@@ -190,6 +197,9 @@ export default {
       this.sharedUsers = this.sharedUsers.filter(
         el => el.username.substr(0, 5) !== 'admin',
       );
+    },
+    prompt(options) {
+      this.$emit('prompt', options);
     },
   },
   mounted() {
@@ -213,9 +223,12 @@ export default {
     border-radius: 5px
     border: 1px solid rgba(black, 0.1)
     &__info
-      display: flex
-      flex-direction: row
+      // display: flex
+      // flex-direction: row
       flex-grow: 1
+      display: grid
+      grid-template-columns: 240px 31px 189px 30px 1fr 1fr
+      grid-template-rows: 1fr
       padding-top: 10px
       padding-bottom: 10px
       padding-right: 10px
@@ -225,6 +238,8 @@ export default {
       margin-left: 15px
       margin-right: 15px
     &__alert
+      grid-column-start: 3
+      grid-column-end: 6
       display: flex
       justify-content: center
       align-items: center
