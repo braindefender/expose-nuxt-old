@@ -224,6 +224,7 @@ export default {
       width: 1px
       margin-left: 15px
       margin-right: 15px
+      height: 100%
 
     &__alert
       grid-column-start: 3

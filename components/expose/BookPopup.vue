@@ -13,7 +13,18 @@
       <div class="book-popup__links">
         <a class="book-popup__link" :href="book.basePath">Перейти в каталог</a>
         <a v-if="book.link" class="book-popup__link" :href="book.link">Полный текст</a>
-        <button v-if="book.contents" class="book-popup__link" type="button" @click="showContents">Содержание</button>
+        <button
+          v-if="book.contents"
+          class="book-popup__link"
+          type="button"
+          @click="showContents"
+        >Содержание</button>
+        <a
+          v-for="(item, index) in book.extLink"
+          :key="index"
+          :href="item.link"
+          class="book-popup__link"
+        >{{ item.title }}</a>
       </div>
     </div>
     <div class="book-popup__content">
@@ -41,14 +52,17 @@
           <span>{{ book.pages }}</span>
         </div>
       </div>
-      <div class="book-popup__annotation">{{ book.annotation }}</div>
+      <div v-if="annotation" class="book-popup__annotation">{{ book.annotation }}</div>
       <div class="book-popup__additional">
         <div v-if="hasInfo" class="book-popup__info">
           <div class="book-popup__info-heading">Дополнительная информация</div>
           <ul class="book-popup__info-list">
             <li v-for="(item, index) in book.info" :key="index" class="book-popup__info-line">
               <div class="book-popup__info-name">{{ item.name }}</div>
-              <div class="book-popup__info-value">{{ item.value }}</div>
+              <div v-if="checkIsArray(item.value)" class="book-popup__info-value">
+                <span v-for="(field, key) in item.value" :key="key">{{ field }}</span>
+              </div>
+              <div v-else class="book-popup__info-value">{{ item.value }}</div>
             </li>
           </ul>
         </div>
@@ -119,6 +133,9 @@ export default {
     },
   },
   methods: {
+    checkIsArray(arg) {
+      return Array.isArray(arg);
+    },
     full(path) {
       let pos = path.indexOf('/books');
       return path.substr(0, pos + 7) + 'full_' + path.substr(pos + 7);
