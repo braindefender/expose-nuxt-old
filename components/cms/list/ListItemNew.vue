@@ -214,6 +214,7 @@ export default {
       display: grid
       grid-template-columns: 240px 31px min-content 31px min-content 1fr
       grid-template-rows: 1fr
+      align-items: center
       padding-top: 10px
       padding-bottom: 10px
       padding-right: 10px
