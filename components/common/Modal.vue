@@ -2,12 +2,19 @@
   <div transition="modal" class="modal">
     <div class="modal__wrapper">
       <div class="modal__header" :class="`modal__header--${options.type}`">{{ options.header }}</div>
-      <div class="modal__body">{{ options.body }}</div>
+      <div class="modal__body">
+        <slot/>
+      </div>
       <div class="modal__buttons">
-        <div class="modal__button" @click="options.okcallback">{{ options.oktext }}</div>
+        <div
+          class="modal__button"
+          :class="options.swapcolors ? 'modal__button--error' : 'modal__button--ok'"
+          @click="options.okcallback"
+        >{{ options.oktext }}</div>
         <div
           v-if="options.showcancel"
           class="modal__button"
+          :class="options.swapcolors ? 'modal__button--ok' : 'modal__button--error'"
           @click="options.cancelcallback"
         >{{ options.canceltext }}</div>
       </div>
@@ -32,6 +39,7 @@ export default {
 <style lang="sass">
 
 @import '~/styles/vars.sass'
+@import '~/styles/mixins.sass'
 
 .modal
   display: flex
@@ -47,16 +55,22 @@ export default {
   position: absolute
 
   &__wrapper
-    width: 320px
+    min-width: 320px
     border-radius: 5px
     box-shadow: 0 5px 20px rgba(black, 0.1)
     transition: opacity 0.3s ease
-    text-align: center
     background: white
+    padding: 20px
+    display: grid
+    grid-template-rows: 32px 1fr 32px
+    grid-row-gap: 20px
 
   &__header
-    padding: 10px 20px
+    display: flex
+    justify-content: center
+    align-items: center
     font-weight: bold
+    text-align: center
     &--tip
       background: rgba($color-accent, 0.1)
     &--error
@@ -64,21 +78,29 @@ export default {
     &--warning
       background: rgba($color-warning, 0.1)
 
-  &__body
-    padding: 20px
-
   &__buttons
     display: flex
 
   &__button
+    +button
+    border-radius: 5px
     width: 100%
     font-weight: bold
     font-size: 14px
-    cursor: pointer
     padding: 10px 20px
-    &:first-child
-      background: rgba($color-accent, 0.1)
-    &:nth-child(2)
-      background: rgba($color-error, 0.1)
+    margin-right: 10px
+    border: 1px solid rgba(black, 0.05)
+    &--ok
+      background: rgba(black, 0.05)
+      color: $color-accent
+    &--error
+      background: rgba(black, 0.05)
+      color: $color-error
+    &:last-child
+      margin-right: 0
+
+  .modal-preview
+    &__grid
+      display: grid
 
 </style>

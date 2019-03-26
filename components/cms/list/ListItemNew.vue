@@ -1,23 +1,8 @@
 <template>
   <div class="list-item">
-    <div
-      class="expo-card"
-      :style="`background-image: url('${image}');`"
-      @click="passRedirect('Info')"
-    >
-      <p class="expo-card__title">{{item.title}}</p>
-    </div>
+    <expo-card :title="item.title" :image="image" @click="passRedirect('Info')"/>
     <div class="list-item__info">
-      <div class="list-item__dates dates-block">
-        <div class="dates-block__grid">
-          <p class="dates-block__name">Создано:</p>
-          <p class="dates-block__value">{{pretty(item.dates.create)}}</p>
-          <p class="dates-block__name">Обновлено:</p>
-          <p class="dates-block__value">{{pretty(item.dates.update)}}</p>
-          <p class="dates-block__name">Опубликовано:</p>
-          <p class="dates-block__value">{{pretty(item.dates.public)}}</p>
-        </div>
-      </div>
+      <expo-date class="list-item__dates" :dates="item.dates"/>
       <div class="list-item__divider"/>
       <div v-if="!blocked" class="list-item__actions actions-block">
         <div class="actions-block__grid">
@@ -49,10 +34,10 @@
       </div>
       <div v-if="!blocked" class="list-item__divider"/>
       <div v-if="!blocked" class="list-item__users users-block">
-        <p class="users-block__creator">
+        <div class="users-block__creator">
           <span>Создатель:</span>
           {{item.creator.username}}
-        </p>
+        </div>
         <div class="users-block__picker">
           <no-ssr>
             <multiselect
@@ -97,10 +82,13 @@
 </template>
 
 <script>
-import Modal from '~/components/common/Modal';
+import { prettyDate } from '~/assets/scripts/util';
+
+import ExpoCard from '~/components/common/ExpoCard';
+import ExpoDate from '~/components/common/ExpoDate';
 
 export default {
-  components: { Modal },
+  components: { ExpoCard, ExpoDate },
   props: {
     item: {
       type: Object,
@@ -119,9 +107,6 @@ export default {
     };
   },
   computed: {
-    months() {
-      return this.$store.state.static.months;
-    },
     blocked() {
       return this.item.blocked;
     },
@@ -140,7 +125,6 @@ export default {
         return true;
       }
       return this.currentUser._id === this.item.creator._id;
-      // return true;
     },
     currentUser() {
       return this.$store.state.auth.user;
@@ -148,8 +132,7 @@ export default {
   },
   methods: {
     pretty(date) {
-      let p = date.split('-').map(i => parseInt(i));
-      return `${p[2]} ${this.months[p[1] - 1]}, ${p[0]}`;
+      return prettyDate(date);
     },
     open() {
       let link = this.item.mode ? this.item.shortLink : `vnp`;
@@ -184,9 +167,12 @@ export default {
             status: self.$store.state.currentStatus,
           });
         },
-        header: 'Удаление',
-        body: 'Действительно удалить выставку?',
+        header: 'Действительно удалить выставку?',
+        canceltext: 'Нет, отменить',
+        oktext: 'Да, удалить',
         showcancel: true,
+        swapcolors: true,
+        item: this.item,
       };
       this.prompt(options);
     },
@@ -222,21 +208,22 @@ export default {
     background-color: white
     border-radius: 5px
     border: 1px solid rgba(black, 0.1)
+
     &__info
-      // display: flex
-      // flex-direction: row
       flex-grow: 1
       display: grid
-      grid-template-columns: 240px 31px min-content 31px minmax(280px, 1fr) 1fr
+      grid-template-columns: 240px 31px min-content 31px min-content 1fr
       grid-template-rows: 1fr
       padding-top: 10px
       padding-bottom: 10px
       padding-right: 10px
+
     &__divider
       background-color: rgba(black, 0.2)
       width: 1px
       margin-left: 15px
       margin-right: 15px
+
     &__alert
       grid-column-start: 3
       grid-column-end: 6
@@ -244,33 +231,16 @@ export default {
       justify-content: center
       align-items: center
 
-  .dates-block
-    display: flex
-    flex-direction: column
-    justify-content: center
-    align-items: center
-    padding-left: 15px
-    color: rgba(black, 0.8)
-    &__grid
-      display: grid
-      grid-template-columns: auto auto
-      align-content: center
-      align-items: center
-      justify-content: center
-      grid-gap: 5px 10px
-    &__name
-      font-weight: bold
-      font-size: 14px
-      text-align: right
-    &__value
-      font-size: 14px
-
   .users-block
     font-size: 14px
-    display: flex
-    flex-direction: column
-    justify-content: center
+    display: grid
+    grid-template-rows: min-content 1fr
+
+    &__creator, &__picker
+      justify-self: start
+
     &__creator
+      min-width: 280px
       margin: 0
       padding: 0
       margin-bottom: 10px
@@ -280,15 +250,17 @@ export default {
   .actions-block
     display: flex
     align-items: center
+
     &--grow
-      flex-grow: 1
       justify-content: flex-end
+
     &__grid
       display: grid
       grid-auto-flow: column
       grid-template-rows: 36px
       grid-gap: 15px
       justify-items: end
+
     &__item
       cursor: pointer
       width: 36px
@@ -299,16 +271,20 @@ export default {
       background-color: rgba(black, 0.05)
       transition: all ease-in-out 0.15s
       box-shadow: 0 2px 10px rgba(black, 0)
+
       &::after
         +posa(0)
         content: ''
         opacity: 0.4
         background: center no-repeat
         transition: all ease 0.15s
+
       &:hover
         box-shadow: 0 2px 10px rgba(black, 0.25)
+
         &::after
           opacity: 0.8
+
       &--info
         &::after
           background-image: url('~/assets/icons/info.svg')
@@ -331,68 +307,36 @@ export default {
           background-image: url('~/assets/icons/remove--color.svg')
           opacity: 1
 
-  .expo-card
-    margin: -1px
-    flex: 0 0 auto
-    display: flex
-    justify-content: center
-    align-items: center
-    min-height: 100px
-    width: 300px
-    border-radius: 5px
-    background: #333 center center no-repeat
-    background-size: cover
-    color: white
-    font-weight: bold
-    font-size: 16px
-    line-height: 18px
-    position: relative
-    cursor: pointer
-    padding-left: 20px
-    padding-right: 20px
-    &::after
-      content: ''
-      position: absolute
-      top: 0
-      left: 0
-      right: 0
-      bottom: 0
-      background-color: rgba(black, 0.5)
-      border-radius: inherit
-    &__title
-      white-space: pre-wrap
-      position: relative
-      z-index: 1
-      margin: 0
-      padding: 0
-
   @media only screen and (max-width : 1600px)
+
     .actions-block
       &__grid
         grid-template-rows: 36px 36px
         grid-gap: 10px
 
   @media only screen and (max-width : 1024px)
+
     .list-item
       &__info
         grid-template-columns: 120px 17px min-content 17px minmax(280px, 1fr) 1fr
+
       &__divider
         margin-left: 8px
         margin-right: 8px
+
     .dates-block
       padding-left: 10px
+
       &__grid
         grid-template-columns: auto
         grid-gap: 5px 0px
+
       &__name
         text-align: left
         font-size: 13px
+
       &__value
         font-size: 13px
         margin-top: -5px
-
-    .expo-card
-      width: 240px
-      font-size: 14px
 
 </style>

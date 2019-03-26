@@ -29,7 +29,9 @@
         </div>
       </div>
     </div>
-    <modal v-show="modal" :show="modal" :options="modalOptions"/>
+    <modal v-show="modal" :show="modal" :options="modalOptions">
+      <expo-preview :expo="modalOptions.item"/>
+    </modal>
   </div>
 </template>
 
@@ -38,6 +40,7 @@ import ListItemNew from '~/components/cms/list/ListItemNew';
 import Sidebar from '~/components/cms/sidebar/Sidebar';
 import Toggle from '~/components/cms/common/Toggle';
 import SortMenu from '~/components/cms/common/SortMenu';
+import ExpoPreview from '~/components/common/ExpoPreview';
 import Modal from '~/components/common/Modal';
 
 export default {
@@ -48,6 +51,7 @@ export default {
     Sidebar,
     Toggle,
     SortMenu,
+    ExpoPreview,
     Modal,
   },
   data() {
@@ -56,6 +60,7 @@ export default {
       modalOptions: {
         okcallback: () => undefined,
         cancelcallback: () => undefined,
+        item: {},
       },
     };
   },
@@ -87,7 +92,7 @@ export default {
       this.$store.dispatch('setSortType', option);
     },
     showModal(options) {
-      this.modalOptions = { oktext: 'Ок', canceltext: 'Отменить', ...options };
+      this.modalOptions = { ...options };
       let self = this;
       this.modalOptions.cancelcallback = () => (self.modal = false);
       this.modalOptions.okcallback = () => {
