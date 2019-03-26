@@ -227,7 +227,7 @@ export default {
       // flex-direction: row
       flex-grow: 1
       display: grid
-      grid-template-columns: 240px 31px 189px 30px 1fr 1fr
+      grid-template-columns: 240px 31px min-content 31px minmax(280px, 1fr) 1fr
       grid-template-rows: 1fr
       padding-top: 10px
       padding-bottom: 10px
@@ -366,7 +366,7 @@ export default {
       margin: 0
       padding: 0
 
-  @media only screen and (max-width : 1440px)
+  @media only screen and (max-width : 1600px)
     .actions-block
       &__grid
         grid-template-rows: 36px 36px
@@ -374,6 +374,8 @@ export default {
 
   @media only screen and (max-width : 1024px)
     .list-item
+      &__info
+        grid-template-columns: 120px 17px min-content 17px minmax(280px, 1fr) 1fr
       &__divider
         margin-left: 8px
         margin-right: 8px
@@ -381,9 +383,14 @@ export default {
       padding-left: 10px
       &__grid
         grid-template-columns: auto
-        grid-gap: 5px 5px
+        grid-gap: 5px 0px
       &__name
         text-align: left
+        font-size: 13px
+      &__value
+        font-size: 13px
+        margin-top: -5px
+
     .expo-card
       width: 240px
       font-size: 14px

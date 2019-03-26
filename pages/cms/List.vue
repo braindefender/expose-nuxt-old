@@ -126,8 +126,6 @@ export default {
       padding-right: 15px
       display: flex
       justify-content: space-between
-    &__toggle
-      max-width: 50%
     &__header, &__list-item
       font-size: 15px
       color: rgba(black, 0.8)
@@ -138,7 +136,6 @@ export default {
       &--main
         padding-left: 20px
         margin-right: 40px
-        width: 395px
         flex: 0 0 auto
       &--title
         font-size: 18px

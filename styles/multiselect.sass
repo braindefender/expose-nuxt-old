@@ -160,13 +160,14 @@ fieldset[disabled] .multiselect
   padding-left: 7px
   padding-right: 29px
   border-radius: 3px
-  color: white
   font-size: 13px
-  background: $color-accent
+  background-color: rgba(black, 0.05)
+  border: 1px solid rgba(black, 0.05)
+  color: rgba(black, 0.75)
   white-space: nowrap
   overflow: hidden
   max-width: 100%
-  text-overflow: ellipsis
+  overflow: hidden
 
 .multiselect__tag-icon
   +posa(0)
@@ -174,7 +175,7 @@ fieldset[disabled] .multiselect
   left: auto
   width: 24px
   transition: all .2s ease
-  border-radius: 3px
+  border-radius: 0px
   &::before, &::after
     position: absolute
     top: 50%
@@ -184,7 +185,7 @@ fieldset[disabled] .multiselect
     width: 8px
     height: 2px
     border-radius: 5em
-    background-color: white
+    background-color: $color-accent
     content: ''
   &::before
     transform: rotate(-45deg)
