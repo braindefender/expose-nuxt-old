@@ -52,7 +52,7 @@
           <span>{{ book.pages }}</span>
         </div>
       </div>
-      <div v-if="annotation" class="book-popup__annotation">{{ book.annotation }}</div>
+      <div v-if="book.annotation" class="book-popup__annotation">{{ book.annotation }}</div>
       <div class="book-popup__additional">
         <div v-if="hasInfo" class="book-popup__info">
           <div class="book-popup__info-heading">Дополнительная информация</div>
@@ -60,7 +60,10 @@
             <li v-for="(item, index) in book.info" :key="index" class="book-popup__info-line">
               <div class="book-popup__info-name">{{ item.name }}</div>
               <div v-if="checkIsArray(item.value)" class="book-popup__info-value">
-                <span v-for="(field, key) in item.value" :key="key">{{ field }}</span>
+                <span
+                  v-for="(field, key) in item.value"
+                  :key="key"
+                >{{ field + (key != item.value.length - 1 ? ', ' : '') }}</span>
               </div>
               <div v-else class="book-popup__info-value">{{ item.value }}</div>
             </li>

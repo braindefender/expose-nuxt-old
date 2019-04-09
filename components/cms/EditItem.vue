@@ -20,7 +20,13 @@
       <div class="ee-card__item-content ee-card__info">
         <div v-for="(info, index) in item.info" :key="index" class="ee-card__info-line">
           <div class="ee-card__info-cell bold">{{ info.name }}</div>
-          <div class="ee-card__info-cell">{{ info.value }}</div>
+          <div v-if="checkIsArray(info.value)" class="ee-card__info-cell">
+            <span
+              v-for="(field, key) in info.value"
+              :key="key"
+            >{{ field + (key != info.value.length - 1 ? ', ' : '') }}</span>
+          </div>
+          <div v-else class="ee-card__info-cell">{{ info.value }}</div>
         </div>
       </div>
     </div>
@@ -156,6 +162,9 @@ export default {
     }),
   },
   methods: {
+    checkIsArray(arg) {
+      return Array.isArray(arg);
+    },
     revert() {
       this.$store.dispatch('edit/updateOnEditScreen', this.item);
     },
