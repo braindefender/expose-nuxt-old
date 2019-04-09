@@ -12,7 +12,8 @@ export const state = () => ({
       image: weekly0,
       email: 'abonement@gpntbsib.ru',
       phones: ['+7 (383) 266-85-18'],
-      sourceLink: '',
+      sourceLink: 'http://spsl.nsc.ru',
+      alt: 'ГПНТБ СО РАН',
     },
     {
       index: 1,
@@ -24,6 +25,7 @@ export const state = () => ({
       email: 'branchconfhall@gpntbsib.ru',
       phones: ['+7 (383) 330-17-59'],
       sourceLink: 'http://prometeus.nsc.ru',
+      alt: 'Отделение ГПНТБ СО РАН',
     },
     {
       index: 2,

@@ -58,6 +58,8 @@ export const actions = {
           commit('set', { field: 'title', value: sl.weekly });
           commit('set', { field: 'phones', value: sl.phones });
           commit('set', { field: 'email', value: sl.email });
+          commit('set', { field: 'sourceLink', value: sl.sourceLink });
+          commit('set', { field: 'alt', value: sl.alt });
         }
         commit('set', { field: 'mode', value: 0 });
         commit('set', { field: 'image', value: '' });
