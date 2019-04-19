@@ -11,7 +11,12 @@
         <div class="book-popup__cover-year">{{ book.year }}</div>
       </div>
       <div class="book-popup__links">
-        <a class="book-popup__link" :href="book.basePath">Перейти в каталог</a>
+        <a
+          class="book-popup__link"
+          :href="book.basePath"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Перейти в каталог</a>
         <a v-if="book.link" class="book-popup__link" :href="book.link">Полный текст</a>
         <button
           v-if="book.contents"
@@ -29,7 +34,12 @@
     </div>
     <div class="book-popup__content">
       <div v-if="!opened" class="book-popup__controls">
-        <a class="book-popup__badge book-popup__badge--link" :href="link">Открыть в новом окне</a>
+        <a
+          class="book-popup__badge book-popup__badge--link"
+          :href="link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Открыть в новом окне</a>
         <button
           type="button"
           class="book-popup__circle-button book-popup__circle-button--close"
@@ -203,24 +213,34 @@ export default {
 
     &__badges
       display: flex
+      align-items: flex-start
 
     &__badge
-      +button
+      +tdn
+      border: none
+      outline: none
+      display: flex
+      align-items: flex-start
+      justify-content: center
+      position: relative
       font-size: 13px
-      height: 24px
+      padding-top: 4px
+      padding-bottom: 4px
       padding-left: 10px
       padding-right: 10px
-      border-radius: 5em
+      border-radius: 12px
       background-color: rgba(black, 0.05)
       color: rgba(black, 0.6)
       margin-right: 10px
       overflow: hidden
+      max-width: 480px
       &:last-child
         margin-right: 0
       span
         color: $color-accent
       &--link
         color: $color-accent
+        cursor: pointer
         &:hover
           background-color: rgba(black, 0.1)
         &:active
@@ -317,6 +337,13 @@ export default {
       color: rgba(black, 0.8)
       display: flex
       justify-content: space-between
+      line-height: 15px
+      margin-bottom: 4px
+      &:last-child
+        margin-bottom: 0
+
+    &__info-value
+      text-align: right
 
     &__images-list
       margin: 0

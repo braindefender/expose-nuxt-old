@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <Header/>
     <section class="cover-section" :style="`background-image: url(${cover})`">
       <div class="cover-section__content">
         <h1>Каталог выставок ГПНТБ СО РАН</h1>
@@ -8,7 +9,7 @@
     <section class="content-section">
       <slider/>
       <catalogue-preview v-if="catalogueList !== ''" :list="catalogueList"/>
-      <category-preview v-if="categoryList !== ''" :list="categoryList"/>
+      <!-- <category-preview v-if="categoryList !== ''" :list="categoryList"/> -->
     </section>
     <section v-if="preload" class="content-section content-section--preload">
       <slider-preload/>
@@ -24,6 +25,7 @@ import cover from '~/assets/images/alfons-morales-410757-unsplash.jpg';
 import CataloguePreview from '~/components/expose/catalogue/CataloguePreview';
 import CataloguePreviewPreload from '~/components/expose/catalogue/CataloguePreviewPreload';
 import CategoryPreview from '~/components/expose/category/CategoryPreview';
+import Header from '~/components/common/Header';
 import Slider from '~/components/expose/slider/Slider';
 import SliderPreload from '~/components/expose/slider/SliderPreload';
 
@@ -32,6 +34,7 @@ export default {
     CataloguePreview,
     CataloguePreviewPreload,
     CategoryPreview,
+    Header,
     Slider,
     SliderPreload,
   },

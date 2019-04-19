@@ -113,7 +113,7 @@ export default {
     info() {
       return [
         this.item.source || '',
-        this.item.year || '',
+        this.cleanup(this.item.year) || '',
         this.item.pages ? `${this.item.pages} стр.` : '',
       ]
         .filter(el => el !== '')
@@ -121,9 +121,13 @@ export default {
     },
   },
   methods: {
+    cleanup(str) {
+      return str ? str.replace(/\D/g, '') : undefined;
+    },
     openPopup() {
       this.$axios.get(this.link).then(res => {
         this.book = res.data;
+        this.book.year = this.cleanup(this.book.year);
         this.opened = true;
       });
     },
@@ -148,15 +152,13 @@ export default {
   @import '@/styles/mixins.sass'
 
   .bc
-    &__wrapper
-
     &__card
       text-decoration: none
       padding: 15px
       border-radius: 5px
       overflow: hidden
       display: grid
-      grid-column-gap: 10px
+      grid-column-gap: 15px
       grid-template-columns: 125px 1fr
       grid-template-rows: min-content
       background-color: white
@@ -188,7 +190,6 @@ export default {
       justify-content: space-between
 
     &__image
-      margin-right: 15px
       flex-grow: 0
       flex-shrink: 0
       flex-basis: 125px
@@ -207,6 +208,7 @@ export default {
       line-height: 20px
       color: $color-accent
       max-width: 560px
+      margin-bottom: 3px
       &--gray
         color: rgba(black, 0.4)
 
@@ -214,7 +216,7 @@ export default {
       font-weight: bold
       line-height: 20px
       max-width: 560px
-      margin-bottom: 5px
+      margin-bottom: 6px
       cursor: pointer
       color: black
       display: block
