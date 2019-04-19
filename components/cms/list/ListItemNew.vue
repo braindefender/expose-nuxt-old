@@ -60,6 +60,7 @@
       <div v-if="!blocked" class="list-item__actions actions-block actions-block--grow">
         <div class="actions-block__grid">
           <button
+            v-if="this.$store.state.currentStatus !== 'work'"
             v-tooltip.left="{content: 'Перейти к выставке', classes: 'popover'}"
             type="button"
             class="actions-block__item actions-block__item--hide"
