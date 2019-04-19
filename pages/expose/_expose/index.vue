@@ -55,7 +55,7 @@
                 </div>
                 <div v-if="expose.alt" class="expose-page__info-text">
                   Ссылка:
-                  <a :href="`mailto:${expose.sourceLink}`">{{ expose.alt }}</a>
+                  <a :href="`${expose.sourceLink}`">{{ expose.alt }}</a>
                 </div>
               </div>
             </affix>
