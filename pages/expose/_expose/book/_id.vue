@@ -1,13 +1,15 @@
 <template>
-  <div class="fullscreen-container book-page">
-    <div v-if="expose" class="book-page__return">
-      <div class="book-page__return-image">
-        <img :src="exposeImage" :alt="expose.title">
+  <div class="fullscreen-container">
+    <div class="book-page">
+      <div v-if="expose" class="book-page__return">
+        <div class="book-page__return-image">
+          <img :src="exposeImage" :alt="expose.title">
+        </div>
+        <a :href="`/expose/${expose.link}`" class="book-page__return-link">{{ expose.title }}</a>
       </div>
-      <a :href="`/expose/${expose.link}`" class="book-page__return-link">{{ expose.title }}</a>
-    </div>
 
-    <book-popup v-if="book" :book="book" :opened="true"/>
+      <book-popup v-if="book" :book="book" :opened="true"/>
+    </div>
   </div>
 </template>
 
@@ -77,22 +79,27 @@ export default {
 
 @import '~/styles/mixins.sass'
 
-.fullscreen-container
-  +posa(0px)
-  display: flex
-  flex-direction: column
-  align-items: center
-  justify-content: center
+body
   background-color: rgba(black, 0.1)
 
+.fullscreen-container
+  width: 100vw
+  height: 100vh
+  display: flex
+  justify-content: center
+
 .book-page
+  display: grid
+  grid-template-rows: 60px min-content
+  grid-row-gap: 30px
+  margin: auto
   &__return
     width: 1024px
-    margin-bottom: 30px
     position: relative
     z-index: 5
     border-radius: 10px
     overflow: hidden
+    flex-shrink: 0
     &::after
       +posa(0)
       content: ''
