@@ -187,10 +187,12 @@ export default {
   .expose-section
     border-radius: 5px
     background-color: #f5f5f5
+
     &__content
       padding-left: 15px
       padding-right: 15px
       padding-bottom: 15px
+
     &__panel
       padding-left: 30px
       padding-right: 30px
@@ -199,10 +201,12 @@ export default {
       justify-content: space-between
       align-items: center
       height: 64px
+
     &__title
       font-size: 18px
       font-weight: bold
       font-family: 'PT Sans'
+
     &__info
       font-size: 18px
       color: rgba(black, 0.25)
@@ -211,6 +215,7 @@ export default {
 
     &__grid
       padding-top: 20px
+      padding-bottom: 20px
       display: grid
       grid-template-columns: 2fr 1fr
       grid-template-rows: auto

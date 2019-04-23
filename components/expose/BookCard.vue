@@ -7,7 +7,7 @@
         :href="link"
         @click.prevent="openPopup"
       >
-        <div class="bc__image">
+        <div v-if="item.cover" class="bc__image">
           <img :src="`${imageSrc}?_=${Date.now()}`" :alt="item.meta">
         </div>
         <div class="bc__content">
@@ -157,10 +157,9 @@ export default {
       padding: 15px
       border-radius: 5px
       overflow: hidden
-      display: grid
-      grid-column-gap: 15px
-      grid-template-columns: 125px 1fr
-      grid-template-rows: min-content
+      display: flex
+      align-items: flex-start
+      justify-content: flex-start
       background-color: white
       box-shadow: 0px 5px 10px rgba(black, 0.1)
       margin-bottom: 10px
@@ -199,6 +198,7 @@ export default {
       overflow: hidden
       font-size: 0
       align-self: start
+      margin-right: 15px
       img
         width: 100%
         // object-fit: cover
@@ -239,7 +239,7 @@ export default {
     &__annotation
       display: flex
       overflow: hidden
-      max-width: 480px
+      padding-right: 75px
       font-size: 14px
       line-height: 18px
       color: rgba(black, 0.6)
