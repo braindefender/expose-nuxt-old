@@ -18,12 +18,7 @@
           rel="noopener noreferrer"
         >Перейти в каталог</a>
         <a v-if="book.link" class="book-popup__link" :href="book.link">Полный текст</a>
-        <button
-          v-if="book.contents"
-          class="book-popup__link"
-          type="button"
-          @click="showContents"
-        >Содержание</button>
+        <a v-if="book.contents" class="book-popup__link" :href="contentsLink">Содержание</a>
         <a
           v-for="(item, index) in book.extLink"
           :key="index"
@@ -128,9 +123,14 @@ export default {
     hasImages() {
       return this.book.images != undefined && this.book.images.length != 0;
     },
+    contentsLink() {
+      const exposeRoute = this.$route.path.split('/');
+      const webirbis = this.book.webirbis;
+      return `/${exposeRoute[1]}/${exposeRoute[2]}/contents/${webirbis}`;
+    },
     link() {
-      const title = this.book.webirbis;
-      return `${this.$route.path}/book/${title}`;
+      const webirbis = this.book.webirbis;
+      return `${this.$route.path}/book/${webirbis}`;
     },
     authors() {
       return this.book.authors.join(', ');
@@ -370,6 +370,7 @@ export default {
     &__links
       display: grid
       grid-template-columns: repeat(auto-fit, minmax(100px, 1fr))
+      grid-auto-rows: min-content
       grid-gap: 15px 15px
 
     &__link
