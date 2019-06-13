@@ -73,6 +73,22 @@ export const state = () => ({
         phones: ['+7 (383) 266-83-76'],
         sourceLink: '#',
       },
+      {
+        index: 4,
+        title: 'Читальный зал №7',
+        alt: 'Ч/З Патентной информации',
+        email: 'patent1@spsl.nsc.ru',
+        phones: ['+7 (383) 266-26-54'],
+        sourceLink: '#',
+      },
+      {
+        title: 'Отдел научной библиографии',
+        index: 5,
+        alt: 'Отдел научной библиографии',
+        email: 'onbiri@spsl.nsc.ru',
+        phones: ['+7 (383) 266-37-18'],
+        sourceLink: '#',
+      }
     ],
     undefined,
     undefined,
