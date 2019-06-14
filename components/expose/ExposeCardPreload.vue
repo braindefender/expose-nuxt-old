@@ -1,5 +1,5 @@
 <template>
-  <a class="e-card e-card--preloader preloader-mask" href="#"></a>
+  <a class="e-card e-card--preloader" href="#"></a>
 </template>
 
 <script>
@@ -14,6 +14,6 @@ export default {
 
   .e-card
     &--preloader
-      background-color: rgba(black, 0.1)
+      +preloader-mask
 
 </style>

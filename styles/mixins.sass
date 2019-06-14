@@ -9,12 +9,22 @@
   &:active
     text-decoration: none
 
+@mixin link
+  +tdn
+  cursor: pointer
+  color: $color-accent
+
 @mixin posa($padding)
   position: absolute
   top: $padding
   left: $padding
   right: $padding
   bottom: $padding
+
+@mixin heading-2
+  font-size: 20px
+  font-weight: bold
+  font-family: 'PT Sans'
 
 @mixin blur-bg
   filter: blur(15px)
@@ -58,3 +68,19 @@
   align-items: center
   justify-content: center
   position: relative
+
+@mixin preloader-mask
+  background: rgba(black, 0.1)
+  color: transparent
+  border-radius: 5px
+  pointer-events: none
+  cursor: none
+  position: relative
+  border-radius: 5px
+  overflow: hidden
+  &::after
+    +posa(0)
+    content: ''
+    background: linear-gradient(to left, rgba(white, 0.0), rgba(white, 0.5), rgba(white, 0.0))
+    animation: gradientanimation 2.5s ease infinite
+    background-size: 200% 200%

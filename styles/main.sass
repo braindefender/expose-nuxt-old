@@ -1,57 +1,61 @@
 @import '~/styles/mixins.sass'
+@import '~/styles/expose-card.sass'
 
-.main
-  .cover-section
-    position: relative
-    // aspect ratio 375 x 120
-    height: 0
-    width: 100%
-    padding-top: 25%
-    background: #333 center center no-repeat
-    background-size: cover
-    color: white
-    &__content
-      +posa(0)
-      background-color: rgba(black, 0.25)
-      display: flex
-      align-items: center
-      flex-direction: column
-      justify-content: center
-      h1
-        font-weight: bold
-        font-size: 2.5em
-  .content-section
+.cover-section
+  position: relative
+  // aspect ratio 375 x 120
+  height: 0
+  width: 100%
+  padding-top: 25%
+  background: #333 center center no-repeat
+  background-size: cover
+  color: white
+  &__content
+    +posa(0)
+    background-color: rgba(black, 0.25)
     display: flex
-    justify-content: center
+    align-items: center
     flex-direction: column
+    justify-content: center
+    h1
+      font-weight: bold
+      font-size: 2.5em
+.content-section
+  display: grid
+  grid-template-columns: 1fr
+  grid-template-rows: repeat(3, min-content)
+  grid-row-gap: 20px
+  width: $container-width-xl
+  margin: 0 auto
+  justify-content: center
+
+@media only screen and (max-width : 1720px)
+  .content-section
+    width: 1120px
 
 @media only screen and (max-width : 1024px)
-  .main
-    .cover-section
-      &__content
-        h1
-          font-size: 32px
+  .cover-section
+    &__content
+      h1
+        font-size: 32px
 
 @media only screen and (max-width : 425px)
-  .main
-    .cover-section
-      &__content
-        background-color: rgba(black, 0.5)
-        h1
-          font-size: 24px
+  .cover-section
+    &__content
+      background-color: rgba(black, 0.5)
+      h1
+        font-size: 24px
 
 @media only screen and (max-width : 375px)
-  .main
-    .cover-section
-      &__content
-        background-color: rgba(black, 0.5)
-        h1
-          font-size: 20px
+  .cover-section
+    &__content
+      background-color: rgba(black, 0.5)
+      h1
+        font-size: 20px
 
 @media only screen and (max-width : 320px)
-  .main
-    .cover-section
-      &__content
-        background-color: rgba(black, 0.5)
-        h1
-          font-size: 20px
+  .cover-section
+    &__content
+      background-color: rgba(black, 0.5)
+      h1
+        font-size: 20px

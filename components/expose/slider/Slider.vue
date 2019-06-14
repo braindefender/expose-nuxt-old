@@ -1,30 +1,19 @@
 <template>
-  <div class="cat-layout" v-if="show">
-    <div class="cat-layout__panel">
-      <div class="cat-layout__title">Демонстрируемые</div>
-    </div>
-    <div class="cat-layout__content">
-      <div class="cat-layout__slider slider">
-        <div v-swiper:mySwiper="swiperOption">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide" v-for="(item, index) in list" :key="index">
-              <slider-item :item="item"></slider-item>
-            </div>
-          </div>
-          <div class="slider__arrow slider__arrow--left" slot="button-prev"></div>
-          <div class="slider__arrow slider__arrow--right" slot="button-next"></div>
+  <div class="slider">
+    <div v-swiper:mySwiper="swiperOption">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" v-for="(item, index) in list" :key="index">
+          <slider-item :item="item"></slider-item>
         </div>
       </div>
+      <div class="swiper-pagination swiper-pagination-bullets"></div>
+      <div class="slider__arrow slider__arrow--left" slot="button-prev"></div>
+      <div class="slider__arrow slider__arrow--right" slot="button-next"></div>
     </div>
   </div>
 </template>
 
 <script>
-import image1 from '@/assets/images/janko-ferlic-174927-unsplash.jpg';
-import image2 from '@/assets/images/chad-kirchoff-202730-unsplash.jpg';
-import image3 from '@/assets/images/ren-ran-232078-unsplash.jpg';
-import image4 from '@/assets/images/stock-1863880_1920.jpg';
-
 import SliderItem from '~/components/expose/slider/SliderItem';
 
 export default {
@@ -70,16 +59,11 @@ export default {
 
 <style lang="sass">
 
-  .swiper-container
-    height: 226px
-    width: 100%
-    border-radius: 5px
-
   .slider
-    position: relative
-    width: 100%
-    height: 100%
-    min-height: 226px
+    width: 1700px
+    height: 225px
+    border-radius: 5px
+    grid-area: card
     &:hover
       .slider__blurbg
         opacity: 0.6

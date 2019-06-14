@@ -364,7 +364,7 @@
       +tdn
       cursor: pointer
       font-size: 14px
-      color: #4680ff
+      color: $color-accent
     &__sort
       font-size: 0
     &__sort-button
@@ -372,7 +372,7 @@
       padding: 0
       font-family: 'PT Sans'
       cursor: pointer
-      color: #4680ff
+      color: $color-accent
       border: none
       outline: none
       background: none
@@ -417,22 +417,6 @@
       z-index: 100
       box-shadow: 0 1px 0 rgba(black, 0.1)
       background-color: #F6F7FB
-
-  .preloader-mask
-    background: rgba(black, 0.1)
-    color: transparent
-    border-radius: 5px
-    pointer-events: none
-    cursor: none
-    position: relative
-    border-radius: 5px
-    overflow: hidden
-    &::after
-      +posa(0)
-      content: ''
-      background: linear-gradient(to left, rgba(white, 0.0), rgba(white, 0.5), rgba(white, 0.0))
-      animation: gradientanimation 2.5s ease infinite
-      background-size: 200% 200%
 
   @keyframes gradientanimation
     0%

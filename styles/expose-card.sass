@@ -10,11 +10,18 @@
   &:hover
     .e-card__shadow-blur
       opacity: 0.8
+
+  &--preload
+    .e-card__image
+      +preloader-mask
+
   &__layer
     +posa(0)
+
   &__info
     padding: 1.5em
     color: white
+
   &__info--catalogue
     display: flex
     flex-direction: column
@@ -28,6 +35,7 @@
     .e-card__date
       text-align: right
       font-size: 16px
+
   &__image
     width: 100%
     overflow: hidden
@@ -37,14 +45,23 @@
     justify-content: center
     -webkit-mask-image: -webkit-radial-gradient(white, black)
     img
+      object-fit: cover
+      height: 100%
       width: 100%
     &::after
       +posa(0)
       content: ''
       background-color: rgba(black, 0.45)
+
   &__shadow-blur
     +blur-bg
     transition: all ease 0.25s
+
+  &__shadow-blur-container
+    img
+      width: 100%
+      height: 100%
+      object-fit: cover
 
 @media only screen and (max-width : 1024px)
   .e-card

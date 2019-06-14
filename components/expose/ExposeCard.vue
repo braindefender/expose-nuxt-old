@@ -1,5 +1,5 @@
 <template>
-  <a class="e-card" :href="link">
+  <a class="e-card" :class="preload ? 'e-card--preload' : ''" :href="link">
     <div class="e-card__layer e-card__shadow-blur">
       <div class="e-card__shadow-blur-container">
         <img :src="image" :alt="meta">
@@ -21,6 +21,7 @@ export default {
   props: {
     item: { type: Object, default: () => {} },
     options: { type: Object, default: () => undefined },
+    preload: Boolean,
   },
   computed: {
     prettyDate() {
@@ -59,9 +60,3 @@ export default {
   },
 };
 </script>
-
-<style lang="sass">
-
-  @import '@/styles/expose-card.sass'
-
-</style>

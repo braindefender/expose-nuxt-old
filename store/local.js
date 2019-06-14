@@ -46,7 +46,7 @@ export const state = () => ({
       },
     },
   ],
-  categoryList: [
+  collectionList: [
     {
       title: 'Библиотечное дело',
       date: '25 декабря, 2018',
