@@ -33,7 +33,7 @@
               }"
             >
               <ContentSelector :stack="stack"/>
-
+              <BlockInfo :info="blockInfo"/>
               <div class="expose-page__info">
                 <div class="expose-page__info-title">Информация</div>
                 <div
@@ -67,14 +67,15 @@
 </template>
 
 <script>
+import Annotation from '@/components/expose/Annotation';
+import BlockInfo from '~/components/expose/BlockInfo';
 import ContentSelector from '@/components/expose/ContentSelector';
 import Cover from '@/components/expose/Cover';
-import Annotation from '@/components/expose/Annotation';
 import ExposeStack from '@/components/expose/ExposeStack';
 
 export default {
   name: 'Expose',
-  components: { Annotation, Cover, ContentSelector, ExposeStack },
+  components: { Annotation, BlockInfo, Cover, ContentSelector, ExposeStack },
   props: ['options'],
   mounted() {
     if (!this.options) {
@@ -153,6 +154,22 @@ export default {
     },
   },
   computed: {
+    blockInfo() {
+      return {
+        web: {
+          title: this.expose.alt,
+          link: this.expose.sourceLink,
+        },
+        email: {
+          title: this.expose.alt,
+          link: this.expose.sourceLink,
+        },
+        phone: {
+          title: this.expose.alt,
+          link: this.expose.sourceLink,
+        },
+      };
+    },
     expose() {
       if (this.options && this.options.fromcms) {
         return this.$store.state.info;

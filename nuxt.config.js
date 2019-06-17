@@ -78,7 +78,7 @@ module.exports = {
     baseURL: config.serverAPI,
   },
   router: {},
-  modules: ['@nuxtjs/axios', '@nuxtjs/auth'],
+  modules: ['@nuxtjs/axios', '@nuxtjs/auth', '@nuxtjs/style-resources'],
   plugins: [
     { src: '~plugins/vue-autosize', ssr: false },
     { src: '~plugins/vue-picture-input', ssr: false },
@@ -90,6 +90,9 @@ module.exports = {
     { src: '~plugins/vue-img' },
   ],
   css: ['swiper/dist/css/swiper.css'],
+  // styleResources: {
+  //   sass: ['styles/vars.sass', 'styles/mixins.sass'],
+  // },
   // serverMiddleware: [
   //   'redirect-ssl',
   // ]
