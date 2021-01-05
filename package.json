@@ -21,7 +21,7 @@
     "@nuxtjs/auth": "^4.7.0",
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/style-resources": "^0.1.2",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "cookieparser": "^0.1.0",
     "eslint-plugin-import": "^2.13.0",
     "gsap": "^2.0.2",
